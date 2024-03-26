@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238462781665",
+    "project_id": "greenway-f23bb",
+    "storage_bucket": "greenway-f23bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238462781665:android:c924963db37563ed40cfa0",
+        "android_client_info": {
+          "package_name": "it.unimib.greenway"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPKzQBzGa0DrRLYqhckRXMyKfzVIHxPqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
