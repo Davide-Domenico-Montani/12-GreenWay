@@ -2,6 +2,5 @@
 <resources>
     <string name="app_name">GreenWay</string>
     <string name="login">Login</string>
-    <string name="register">Register</string>
-
+    <string name="register">Registrati</string>
 </resources>

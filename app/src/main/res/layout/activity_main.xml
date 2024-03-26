@@ -9,19 +9,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/material_dynamic_neutral_variant90">
         <LinearLayout
             android:id="@+id/text_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            >
 
             <TextView
                 android:id="@+id/text_green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="GREEN"
+                android:textColor="@color/md_theme_outlineVariant"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -30,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WAY"
+                android:textColor="@color/md_theme_primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
