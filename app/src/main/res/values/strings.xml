@@ -8,5 +8,10 @@
     <string name="string3Carosel">Sustainability is crucial to tackling climate change.</string>
     <string name="string4Carosel">Cycle paths and high-speed trains promote sustainable mobility and urban health.</string>
 
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_Google">Sign in with Google</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
 
 </resources>

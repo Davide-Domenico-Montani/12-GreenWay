@@ -2,12 +2,15 @@ package it.unimib.greenway;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.carousel.CarouselLayoutManager;
 
@@ -24,6 +27,8 @@ public class fragment_welcome extends Fragment {
     private CarouselAdapter carouselAdapter;
     CarouselLayoutManager carouselLayoutManager;
 
+
+    Button loginButton, signInButton;
 
     public fragment_welcome() {
     }
@@ -65,7 +70,30 @@ public class fragment_welcome extends Fragment {
         carouselRecyclerView.setLayoutManager(carouselLayoutManager);
 
         return rootView;
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        loginButton = view.findViewById(R.id.button_login);
+        signInButton = view.findViewById(R.id.button_signin);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_fragment_welcome_to_login);
+            }
+        });
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_fragment_welcome_to_sign_in);
+            }
+        });
+    }
+
+
 
 
 }
