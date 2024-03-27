@@ -48,11 +48,14 @@
             android:src="@drawable/logo"
             android:layout_below="@id/text_layout"/>
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/image"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/welcome_nav_graph"
             />
 
     </RelativeLayout>
