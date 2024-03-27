@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +73,6 @@ public class fragment_welcome extends Fragment {
         return rootView;
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
