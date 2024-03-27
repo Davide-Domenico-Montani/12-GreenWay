@@ -9,10 +9,30 @@
         android:id="@+id/fragment_welcome"
         android:name="it.unimib.greenway.fragment_welcome"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_fragment_welcome_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_fragment_welcome_to_sign_in"
+            app:destination="@id/sign_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login"
+        android:name="it.unimib.greenway.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+
     <activity
         android:id="@+id/mainActivity"
         android:name="it.unimib.greenway.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/sign_in"
+        android:name="it.unimib.greenway.Sign_in"
+        android:label="fragment_signin"
+        tools:layout="@layout/fragment_signin" />
+
 </navigation>

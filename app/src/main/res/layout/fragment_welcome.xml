@@ -32,22 +32,19 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="40dp">
         <com.google.android.material.button.MaterialButton
-
-            android:id="@+id/button_1"
+            android:id="@+id/button_login"
             android:layout_width="150dp"
             android:layout_height="49dp"
             style="@style/ButtonLogin"
-            android:backgroundTint="@color/md_theme_primary"
-            android:textColor="@color/md_theme_onPrimary"
             android:text="@string/login"
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_2"
+            android:id="@+id/button_signin"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            style="@style/ButtonRegister"
-            android:text="@string/register" />
+            style="@style/ButtonSignIn"
+            android:text="@string/sign_in" />
 
     </LinearLayout>
     </RelativeLayout>

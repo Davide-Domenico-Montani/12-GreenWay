@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">GreenWay</string>
     <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_Google">Sign in with Google</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
 
 </resources>
