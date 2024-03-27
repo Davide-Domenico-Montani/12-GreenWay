@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#80000000" /> <!-- Colore semitrasparente per l'ombra -->
+    <corners android:radius="0dp" /> <!-- Angoli arrotondati per l'ombra, adatta il valore secondo le tue preferenze -->
+</shape>

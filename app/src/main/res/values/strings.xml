@@ -3,5 +3,10 @@
     <string name="app_name">GreenWay</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="string1Carosel">Electric vehicles and public transport reduce emissions.</string>
+    <string name="string2Carosel">Sustainability preserves resources for future generations.</string>
+    <string name="string3Carosel">Sustainability is crucial to tackling climate change.</string>
+    <string name="string4Carosel">Cycle paths and high-speed trains promote sustainable mobility and urban health.</string>
+
 
 </resources>
