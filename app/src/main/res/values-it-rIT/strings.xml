@@ -15,4 +15,16 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
 
+    <string name="insert_name">Inserisci il nome</string>
+    <string name="insert_surname">Inserisci il cognome</string>
+    <string name="insert_email">Inserisci Email</string>
+
+
+    <string name="insert_password">Inserisci password</string>
+    <string name="different_password">Inserisci password uguale</string>
+
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="repeat_password">Ripeti Password</string>
+
 </resources>

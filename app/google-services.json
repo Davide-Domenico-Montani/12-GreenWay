@@ -12,7 +12,20 @@
           "package_name": "it.unimib.greenway"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "238462781665-0cuucs88vnojvvjdj7ikr6t9dj705teh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.unimib.greenway",
+            "certificate_hash": "4b5b3199f07afd72e2b2f9c05220a479c889faf3"
+          }
+        },
+        {
+          "client_id": "238462781665-h1os7ac4i7k76b93dnhrdmfj5i6keps6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAPKzQBzGa0DrRLYqhckRXMyKfzVIHxPqo"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238462781665-h1os7ac4i7k76b93dnhrdmfj5i6keps6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

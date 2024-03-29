@@ -1,4 +1,4 @@
-package it.unimib.greenway;
+package it.unimib.greenway.ui;
 
 import android.os.Bundle;
 
@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Login#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Login extends Fragment {
+import it.unimib.greenway.R;
+
+
+public class LoginFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +22,7 @@ public class Login extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Login() {
+    public LoginFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +35,8 @@ public class Login extends Fragment {
      * @return A new instance of fragment Login.
      */
     // TODO: Rename and change types and number of parameters
-    public static Login newInstance(String param1, String param2) {
-        Login fragment = new Login();
+    public static LoginFragment newInstance(String param1, String param2) {
+        LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

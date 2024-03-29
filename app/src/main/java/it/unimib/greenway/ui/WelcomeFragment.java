@@ -1,4 +1,4 @@
-package it.unimib.greenway;
+package it.unimib.greenway.ui;
 
 import android.os.Bundle;
 
@@ -18,10 +18,12 @@ import com.google.android.material.carousel.CarouselLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.greenway.CarouselItem;
+import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.CarouselAdapter;
 
 
-public class fragment_welcome extends Fragment {
+public class WelcomeFragment extends Fragment {
 
     private List<CarouselItem> carouselItems;
     private RecyclerView carouselRecyclerView;
@@ -31,11 +33,11 @@ public class fragment_welcome extends Fragment {
 
     Button loginButton, signInButton;
 
-    public fragment_welcome() {
+    public WelcomeFragment() {
     }
 
-    public static fragment_welcome newInstance(String param1, String param2) {
-        fragment_welcome fragment = new fragment_welcome();
+    public static WelcomeFragment newInstance(String param1, String param2) {
+        WelcomeFragment fragment = new WelcomeFragment();
         return fragment;
     }
 
@@ -62,8 +64,6 @@ public class fragment_welcome extends Fragment {
         carouselItems.add(item4);
 
 
-
-        // Inizializza il RecyclerView
         carouselRecyclerView = rootView.findViewById(R.id.carousel_recycler_view);
         carouselAdapter = new CarouselAdapter(carouselItems);
         carouselRecyclerView.setAdapter(carouselAdapter);
@@ -72,7 +72,7 @@ public class fragment_welcome extends Fragment {
 
         return rootView;
 
-        // Inflate the layout for this fragment
+
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

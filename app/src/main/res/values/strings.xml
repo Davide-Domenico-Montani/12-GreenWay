@@ -14,4 +14,16 @@
     <string name="password">Password</string>
 
 
+    <string name="insert_name">Insert name</string>
+    <string name="insert_surname">Insert surname</string>
+    <string name="insert_email">Insert Email</string>
+    <string name="insert_password">Insert password</string>
+    <string name="different_password">Insert right password</string>
+
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+
+    <string name="repeat_password">Repeat Password</string>
+
+
 </resources>
