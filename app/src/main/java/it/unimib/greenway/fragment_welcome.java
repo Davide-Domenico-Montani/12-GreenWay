@@ -6,43 +6,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link fragment_welcome#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.carousel.CarouselLayoutManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.greenway.adapter.CarouselAdapter;
+
+
 public class fragment_welcome extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private List<CarouselItem> carouselItems;
+    private RecyclerView carouselRecyclerView;
+    private CarouselAdapter carouselAdapter;
+    CarouselLayoutManager carouselLayoutManager;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     Button loginButton, signInButton;
 
     public fragment_welcome() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_welcome.
-     */
-    // TODO: Rename and change types and number of parameters
     public static fragment_welcome newInstance(String param1, String param2) {
         fragment_welcome fragment = new fragment_welcome();
         return fragment;
@@ -51,15 +42,37 @@ public class fragment_welcome extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
+
+        CarouselItem item1 = new CarouselItem(R.drawable.image1, getString(R.string.string1Carosel));
+        CarouselItem item2 = new CarouselItem(R.drawable.image2, getString(R.string.string2Carosel));
+        CarouselItem item3 = new CarouselItem(R.drawable.image3, getString(R.string.string3Carosel));
+        CarouselItem item4 = new CarouselItem(R.drawable.image4, getString(R.string.string4Carosel));
+
+        carouselItems = new ArrayList<>();
+        carouselItems.add(item1);
+        carouselItems.add(item2);
+        carouselItems.add(item3);
+        carouselItems.add(item4);
+
+
+
+        // Inizializza il RecyclerView
+        carouselRecyclerView = rootView.findViewById(R.id.carousel_recycler_view);
+        carouselAdapter = new CarouselAdapter(carouselItems);
+        carouselRecyclerView.setAdapter(carouselAdapter);
+        carouselLayoutManager = new CarouselLayoutManager();
+        carouselRecyclerView.setLayoutManager(carouselLayoutManager);
+
+        return rootView;
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -79,6 +92,8 @@ public class fragment_welcome extends Fragment {
             }
         });
     }
+
+
 
 
 }

@@ -2,6 +2,14 @@
 <resources>
     <string name="app_name">GreenWay</string>
     <string name="login">Login</string>
+    <string name="register">Registrati</string>
+    <string name="string1Carosel">Veicoli elettrici e trasporto pubblico riducono le emissioni.</string>
+    <string name="string2Carosel">La sostenibilità preserva le risorse per le generazioni future.</string>
+    <string name="string3Carosel">Piste ciclabili e treni ad alta velocità promuovono la mobilità sostenibile e la salute urbana.</string>
+    <string name="string4Carosel">La sostenibilità è cruciale per affrontare il cambiamento climatico.</string>
+
+
+
     <string name="sign_in">Registrati</string>
     <string name="sign_in_Google">Registrati con Google</string>
     <string name="email">Email</string>
