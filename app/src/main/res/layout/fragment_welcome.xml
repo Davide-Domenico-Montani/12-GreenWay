@@ -20,14 +20,21 @@
 
 
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/carousel_recycler_view"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="25dp"
+    >
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/carousel_recycler_view"
         android:orientation="horizontal"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="40dp">
+        >
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_login"
             android:layout_width="150dp"
@@ -42,7 +49,21 @@
             android:layout_height="wrap_content"
             style="@style/ButtonSignIn"
             android:text="@string/sign_in" />
-
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonGoogleLogin"
+        style="?attr/materialIconButtonOutlinedStyle"
+        android:layout_width="150dp"
+        app:iconGravity="textStart"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:icon="@drawable/icon_google" />
+
+
+</LinearLayout>
+
+
+
     </RelativeLayout>
 </FrameLayout>
