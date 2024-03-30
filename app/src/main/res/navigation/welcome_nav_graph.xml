@@ -26,9 +26,9 @@
 
     <activity
         android:id="@+id/mainActivity"
-        android:name="it.unimib.greenway.ui.MainActivity"
+        android:name="it.unimib.greenway.ui.WelcomeActivity"
         android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+        tools:layout="@layout/activity_welcome" />
     <fragment
         android:id="@+id/sign_in"
         android:name="it.unimib.greenway.ui.Sign_inFragment"

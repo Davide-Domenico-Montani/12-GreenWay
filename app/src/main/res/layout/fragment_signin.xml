@@ -47,6 +47,7 @@
             app:boxCornerRadiusTopStart="30dp"
             android:layout_marginBottom="10dp"
             app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:errorEnabled="false"
             >
 
