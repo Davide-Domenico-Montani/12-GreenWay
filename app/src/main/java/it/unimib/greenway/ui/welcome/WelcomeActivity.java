@@ -1,4 +1,4 @@
-package it.unimib.greenway.ui;
+package it.unimib.greenway.ui.welcome;
 
 import android.os.Bundle;
 
