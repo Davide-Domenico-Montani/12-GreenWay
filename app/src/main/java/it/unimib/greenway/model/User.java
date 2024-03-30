@@ -11,8 +11,11 @@ public class User {
     String photoUrl;
     String photoUrlGoogle;
     double kmCar;
-
+    double kmTrain;
+    double kmBus;
+    double kmWalk;
     //User normale
+
     public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTrain, double kmBus,double kmWalk) {
         this.userId = userId;
         this.name = name;
@@ -26,6 +29,7 @@ public class User {
         this.kmWalk = kmWalk;
     }
     //User Google
+
     public User(String userId, String name, String surname, String email, String photoUrlGoogle, double kmCar, double kmTrain, double kmBus,double kmWalk) {
         this.userId = userId;
         this.name = name;
@@ -37,15 +41,15 @@ public class User {
         this.kmBus = kmBus;
         this.kmWalk = kmWalk;
     }
-
     //Costruttore per login
+
     public User(String userId, String email, String password){
         this.userId = userId;
         this.email = email;
         this.password = password;
     }
-
     //Costruttore per getLoggedUser
+
     public User(String userId, String email){
         this.userId = userId;
         this.email = email;
@@ -130,10 +134,6 @@ public class User {
     public void setKmWalk(double kmWalk) {
         this.kmWalk = kmWalk;
     }
-
-    double kmTrain;
-    double kmBus;
-    double kmWalk;
 
     public String getUserId() {
         return userId;
