@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="server_client_id" translatable="false">238462781665-h1os7ac4i7k76b93dnhrdmfj5i6keps6.apps.googleusercontent.com</string>
     <string name="app_name">GreenWay</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
@@ -24,6 +26,7 @@
     <string name="surname">Surname</string>
 
     <string name="repeat_password">Repeat Password</string>
-
+    <string name="error_no_google_account_found_message">No google account found</string>
+    <string name="unexpected_error">unexpected error</string>
 
 </resources>

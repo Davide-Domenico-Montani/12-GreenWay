@@ -37,8 +37,13 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation(libs.firebase.auth)
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+
+
 }

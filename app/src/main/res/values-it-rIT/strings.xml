@@ -27,4 +27,7 @@
     <string name="surname">Cognome</string>
     <string name="repeat_password">Ripeti Password</string>
 
+    <string name="error_no_google_account_found_message">No google account found</string>
+    <string name="unexpected_error">unexpected error</string>
+
 </resources>
