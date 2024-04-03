@@ -1,5 +1,6 @@
 package it.unimib.greenway.ui.welcome;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import it.unimib.greenway.R;
 import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
+import it.unimib.greenway.ui.main.MainActivity;
 
 
 public class LoginFragment extends Fragment {
@@ -98,8 +100,11 @@ public class LoginFragment extends Fragment {
                                 if (result.isSuccessUser()) {
                                     User user = ((Result.UserResponseSuccess) result).getData();
                                     Log.d("LoginFragment", "User: " + user.getUserId() + " " + user.getEmail());
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(intent);
                                     //saveLoginData(user.getUserId(), Email, Password);
                                     //userViewModel.setAuthenticationError(false);
+                                    //TODO: L'intent da sostituire con retrieveUSerInformationandStartActivity
                                     //retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
 
                                 } else {
