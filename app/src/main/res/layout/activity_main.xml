@@ -8,21 +8,19 @@
     android:id="@+id/main"
     >
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/md_theme_surface"
+            app:title="Ciccio" />
 
-            app:title="ciccio" />
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutBottom"
