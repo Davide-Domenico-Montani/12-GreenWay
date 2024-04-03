@@ -65,6 +65,12 @@
             android:layout_gravity="center_horizontal"
             android:text="Login" />
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </FrameLayout>

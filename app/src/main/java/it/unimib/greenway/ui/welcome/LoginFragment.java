@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,6 +30,7 @@ public class LoginFragment extends Fragment {
     Button btnConfirmLogin;
     TextInputEditText editTextEmail, editTextPassword;
     TextInputLayout textInputLayoutEmail, textInputLayoutPassword;
+    CircularProgressIndicator progressIndicator;
     private UserViewModel userViewModel;
     public LoginFragment() {
         // Required empty public constructor
@@ -61,6 +63,7 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnConfirmLogin = view.findViewById(R.id.buttonLogin);
+        progressIndicator = view.findViewById(R.id.progressIndicator);
         btnConfirmLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +91,8 @@ public class LoginFragment extends Fragment {
                 if(isValid){
                     String Email = editTextEmail.getText().toString();
                     String Password = editTextPassword.getText().toString();
+                    progressIndicator.setVisibility(View.VISIBLE);
+
                     userViewModel.loginUserMutableLiveData(Email, Password).observe(
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {
@@ -99,7 +104,7 @@ public class LoginFragment extends Fragment {
 
                                 } else {
                                     //userViewModel.setAuthenticationError(true);
-                                    //progressIndicator.setVisibility(View.GONE);
+                                    progressIndicator.setVisibility(View.GONE);
                                     //Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                       //      getErrorMessage(((Result.Error) result).getMessage()),
                                         //    Snackbar.LENGTH_SHORT).show();
