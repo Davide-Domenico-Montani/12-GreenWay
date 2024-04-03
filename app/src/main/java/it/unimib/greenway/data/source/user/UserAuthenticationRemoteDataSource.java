@@ -1,9 +1,19 @@
 package it.unimib.greenway.data.source.user;
 
+import static it.unimib.greenway.util.Constants.INVALID_CREDENTIALS_ERROR;
+import static it.unimib.greenway.util.Constants.INVALID_USER_ERROR;
+import static it.unimib.greenway.util.Constants.UNEXPECTED_ERROR;
+import static it.unimib.greenway.util.Constants.USER_COLLISION_ERROR;
+import static it.unimib.greenway.util.Constants.WEAK_PASSWORD_ERROR;
+
 import android.util.Log;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -12,6 +22,7 @@ import it.unimib.greenway.model.User;
 public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRemoteDataSource {
 
     private static final String TAG = UserAuthenticationRemoteDataSource.class.getSimpleName();
+
     private final FirebaseAuth firebaseAuth;
     public UserAuthenticationRemoteDataSource() {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -26,7 +37,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success");
-                    /*FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     if (firebaseUser != null) {
                         String[] parts = firebaseUser.getDisplayName().split(" ");
                         String nome = parts[0];  // Il primo elemento è il nome
@@ -36,19 +47,69 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                                 new User(firebaseUser.getUid(),
                                         nome, cognome,
                                         firebaseUser.getEmail(),
-                                        "",
-                                        "",
                                         firebaseUser.getPhotoUrl().toString(),
-                                        null));
+                                        0, 0, 0, 0
+                                        ));
                     } else {
                         userResponseCallback.onFailureFromAuthentication(
                                 getErrorMessage(task.getException()));
-                    }*/
+                    }
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.getException());
                     //userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
                 }
             });
         }
+    }
+
+    @Override
+    public void signUp(String nome, String cognome, String email, String password) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                Log.d("Ciao", firebaseUser.getUid());
+                if (firebaseUser != null) {
+                    userResponseCallback.onSuccessFromAuthentication(
+                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0, 0)
+                    );
+                } else {
+                    userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+                }
+            } else {
+                userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+            }
+        });
+    }
+
+    @Override
+    public void login(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+
+                    userResponseCallback.onSuccessFromAuthentication(
+                            new User(firebaseUser.getUid(), email, password)
+                    );
+                } else {
+                    userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+                }
+            } else {
+                userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+            }
+        });
+    }
+
+    private String getErrorMessage(Exception exception) {
+        if (exception instanceof FirebaseAuthWeakPasswordException) {
+            return WEAK_PASSWORD_ERROR;
+        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+            return INVALID_CREDENTIALS_ERROR;
+        } else if (exception instanceof FirebaseAuthInvalidUserException) {
+            return INVALID_USER_ERROR;
+        } else if (exception instanceof FirebaseAuthUserCollisionException) {
+            return USER_COLLISION_ERROR;
+        }
+        return UNEXPECTED_ERROR;
     }
 }

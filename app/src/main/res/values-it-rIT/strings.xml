@@ -29,5 +29,7 @@
 
     <string name="error_no_google_account_found_message">No google account found</string>
     <string name="unexpected_error">unexpected error</string>
+    <string name="password_not_match">Password non coincidono</string>
+    <string name="email_not_valid">Email non valida</string>
 
 </resources>

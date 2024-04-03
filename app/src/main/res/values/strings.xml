@@ -28,5 +28,7 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="error_no_google_account_found_message">No google account found</string>
     <string name="unexpected_error">unexpected error</string>
+    <string name="password_not_match">Password don\'t match</string>
+    <string name="email_not_valid">Email not valid</string>
 
 </resources>

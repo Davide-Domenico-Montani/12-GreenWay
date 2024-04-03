@@ -5,7 +5,9 @@ import android.app.Application;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.repository.user.UserRepository;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
+import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.data.source.user.UserAuthenticationRemoteDataSource;
+import it.unimib.greenway.data.source.user.UserDataRemoteDataSource;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
@@ -33,15 +35,16 @@ public class ServiceLocator {
         BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource =
                 new UserAuthenticationRemoteDataSource();
 
-        /*BaseUserDataRemoteDataSource userDataRemoteDataSource =
-                new UserDataRemoteDataSource(sharedPreferencesUtil);
-        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
+
+        BaseUserDataRemoteDataSource userDataRemoteDataSource =
+                new UserDataRemoteDataSource();
+        /*DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
         BaseBeerLocalDataSource beerLocalDataSource =
                 new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
 
 */
-        return new UserRepository(userRemoteAuthenticationDataSource//,
+        return new UserRepository(userRemoteAuthenticationDataSource, userDataRemoteDataSource//,
                 /*beerLocalDataSource, userDataRemoteDataSource*/);
     }
 

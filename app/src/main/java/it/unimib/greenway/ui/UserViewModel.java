@@ -27,5 +27,26 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.getGoogleUser(token);
     }
 
+    public MutableLiveData<Result> registerUserMutableLiveData(String nome, String cognome, String email, String password) {
+        if (userMutableLiveData == null) {
+            registerUser(nome, cognome, email, password);
+        }
+        return userMutableLiveData;
+    }
+
+    public void registerUser(String nome, String cognome, String email, String password) {
+        userMutableLiveData = userRepository.registerUser(nome, cognome, email, password);
+    }
+
+    public MutableLiveData<Result> loginUserMutableLiveData(String email, String password) {
+        if (userMutableLiveData == null) {
+            loginUser(email, password);
+        }
+        return userMutableLiveData;
+    }
+
+    public void loginUser(String email, String password) {
+        userMutableLiveData = userRepository.loginUser(email, password);
+    }
 
 }

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "238462781665",
+    "firebase_url": "https://greenway-f23bb-default-rtdb.firebaseio.com",
     "project_id": "greenway-f23bb",
     "storage_bucket": "greenway-f23bb.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "it.unimib.greenway",
             "certificate_hash": "4b5b3199f07afd72e2b2f9c05220a479c889faf3"
+          }
+        },
+        {
+          "client_id": "238462781665-u76bo3pbfmcadcma7oanvau1pj7o2bl2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.unimib.greenway",
+            "certificate_hash": "8ddcafa3bdbd01029c683617e498f68a82bd2e52"
           }
         },
         {

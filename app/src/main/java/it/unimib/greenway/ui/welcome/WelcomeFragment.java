@@ -37,6 +37,7 @@ import it.unimib.greenway.CarouselItem;
 import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.CarouselAdapter;
 import it.unimib.greenway.data.repository.user.IUserRepository;
+import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
@@ -102,19 +103,19 @@ public class WelcomeFragment extends Fragment {
                         // Got an ID token from Google. Use it to authenticate with Firebase.
                         userViewModel.getGoogleUserMutableLiveData(idToken).observe(getViewLifecycleOwner(), authenticationResult -> {
 
-                            /*if (authenticationResult.isSuccessUser()) {
+                            if (authenticationResult.isSuccessUser()) {
                                 User user = ((Result.UserResponseSuccess) authenticationResult).getData();
-                                saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
-                                userViewModel.setAuthenticationError(false);
-                                retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
+                                //saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
+                                //userViewModel.setAuthenticationError(false);
+                                //retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
 
                             } else {
-                                userViewModel.setAuthenticationError(true);
+                                //userViewModel.setAuthenticationError(true);
 
-                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                        getErrorMessage(((Result.Error) authenticationResult).getMessage()),
-                                        Snackbar.LENGTH_SHORT).show();
-                            }*/
+                                //Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                 //       getErrorMessage(((Result.Error) authenticationResult).getMessage()),
+                                   //     Snackbar.LENGTH_SHORT).show();
+                            }
                         });
                     }
                 } catch (ApiException e) {
