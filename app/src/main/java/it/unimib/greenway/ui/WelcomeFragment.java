@@ -1,6 +1,7 @@
 package it.unimib.greenway.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -52,7 +53,7 @@ public class WelcomeFragment extends Fragment {
     CarouselLayoutManager carouselLayoutManager;
 
 
-    Button loginButton, signInButton, google;
+    Button loginButton, signInButton, google, skipButton;
 
     public WelcomeFragment() {
     }
@@ -147,6 +148,7 @@ public class WelcomeFragment extends Fragment {
         loginButton = view.findViewById(R.id.button_login);
         signInButton = view.findViewById(R.id.button_signin);
         google = view.findViewById(R.id.buttonGoogle);
+        skipButton = view.findViewById(R.id.skipButton);
 
 
         google.setOnClickListener(v -> oneTapClient.beginSignIn(signInRequest)
@@ -182,6 +184,14 @@ public class WelcomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_fragment_welcome_to_sign_in);
+            }
+        });
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }
