@@ -23,7 +23,7 @@
                 android:id="@+id/text_green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GREEN"
+                android:text="@string/green"
                 android:textColor="@color/md_theme_outlineVariant"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -32,7 +32,7 @@
                 android:id="@+id/text_way"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="WAY"
+                android:text="@string/way"
                 android:textColor="@color/md_theme_primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />

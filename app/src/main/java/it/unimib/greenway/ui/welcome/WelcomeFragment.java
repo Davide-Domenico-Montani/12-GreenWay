@@ -1,6 +1,7 @@
 package it.unimib.greenway.ui.welcome;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -41,6 +42,7 @@ import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
+import it.unimib.greenway.ui.main.MainActivity;
 import it.unimib.greenway.util.ServiceLocator;
 
 
@@ -105,6 +107,9 @@ public class WelcomeFragment extends Fragment {
 
                             if (authenticationResult.isSuccessUser()) {
                                 User user = ((Result.UserResponseSuccess) authenticationResult).getData();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+
                                 //saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
                                 //userViewModel.setAuthenticationError(false);
                                 //retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);

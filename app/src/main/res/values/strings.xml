@@ -34,6 +34,8 @@
     <string name="nav">Navigator</string>
     <string name="challenge">Challenge</string>
     <string name="user">User</string>
+    <string name="green" translatable="false">GREEN</string>
+    <string name="way" translatable="false">WAY</string>
 
 
 </resources>

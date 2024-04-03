@@ -5,20 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
+    android:background="@color/material_dynamic_neutral_variant90"
     >
 
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarTop"
             android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="@color/md_theme_surfaceContainerLow"
+            >
+
+
+        <TextView
+            android:id="@+id/text_green"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:title="ciccio" />
+            android:text="@string/green"
+            android:textColor="@color/md_theme_outlineVariant"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="35dp"
+            />
+
+        <TextView
+            android:id="@+id/text_way"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/way"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="35dp"
+
+        />
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.appbar.AppBarLayout
@@ -37,7 +64,7 @@
             android:layout_height="match_parent"
             app:itemIconSize="25dp"
             app:labelVisibilityMode="labeled"
-            android:background="@color/md_theme_surface"
+            android:background="@color/md_theme_surfaceContainerLow"
             app:menu="@menu/bottom_navigation_menu" />
     </com.google.android.material.appbar.AppBarLayout>
 
