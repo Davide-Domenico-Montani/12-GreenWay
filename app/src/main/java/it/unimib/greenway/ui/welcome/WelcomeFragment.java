@@ -1,6 +1,7 @@
-package it.unimib.greenway.ui;
+package it.unimib.greenway.ui.welcome;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,13 @@ import java.util.List;
 import it.unimib.greenway.CarouselItem;
 import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.CarouselAdapter;
+import it.unimib.greenway.data.repository.user.IUserRepository;
+import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.User;
+import it.unimib.greenway.ui.UserViewModel;
+import it.unimib.greenway.ui.UserViewModelFactory;
+import it.unimib.greenway.ui.main.MainActivity;
+import it.unimib.greenway.util.ServiceLocator;
 
 
 public class WelcomeFragment extends Fragment {
@@ -47,12 +56,13 @@ public class WelcomeFragment extends Fragment {
     private BeginSignInRequest signInRequest;
     private ActivityResultLauncher<IntentSenderRequest> activityResultLauncher;
     private ActivityResultContracts.StartIntentSenderForResult startIntentSenderForResult;
+    private UserViewModel userViewModel;
 
 
     CarouselLayoutManager carouselLayoutManager;
 
 
-    Button loginButton, signInButton, google;
+    Button loginButton, signInButton, google, skipButton;
 
     public WelcomeFragment() {
     }
@@ -64,6 +74,12 @@ public class WelcomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        IUserRepository userRepository = ServiceLocator.getInstance().
+                getUserRepository(requireActivity().getApplication());
+
+                userViewModel = new ViewModelProvider(
+                requireActivity(),
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         oneTapClient = Identity.getSignInClient(requireActivity());
         signInRequest = BeginSignInRequest.builder()
                 .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
@@ -87,22 +103,25 @@ public class WelcomeFragment extends Fragment {
                     if (idToken !=  null) {
                         Log.d("Test", idToken);
                         // Got an ID token from Google. Use it to authenticate with Firebase.
-                        /*userViewModel.getGoogleUserMutableLiveData(idToken).observe(getViewLifecycleOwner(), authenticationResult -> {
+                        userViewModel.getGoogleUserMutableLiveData(idToken).observe(getViewLifecycleOwner(), authenticationResult -> {
 
                             if (authenticationResult.isSuccessUser()) {
                                 User user = ((Result.UserResponseSuccess) authenticationResult).getData();
-                                saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
-                                userViewModel.setAuthenticationError(false);
-                                retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+
+                                //saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
+                                //userViewModel.setAuthenticationError(false);
+                                //retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
 
                             } else {
-                                userViewModel.setAuthenticationError(true);
+                                //userViewModel.setAuthenticationError(true);
 
-                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                        getErrorMessage(((Result.Error) authenticationResult).getMessage()),
-                                        Snackbar.LENGTH_SHORT).show();
+                                //Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                 //       getErrorMessage(((Result.Error) authenticationResult).getMessage()),
+                                   //     Snackbar.LENGTH_SHORT).show();
                             }
-                        });*/
+                        });
                     }
                 } catch (ApiException e) {
                     Snackbar.make(requireActivity().findViewById(android.R.id.content),
@@ -147,6 +166,7 @@ public class WelcomeFragment extends Fragment {
         loginButton = view.findViewById(R.id.button_login);
         signInButton = view.findViewById(R.id.button_signin);
         google = view.findViewById(R.id.buttonGoogle);
+        skipButton = view.findViewById(R.id.skipButton);
 
 
         google.setOnClickListener(v -> oneTapClient.beginSignIn(signInRequest)
@@ -182,6 +202,14 @@ public class WelcomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_fragment_welcome_to_sign_in);
+            }
+        });
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }
