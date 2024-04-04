@@ -14,7 +14,7 @@
     <item
         android:id="@+id/item_challenge"
         android:enabled="true"
-        android:icon="@drawable/icon_navigation_24"
+        android:icon="@drawable/icon_trophy"
         android:title="@string/challenge"/>
     <item
         android:id="@+id/item_user"
