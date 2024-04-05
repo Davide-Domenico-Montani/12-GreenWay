@@ -57,6 +57,26 @@ public class UserRepository implements IUserRepository, UserResponseCallback{
     }
 
     @Override
+    public MutableLiveData<Result> getUserData(String email, String password) {
+        getUserCredential(email, password);
+        return userMutableLiveData;
+    }
+
+
+    @Override
+    public void getUserCredential(String email, String password) {
+        userRemoteDataSource.getUserCredential(email, password);
+    }
+
+    @Override
+    public MutableLiveData<Result> getUser(String idToken) {
+        userDataRemoteDataSource.getUserInfo(idToken);
+        return userMutableLiveData;
+    }
+
+
+
+    @Override
     public void onSuccessFromAuthentication(User user) {
         if(user != null){
             userDataRemoteDataSource.saveUserData(user);
@@ -79,4 +99,10 @@ public class UserRepository implements IUserRepository, UserResponseCallback{
         Result.Error result = new Result.Error(message);
         userMutableLiveData.postValue(result);
     }
+
+    @Override
+    public User getLoggedUser() {
+        return userRemoteDataSource.getLoggedUser();
+    }
+
 }

@@ -12,4 +12,22 @@
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
 
+    <fragment
+        android:id="@+id/navigatorFragment"
+        android:name="it.unimib.greenway.ui.main.NavigatorFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_navigator" />
+
+    <fragment
+        android:id="@+id/challengeFragment"
+        android:name="it.unimib.greenway.ui.main.ChallengeFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_challenge" />
+
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="it.unimib.greenway.ui.main.UserFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_user" />
+
 </navigation>

@@ -72,6 +72,8 @@ dependencies {
     implementation("commons-validator:commons-validator:1.8.0")
 
     implementation("com.google.firebase:firebase-database")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
 
 
 

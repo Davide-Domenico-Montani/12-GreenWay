@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import it.unimib.greenway.model.User;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
@@ -38,6 +40,20 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 userResponseCallback.onFailureFromRemoteDatabase(error.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void getUserInfo(String idToken) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                userResponseCallback.onFailureFromRemoteDatabase(task.getException().getLocalizedMessage());
+            } else {
+                DataSnapshot userSnapshot = task.getResult();
+                User user = userSnapshot.getValue(User.class);
+
+                userResponseCallback.onSuccessFromRemoteDatabase(user);
             }
         });
     }

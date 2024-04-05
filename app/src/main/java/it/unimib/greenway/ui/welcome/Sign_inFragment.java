@@ -1,5 +1,15 @@
 package it.unimib.greenway.ui.welcome;
 
+import static it.unimib.greenway.util.Constants.EMAIL_ADDRESS;
+import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ID;
+import static it.unimib.greenway.util.Constants.PASSWORD;
+import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FIRST_LOADING;
+import static it.unimib.greenway.util.Constants.USE_NAVIGATION_COMPONENT;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,9 +29,16 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import it.unimib.greenway.R;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
+import it.unimib.greenway.ui.main.MainActivity;
+import it.unimib.greenway.util.DataEncryptionUtil;
+import it.unimib.greenway.util.SharedPreferencesUtil;
 
 
 public class Sign_inFragment extends Fragment {
@@ -31,6 +48,8 @@ public class Sign_inFragment extends Fragment {
     Button btnConfirmRegister;
 
     private UserViewModel userViewModel;
+    private DataEncryptionUtil dataEncryptionUtil;
+    private SharedPreferencesUtil sharedPreferencesUtil;
 
     public Sign_inFragment() {
         // Required empty public constructor
@@ -122,9 +141,13 @@ public class Sign_inFragment extends Fragment {
                     userViewModel.registerUserMutableLiveData(Nome, Cognome, Email, Password).observe(
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {
+                                    User user = ((Result.UserResponseSuccess) result).getData();
                                     //userViewModel.setAuthenticationError(false);
                                     //Navigation.findNavController(view).navigate(
                                     //        R.id.action_registerFragment_to_loginFragment);
+                                    saveLoginData(user.getUserId(), Email, Password);
+                                    retrieveUserInformationAndStartActivity(user, R.id.action_signInFragment_to_mainActivity);
+
                                     Log.d("Register", "Success");
                                 } else {
                                     //userViewModel.setAuthenticationError(true);
@@ -143,5 +166,48 @@ public class Sign_inFragment extends Fragment {
 
     public boolean isValidEmail(String email) {
         return EmailValidator.getInstance().isValid(email);
+    }
+    private void retrieveUserInformationAndStartActivity(User user, int destination) {
+
+
+        userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
+                getViewLifecycleOwner(), userDataRetrivalResul -> {
+
+                    startActivityBasedOnCondition(MainActivity.class, destination);
+                }
+        );
+    }
+
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+        if (USE_NAVIGATION_COMPONENT) {
+            Navigation.findNavController(requireView()).navigate(destination);
+        } else {
+            Intent intent = new Intent(requireContext(), destinationActivity);
+            startActivity(intent);
+        }
+        requireActivity().finish();
+    }
+    private void saveLoginData(String id,String email, String password) {
+        dataEncryptionUtil = new DataEncryptionUtil(requireContext());
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+
+        sharedPreferencesUtil.writeBooleanData(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME,
+                SHARED_PREFERENCES_FIRST_LOADING, true);
+        try {
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
+            dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
+                    ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
+
+            sharedPreferencesUtil.writeBooleanData(SHARED_PREFERENCES_FILE_NAME,
+                    SHARED_PREFERENCES_FIRST_LOADING, true);
+
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
+                    id.concat(":").concat(email).concat(":").concat(password));
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

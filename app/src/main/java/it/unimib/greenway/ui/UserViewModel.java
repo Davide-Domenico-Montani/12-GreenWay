@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.User;
 
 public class UserViewModel extends ViewModel {
     private static final String TAG = UserViewModel.class.getSimpleName();
@@ -47,6 +48,31 @@ public class UserViewModel extends ViewModel {
 
     public void loginUser(String email, String password) {
         userMutableLiveData = userRepository.loginUser(email, password);
+    }
+
+    public MutableLiveData<Result> getUserMutableLiveData(String email, String password){
+        getUserData(email, password);
+        return userMutableLiveData;
+    }
+
+    private void getUserData(String email, String password) {
+        userMutableLiveData = userRepository.getUserData(email, password);
+    }
+
+    public MutableLiveData<Result> getUserDataMutableLiveData(
+            String idToken) {
+        if (userMutableLiveData == null) {
+            getUser(idToken);
+        }
+        return userMutableLiveData;
+    }
+
+    private void getUser(String idToken) {
+        userMutableLiveData = userRepository.getUser(idToken);
+    }
+
+    public User getLoggedUser() {
+        return userRepository.getLoggedUser();
     }
 
 }
