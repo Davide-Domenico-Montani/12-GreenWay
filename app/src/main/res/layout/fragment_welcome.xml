@@ -61,11 +61,7 @@
         android:layout_gravity="center_horizontal"
         app:icon="@drawable/icon_google" />
 
-    <Button
-        android:id="@+id/skipButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SkipButton" />
+
 
 
 </LinearLayout>

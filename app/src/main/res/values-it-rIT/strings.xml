@@ -35,7 +35,9 @@
     <string name="nav">Navigatore</string>
     <string name="challenge">Sfide</string>
     <string name="user">Utente</string>
-
+    <string name="autoLogin">Accesso automatico in corso</string>
+    <string name="error_login_password_message">login error</string>
+    <string name="error_login_user_message">Error login user</string>
 
 
 </resources>
