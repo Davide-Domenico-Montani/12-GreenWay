@@ -22,10 +22,14 @@
         android:id="@+id/login"
         android:name="it.unimib.greenway.ui.welcome.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
 
     <activity
-        android:id="@+id/mainActivity"
+        android:id="@+id/welcomeActivity"
         android:name="it.unimib.greenway.ui.welcome.WelcomeActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_welcome" />
@@ -33,6 +37,18 @@
         android:id="@+id/sign_in"
         android:name="it.unimib.greenway.ui.welcome.Sign_inFragment"
         android:label="fragment_signin"
-        tools:layout="@layout/fragment_signin" />
+        tools:layout="@layout/fragment_signin" >
+        <action
+            android:id="@+id/action_signInFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="it.unimib.greenway.ui.main.MainActivity"
+        android:label="MainActivity" />
+
+    <action
+        android:id="@+id/action_welcomeActivity_to_mainActivity"
+        app:destination="@id/mainActivity" />
 
 </navigation>

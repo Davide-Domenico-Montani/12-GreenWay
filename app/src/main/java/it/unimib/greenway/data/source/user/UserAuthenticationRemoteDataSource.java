@@ -100,6 +100,35 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
         });
     }
 
+    @Override
+    public void getUserCredential(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+
+                    userResponseCallback.onSuccessFromAuthentication(
+                            new User(firebaseUser.getUid(), email, password)
+                    );
+                } else {
+                    userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+                }
+            } else {
+                userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+            }
+        });
+    }
+
+    @Override
+    public User getLoggedUser() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser == null){
+            return null;
+        }else{
+            return new User(firebaseUser.getUid(), firebaseUser.getEmail());
+        }
+    }
+
     private String getErrorMessage(Exception exception) {
         if (exception instanceof FirebaseAuthWeakPasswordException) {
             return WEAK_PASSWORD_ERROR;

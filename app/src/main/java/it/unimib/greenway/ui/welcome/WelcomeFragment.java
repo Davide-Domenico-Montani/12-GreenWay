@@ -62,7 +62,7 @@ public class WelcomeFragment extends Fragment {
     CarouselLayoutManager carouselLayoutManager;
 
 
-    Button loginButton, signInButton, google, skipButton;
+    Button loginButton, signInButton, google;
 
     public WelcomeFragment() {
     }
@@ -166,7 +166,6 @@ public class WelcomeFragment extends Fragment {
         loginButton = view.findViewById(R.id.button_login);
         signInButton = view.findViewById(R.id.button_signin);
         google = view.findViewById(R.id.buttonGoogle);
-        skipButton = view.findViewById(R.id.skipButton);
 
 
         google.setOnClickListener(v -> oneTapClient.beginSignIn(signInRequest)
@@ -205,13 +204,7 @@ public class WelcomeFragment extends Fragment {
             }
         });
 
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
 
