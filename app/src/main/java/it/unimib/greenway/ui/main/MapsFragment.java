@@ -122,17 +122,61 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void getAirQualityImage() {
-        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 2, 0, 1, "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    // response.body() is the image
-                    // you can convert it to a Bitmap or save it to a file
-                    Log.d("Prova", "successo");
+                    try {
+                        File imageFile = new File(getActivity().getExternalFilesDir(null), "air_quality_image.png");
+                        InputStream inputStream = null;
+                        OutputStream outputStream = null;
+
+                        try {
+                            byte[] fileReader = new byte[4096];
+
+                            long fileSize = response.body().contentLength();
+                            long fileSizeDownloaded = 0;
+
+                            inputStream = response.body().byteStream();
+                            outputStream = new FileOutputStream(imageFile);
+
+                            while (true) {
+                                int read = inputStream.read(fileReader);
+
+                                if (read == -1) {
+                                    break;
+                                }
+
+                                outputStream.write(fileReader, 0, read);
+                                fileSizeDownloaded += read;
+
+                                Log.d("Prova", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                            }
+
+                            outputStream.flush();
+
+                            Log.d("Prova", "file saved: " + imageFile.getAbsolutePath());
+                        } catch (IOException e) {
+                            Log.e("Prova", "error in saving file", e);
+                        } finally {
+                            if (inputStream != null) {
+                                inputStream.close();
+                            }
+
+                            if (outputStream != null) {
+                                outputStream.close();
+                            }
+                        }
+                    } catch (IOException e) {
+                        Log.e("Prova", "error in saving file", e);
+                    }
                 } else {
                     // handle request errors
                     Log.d("Prova2","no" );
+
+                    Log.d("Prova2", "Codice di stato HTTP: " + response.code());
+                    Log.d("Prova2", "Messaggio di errore: " + response.message());
                 }
             }
 
