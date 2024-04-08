@@ -1,5 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="server_client_id" translatable="false">238462781665-h1os7ac4i7k76b93dnhrdmfj5i6keps6.apps.googleusercontent.com</string>
     <string name="app_name">GreenWay</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="string1Carosel">Electric vehicles and public transport reduce emissions.</string>
+    <string name="string2Carosel">Sustainability preserves resources for future generations.</string>
+    <string name="string3Carosel">Sustainability is crucial to tackling climate change.</string>
+    <string name="string4Carosel">Cycle paths and high-speed trains promote sustainable mobility and urban health.</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_Google">Sign in with Google</string>
     <string name="email">Email</string>
+    <string name="password">Password</string>
+
+
+    <string name="insert_name">Insert name</string>
+    <string name="insert_surname">Insert surname</string>
+    <string name="insert_email">Insert Email</string>
+    <string name="insert_password">Insert password</string>
+    <string name="different_password">Insert right password</string>
+
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+
+    <string name="repeat_password">Repeat Password</string>
+    <string name="error_no_google_account_found_message">No google account found</string>
+    <string name="unexpected_error">unexpected error</string>
+    <string name="password_not_match">Password don\'t match</string>
+    <string name="email_not_valid">Email not valid</string>
+    <string name="map">Map</string>
+    <string name="nav">Navigator</string>
+    <string name="challenge">Challenge</string>
+    <string name="user">User</string>
+    <string name="green" translatable="false">GREEN</string>
+    <string name="way" translatable="false">WAY</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="autoLogin">Automatically logging in</string>
+    <string name="error_login_password_message">login error</string>
+    <string name="error_login_user_message">Error login user</string>
+    <string name="username">username</string>
+    <string name="points">points</string>
+    <string name="co2Saved">CO2 Saved:</string>
+    <string name="co2">0g</string>
+    <string name="co2consumed">CO2 Consumed:</string>
+
 </resources>

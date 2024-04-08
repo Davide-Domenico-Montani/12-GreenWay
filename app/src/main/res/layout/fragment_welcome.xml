@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.welcome.WelcomeFragment">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carousel_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="324dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager"/>
+
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/carousel_recycler_view"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="30dp"
+    >
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_login"
+            android:layout_width="150dp"
+            android:layout_height="49dp"
+            style="@style/ButtonLogin"
+            android:text="@string/login"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_signin"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            style="@style/ButtonSignIn"
+            android:text="@string/sign_in" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonGoogle"
+        style="?attr/materialIconButtonOutlinedStyle"
+        android:layout_width="150dp"
+        android:layout_marginTop="10dp"
+        app:iconGravity="textStart"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:icon="@drawable/icon_google" />
+
+
+
+
+</LinearLayout>
+
+
+
+    </RelativeLayout>
+</FrameLayout>

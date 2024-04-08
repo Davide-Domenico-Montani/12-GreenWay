@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GreenWay</string>
+    <string name="login">Login</string>
+    <string name="register">Registrati</string>
+    <string name="string1Carosel">Veicoli elettrici e trasporto pubblico riducono le emissioni.</string>
+    <string name="string2Carosel">La sostenibilità preserva le risorse per le generazioni future.</string>
+    <string name="string3Carosel">Piste ciclabili e treni ad alta velocità promuovono la mobilità sostenibile e la salute urbana.</string>
+    <string name="string4Carosel">La sostenibilità è cruciale per affrontare il cambiamento climatico.</string>
+
+
+
+    <string name="sign_in">Registrati</string>
+    <string name="sign_in_Google">Registrati con Google</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="insert_name">Inserisci il nome</string>
+    <string name="insert_surname">Inserisci il cognome</string>
+    <string name="insert_email">Inserisci Email</string>
+
+
+    <string name="insert_password">Inserisci password</string>
+    <string name="different_password">Inserisci password uguale</string>
+
+    <string name="name">Nome</string>
+    <string name="surname">Cognome</string>
+    <string name="repeat_password">Ripeti Password</string>
+
+    <string name="error_no_google_account_found_message">No google account found</string>
+    <string name="unexpected_error">unexpected error</string>
+    <string name="password_not_match">Password non coincidono</string>
+    <string name="email_not_valid">Email non valida</string>
+    <string name="map">Mappa</string>
+    <string name="nav">Navigatore</string>
+    <string name="challenge">Sfide</string>
+    <string name="user">Utente</string>
+    <string name="autoLogin">Accesso automatico in corso</string>
+    <string name="error_login_password_message">login error</string>
+    <string name="error_login_user_message">Error login user</string>
+    <string name="username">username</string>
+    <string name="points">punti</string>
+    <string name="co2Saved">CO2 Risparmiata:</string>
+    <string name="co2">0g</string>
+    <string name="co2consumed">CO2 Consumata:</string>
+
+
+</resources>

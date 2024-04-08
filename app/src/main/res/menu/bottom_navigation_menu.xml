@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_map"
+        android:enabled="true"
+        android:icon="@drawable/icon_map"
+        android:title="@string/map"/>
+
+    <item
+        android:id="@+id/item_nav"
+        android:enabled="true"
+        android:icon="@drawable/icon_navigation_24"
+        android:title="@string/nav"/>
+
+    <item
+        android:id="@+id/item_challenge"
+        android:enabled="true"
+        android:icon="@drawable/icon_trophy"
+        android:title="@string/challenge"/>
+    <item
+        android:id="@+id/item_user"
+        android:enabled="true"
+        android:icon="@drawable/icon_user"
+        android:title="@string/user"/>
+
+</menu>
