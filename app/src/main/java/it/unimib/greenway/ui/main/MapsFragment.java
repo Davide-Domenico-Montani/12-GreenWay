@@ -49,6 +49,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap gMap;
     private UserViewModel userViewModel;
     private Retrofit retrofit;
+    private AirQualityApiService airQualityApiService;
+
 
     private static final int PERMISSION_REQUEST_CODE = 1;
 
@@ -66,7 +68,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userViewModel = new ViewModelProvider(this, new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://airquality.googleapis.com/")
+                .build();
+        airQualityApiService = retrofit.create(AirQualityApiService.class);
     }
 
     @Override
@@ -78,7 +83,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-
+        getAirQualityImage();
         String mapType = "US_AQI";
         String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
         int zoomLevel = 2;
@@ -87,7 +92,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         Log.d("MapBounds", "Coordinate X: " + xCoord);
         Log.d("MapBounds", "Coordinate Y: " + yCoord);
 
-        fetchAndSaveAirQualityImage("foto.png");
         googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -117,76 +121,27 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-
-    public void fetchAndSaveAirQualityImage(String filename) {
-        // Construct the API URL with location, bounds, and API key
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://airquality.googleapis.com/")
-                .build();
-        AirQualityApiService service = retrofit.create(AirQualityApiService.class);
-        Log.d("Prova", "dentro");
-        // Esegui la chiamata Retrofit
-        Call<AirQualityApiResponse> call = service.fetchAirQualityImage("AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
-        call.enqueue(new Callback<AirQualityApiResponse>() {
+    private void getAirQualityImage() {
+        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<AirQualityApiResponse> call, Response<AirQualityApiResponse> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    // Salvataggio dell'immagine sul filesystem
+                    // response.body() is the image
+                    // you can convert it to a Bitmap or save it to a file
                     Log.d("Prova", "successo");
-
                 } else {
-                    // Gestione degli errori
+                    // handle request errors
+                    Log.d("Prova2","no" );
                 }
             }
 
             @Override
-            public void onFailure(Call<AirQualityApiResponse> call, Throwable t) {
-                // Gestione degli errori
-                Log.d("Prova", "fallimento");
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // handle network errors
+                Log.d("Prova","no", t );
             }
         });
-
     }
-
-    private void saveImageToDisk(ResponseBody body, String filename) {
-        try {
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-
-            try {
-                byte[] fileReader = new byte[4096];
-
-                inputStream = body.byteStream();
-                outputStream = new FileOutputStream(new File(filename));
-
-                while (true) {
-                    int read = inputStream.read(fileReader);
-
-                    if (read == -1) {
-                        break;
-                    }
-
-                    outputStream.write(fileReader, 0, read);
-                }
-
-                outputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
 }
+

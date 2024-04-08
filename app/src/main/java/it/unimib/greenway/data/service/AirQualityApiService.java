@@ -8,5 +8,5 @@ import retrofit2.http.Query;
 
     public interface AirQualityApiService {
         @GET("v1/mapTypes/US_AQI/heatmapTiles/2/0/1?")
-        Call<AirQualityApiResponse> fetchAirQualityImage(@Query("key=") String apiKey);
+        Call<ResponseBody> fetchAirQualityImage(@Query("key=") String apiKey);
     }

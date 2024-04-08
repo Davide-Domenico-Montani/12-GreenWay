@@ -19,6 +19,9 @@ public class AirQuality implements Parcelable{
         this.y = y;
     }
 
+    public AirQuality(Bitmap image) {
+        this.image = image;
+    }
     public Bitmap getImage() {
         return image;
     }
