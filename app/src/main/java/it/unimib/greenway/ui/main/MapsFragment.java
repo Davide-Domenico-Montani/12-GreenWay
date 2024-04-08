@@ -26,6 +26,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.VisibleRegion;
 
 
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.ui.UserViewModel;
@@ -75,6 +81,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
 
+        String mapType = "heatmapTiles";
+        String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
+        int zoomLevel = 9;
+        int xCoord =  (int) 9.61689043790102 * (2^zoomLevel);
+        int yCoord =  (int) 45.97475173046473 * (2^zoomLevel);
+
+        try {
+            byte[] imageData = downloadImage(apiKey, mapType, zoomLevel, xCoord, yCoord);
+            if (imageData != null) {
+                System.out.println("Immagine scaricata con successo.");
+                Log.d("MapBounds", "Immagine scaricata con successo.");
+                // Puoi fare qualsiasi cosa con i dati dell'immagine qui
+            } else {
+                System.out.println("Impossibile scaricare l'immagine.");
+                Log.d("MapBounds", "Impossibile scaricare l'immagine.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -90,6 +116,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 Log.d("MapBounds", "Southwest Lng: " + southwest.longitude);
             }
         });
+
     }
 
     @Override
@@ -98,6 +125,32 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_map);
         mapFragment.getMapAsync(this);
     }
+
+    public static byte[] downloadImage(String apiKey, String mapType, int zoomLevel, int xCoord, int yCoord) throws Exception {
+        String imageUrl = "https://airquality.googleapis.com/v1/mapTypes/" + mapType + "/heatmapTiles/" + zoomLevel + "/" + xCoord + "/" + yCoord + "?key=" + apiKey;
+        URL url = new URL(imageUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        Log.d("MapBounds", "Connessione aperta.");
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            InputStream inputStream = connection.getInputStream();
+            OutputStream outputStream = new FileOutputStream("heatmap_image.png"); // Salva l'immagine su disco
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            Log.d("MapBounds", "Immagine scaricata.");
+            outputStream.close();
+            inputStream.close();
+            return buffer;
+        } else {
+            System.out.println("Errore nella risposta HTTP: " + responseCode);
+            return null;
+        }
+    }
+
 
 
 }
