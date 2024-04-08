@@ -83,6 +83,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 LatLng northeast = visibleRegion.latLngBounds.northeast;
                 LatLng southwest = visibleRegion.latLngBounds.southwest;
 
+                // Ottieni il livello di zoom attuale della mappa
+                float zoomLevel = googleMap.getCameraPosition().zoom;
+
+                // Stampalo in console di log
+                Log.d("MapZoom", "Zoom Level: " + zoomLevel);
                 // Stampa le coordinate
                 Log.d("MapBounds", "Northeast Lat: " + northeast.latitude);
                 Log.d("MapBounds", "Northeast Lng: " + northeast.longitude);
