@@ -40,5 +40,10 @@
     <string name="autoLogin">Automatically logging in</string>
     <string name="error_login_password_message">login error</string>
     <string name="error_login_user_message">Error login user</string>
+    <string name="username">username</string>
+    <string name="points">points</string>
+    <string name="co2Saved">CO2 Saved:</string>
+    <string name="co2">0g</string>
+    <string name="co2consumed">CO2 Consumed:</string>
 
 </resources>

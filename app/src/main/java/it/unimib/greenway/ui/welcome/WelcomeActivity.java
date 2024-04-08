@@ -8,6 +8,7 @@ import static it.unimib.greenway.util.Constants.USE_NAVIGATION_COMPONENT;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class WelcomeActivity extends AppCompatActivity {
         try {
             // Leggi i dati di login dal file
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
+            Log.d("test", storedLoginData);
             progressIndicator = findViewById(R.id.progressBar);
 
             if (storedLoginData != null && !storedLoginData.isEmpty()) {
