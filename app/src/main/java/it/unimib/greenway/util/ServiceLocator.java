@@ -4,10 +4,13 @@ import android.app.Application;
 
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.repository.user.UserRepository;
+import it.unimib.greenway.data.service.AirQualityApiService;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.data.source.user.UserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.UserDataRemoteDataSource;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
@@ -46,6 +49,12 @@ public class ServiceLocator {
 */
         return new UserRepository(userRemoteAuthenticationDataSource, userDataRemoteDataSource//,
                 /*beerLocalDataSource, userDataRemoteDataSource*/);
+    }
+
+    public AirQualityApiService getBeerApiService() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://airquality.googleapis.com/v1/mapTypes/" + "US_AQI" + "/heatmapTiles/" + "2" + "/" + "0" + "/" + "1" + "?key=" + "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY").
+                addConverterFactory(GsonConverterFactory.create()).build();
+        return retrofit.create(AirQualityApiService.class);
     }
 
 }
