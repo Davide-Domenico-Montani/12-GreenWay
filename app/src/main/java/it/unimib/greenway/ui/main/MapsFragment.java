@@ -2,6 +2,8 @@ package it.unimib.greenway.ui.main;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -19,7 +21,10 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.VisibleRegion;
 
 import java.io.File;
@@ -114,6 +119,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    private LatLng getLatLngFromTile(int x, int y, float zoom) {
+        double lng = x / (double)(1 << (int)zoom) * 360 - 180;
+        double n = Math.PI - 2 * Math.PI * y / (double)(1 << (int)zoom);
+        double lat = Math.toDegrees(Math.atan(Math.sinh(n)));
+        return new LatLng(lat, lng);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -167,6 +179,34 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             if (outputStream != null) {
                                 outputStream.close();
                             }
+                        }
+
+                        if (response.isSuccessful()) {
+                            try {
+                                // Carica l'immagine scaricata come bitmap
+                                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+
+                                // Imposta le coordinate per l'overlay
+                                LatLng northeast = getLatLngFromTile(1, 1, 2);
+                                LatLng southwest = getLatLngFromTile(0,2,2);
+                                LatLngBounds bounds = new LatLngBounds(southwest, northeast);
+
+                                // Crea l'overlay
+                                GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
+                                        .image(BitmapDescriptorFactory.fromBitmap(bitmap))
+                                        .positionFromBounds(bounds);
+                                overlayOptions.transparency(0.7f);
+
+                                // Aggiungi l'overlay alla mappa
+                                gMap.addGroundOverlay(overlayOptions);
+
+                            } catch (Exception e) {
+                                Log.e("Prova", "Errore nel caricare l'immagine come overlay", e);
+                            }
+                        } else {
+                            // Gestisci gli errori della richiesta
+                            Log.d("Prova2", "Codice di stato HTTP: " + response.code());
+                            Log.d("Prova2", "Messaggio di errore: " + response.message());
                         }
                     } catch (IOException e) {
                         Log.e("Prova", "error in saving file", e);
