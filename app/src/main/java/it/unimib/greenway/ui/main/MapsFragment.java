@@ -17,7 +17,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.google.android.gms.fido.fido2.api.common.AuthenticatorSelectionCriteria;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,6 +31,7 @@ import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,8 +42,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.data.database.AirQualityDao;
+import it.unimib.greenway.data.database.AirQualityDatabase;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
+import it.unimib.greenway.model.AirQuality;
 import it.unimib.greenway.model.AirQualityApiResponse;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
@@ -55,6 +64,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private UserViewModel userViewModel;
     private Retrofit retrofit;
     private AirQualityApiService airQualityApiService;
+    Button zoom;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+
+    private FusedLocationProviderClient fusedLocationClient;
+
     private int i = 0;
 
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -90,6 +104,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+        //TODO: SIstemare bottone che compare solo quando accetti i permessi
+        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        } else {
+            gMap.setMyLocationEnabled(true);
+        }
         //getAirQualityImage(0, 0, 1);
         String mapType = "US_AQI";
         String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
@@ -98,6 +118,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         int yCoord = 1;
         Log.d("MapBounds", "Coordinate X: " + xCoord);
         Log.d("MapBounds", "Coordinate Y: " + yCoord);
+
+
+
 
         googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
@@ -131,6 +154,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_map);
         mapFragment.getMapAsync(this);
     }
@@ -192,5 +216,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
+
+
+
+
+
 }
 
