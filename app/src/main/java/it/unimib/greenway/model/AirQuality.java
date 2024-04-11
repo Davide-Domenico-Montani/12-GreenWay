@@ -5,28 +5,46 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
+@Entity
 public class AirQuality implements Parcelable{
-    private Bitmap image;
+    @NonNull
+    @PrimaryKey
+    private String id;
+    @ColumnInfo(name = "image")
+    private byte[] image;
+
+    @ColumnInfo(name = "x")
     private int x;
+    @ColumnInfo(name = "y")
     private int y;
 
-    public AirQuality(Bitmap image, int x, int y) {
+    public AirQuality(byte[] image, int x, int y) {
+        this.id = x + "-" + y;
         this.image = image;
         this.x = x;
         this.y = y;
     }
 
-    public AirQuality(Bitmap image) {
-        this.image = image;
+
+    public String getId() {
+        return id;
     }
-    public Bitmap getImage() {
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -70,12 +88,15 @@ public class AirQuality implements Parcelable{
     }
 
     protected AirQuality(Parcel in) {
-        this.image = in.readParcelable(Bitmap.class.getClassLoader());
-        this.x = in.readInt();
+        int byteLength = in.readInt();
+        byte[] byteArray = new byte[byteLength];
+        in.readByteArray(byteArray);        this.x = in.readInt();
         this.y = in.readInt();
     }
     protected void readFromParcel(Parcel source) {
-        this.image = source.readParcelable(Bitmap.class.getClassLoader());
+        int byteLength = source.readInt();
+        byte[] byteArray = new byte[byteLength];
+        source.readByteArray(byteArray);
         this.x = source.readInt();
         this.y = source.readInt();
     }
@@ -87,9 +108,9 @@ public class AirQuality implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.image, flags);
+    /*    dest.writeParcelable(this.image, flags);
         dest.writeInt(this.x);
-        dest.writeInt(this.y);
+        dest.writeInt(this.y);*/
     }
     public static final Parcelable.Creator<AirQuality> CREATOR = new Parcelable.Creator<AirQuality>() {
         @Override

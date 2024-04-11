@@ -55,7 +55,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private UserViewModel userViewModel;
     private Retrofit retrofit;
     private AirQualityApiService airQualityApiService;
-
+    private int i = 0;
 
     private static final int PERMISSION_REQUEST_CODE = 1;
 
@@ -71,7 +71,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        IUserRepository userRepository = ServiceLocator.getInstance().
+                getUserRepository(requireActivity().getApplication());
+
         userViewModel = new ViewModelProvider(this, new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://airquality.googleapis.com/")
@@ -88,10 +90,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-        getAirQualityImage();
+        //getAirQualityImage(0, 0, 1);
         String mapType = "US_AQI";
         String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
-        int zoomLevel = 2;
+        int zoomLevel = 6;
         int xCoord = 0;
         int yCoord = 1;
         Log.d("MapBounds", "Coordinate X: " + xCoord);
@@ -133,84 +135,47 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
     }
 
-    private void getAirQualityImage() {
-        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 2, 0, 1, "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+    private void getAirQualityImage(int x, int y, int i) {
+        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 3, x, y, "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        File imageFile = new File(getActivity().getExternalFilesDir(null), "air_quality_image.png");
-                        InputStream inputStream = null;
-                        OutputStream outputStream = null;
-
-                        try {
-                            byte[] fileReader = new byte[4096];
-
-                            long fileSize = response.body().contentLength();
-                            long fileSizeDownloaded = 0;
-
-                            inputStream = response.body().byteStream();
-                            outputStream = new FileOutputStream(imageFile);
-
-                            while (true) {
-                                int read = inputStream.read(fileReader);
-
-                                if (read == -1) {
-                                    break;
-                                }
-
-                                outputStream.write(fileReader, 0, read);
-                                fileSizeDownloaded += read;
-
-                                Log.d("Prova", "file download: " + fileSizeDownloaded + " of " + fileSize);
-                            }
-
-                            outputStream.flush();
-
-                            Log.d("Prova", "file saved: " + imageFile.getAbsolutePath());
-                        } catch (IOException e) {
-                            Log.e("Prova", "error in saving file", e);
-                        } finally {
-                            if (inputStream != null) {
-                                inputStream.close();
-                            }
-
-                            if (outputStream != null) {
-                                outputStream.close();
-                            }
-                        }
-
-                        if (response.isSuccessful()) {
+                        if(i <= 64) {
                             try {
+                                // Ottieni i byte dall'input stream
+                                byte[] imageBytes = response.body().bytes();
+
+                                // Decodifica i byte in un'immagine Bitmap
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                                 // Carica l'immagine scaricata come bitmap
-                                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                                Log.d("Prova", "CaricatA");
 
                                 // Imposta le coordinate per l'overlay
-                                LatLng northeast = getLatLngFromTile(1, 1, 2);
-                                LatLng southwest = getLatLngFromTile(0,2,2);
+                                LatLng northeast = getLatLngFromTile(x + 1, y, 3);
+                                LatLng southwest = getLatLngFromTile(x, y + 1, 3);
                                 LatLngBounds bounds = new LatLngBounds(southwest, northeast);
 
                                 // Crea l'overlay
                                 GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
                                         .image(BitmapDescriptorFactory.fromBitmap(bitmap))
                                         .positionFromBounds(bounds);
-                                overlayOptions.transparency(0.7f);
+                                overlayOptions.transparency(0.5f);
 
                                 // Aggiungi l'overlay alla mappa
                                 gMap.addGroundOverlay(overlayOptions);
+                                if(i%8==0) {
+                                    getAirQualityImage(0, y + 1, i+1);
 
+                                }else{
+                                    getAirQualityImage(x+1 , y, i+1);
+
+                                }
                             } catch (Exception e) {
                                 Log.e("Prova", "Errore nel caricare l'immagine come overlay", e);
                             }
-                        } else {
-                            // Gestisci gli errori della richiesta
-                            Log.d("Prova2", "Codice di stato HTTP: " + response.code());
-                            Log.d("Prova2", "Messaggio di errore: " + response.message());
                         }
-                    } catch (IOException e) {
-                        Log.e("Prova", "error in saving file", e);
-                    }
+
                 } else {
                     // handle request errors
                     Log.d("Prova2","no" );

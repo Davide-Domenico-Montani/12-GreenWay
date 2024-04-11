@@ -2,6 +2,7 @@ package it.unimib.greenway.data.repository.user;
 
 import androidx.lifecycle.MutableLiveData;
 
+import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.model.Result;
@@ -13,9 +14,13 @@ public class UserRepository implements IUserRepository, UserResponseCallback{
     private final MutableLiveData<Result> userMutableLiveData;
     private final BaseUserAuthenticationRemoteDataSource userRemoteDataSource;
     private final BaseUserDataRemoteDataSource userDataRemoteDataSource;
+    private final BaseAirQualityLocalDataSource airQualityLocalDataSource;
 
-    public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource, BaseUserDataRemoteDataSource userDataRemoteDataSource) {
+
+    public UserRepository(BaseUserAuthenticationRemoteDataSource userRemoteDataSource, BaseUserDataRemoteDataSource userDataRemoteDataSource
+                            , BaseAirQualityLocalDataSource airQualityLocalDataSource) {
         this.userRemoteDataSource = userRemoteDataSource;
+        this.airQualityLocalDataSource = airQualityLocalDataSource;
         this.userDataRemoteDataSource = userDataRemoteDataSource;
         this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);

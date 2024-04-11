@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,7 +48,7 @@ public class LoginFragment extends Fragment {
     Button btnConfirmLogin;
     TextInputEditText editTextEmail, editTextPassword;
     TextInputLayout textInputLayoutEmail, textInputLayoutPassword;
-    CircularProgressIndicator progressIndicator;
+    ProgressBar progressIndicator;
     private UserViewModel userViewModel;
     private DataEncryptionUtil dataEncryptionUtil;
     private SharedPreferencesUtil sharedPreferencesUtil;
@@ -122,7 +123,6 @@ public class LoginFragment extends Fragment {
                                     startActivity(intent);
                                     saveLoginData(user.getUserId(), Email, Password);
                                     //userViewModel.setAuthenticationError(false);
-                                    //TODO: L'intent da sostituire con retrieveUSerInformationandStartActivity
                                     retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
 
                                 } else {
@@ -164,7 +164,6 @@ public class LoginFragment extends Fragment {
     private void saveLoginData(String id,String email, String password) {
         dataEncryptionUtil = new DataEncryptionUtil(requireContext());
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
-
         sharedPreferencesUtil.writeBooleanData(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME,
                 SHARED_PREFERENCES_FIRST_LOADING, true);
         try {
@@ -172,12 +171,12 @@ public class LoginFragment extends Fragment {
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ID, id);
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, EMAIL_ADDRESS, email);
+
             dataEncryptionUtil.writeSecretDataWithEncryptedSharedPreferences(
                     ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, PASSWORD, password);
 
             sharedPreferencesUtil.writeBooleanData(SHARED_PREFERENCES_FILE_NAME,
                     SHARED_PREFERENCES_FIRST_LOADING, true);
-
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
                     id.concat(":").concat(email).concat(":").concat(password));
         } catch (GeneralSecurityException | IOException e) {

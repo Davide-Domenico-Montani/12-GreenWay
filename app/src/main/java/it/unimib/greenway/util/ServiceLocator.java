@@ -2,9 +2,12 @@ package it.unimib.greenway.util;
 
 import android.app.Application;
 
+import it.unimib.greenway.data.database.AirQualityDatabase;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.repository.user.UserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
+import it.unimib.greenway.data.source.airQuality.AirQualityLocalDataSource;
+import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.data.source.user.UserAuthenticationRemoteDataSource;
@@ -33,7 +36,7 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(Application application) {
-        //SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
 
         BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource =
                 new UserAuthenticationRemoteDataSource();
@@ -42,19 +45,23 @@ public class ServiceLocator {
         BaseUserDataRemoteDataSource userDataRemoteDataSource =
                 new UserDataRemoteDataSource();
         /*DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
-
-        BaseBeerLocalDataSource beerLocalDataSource =
-                new BeerLocalDataSource(getBeerDao(application), sharedPreferencesUtil, dataEncryptionUtil);
-
 */
-        return new UserRepository(userRemoteAuthenticationDataSource, userDataRemoteDataSource//,
-                /*beerLocalDataSource, userDataRemoteDataSource*/);
+        BaseAirQualityLocalDataSource airQualityLocalDataSource =
+                new AirQualityLocalDataSource(getAirQualityDao(application), sharedPreferencesUtil);
+
+
+        return new UserRepository(userRemoteAuthenticationDataSource, userDataRemoteDataSource,
+                airQualityLocalDataSource /*userDataRemoteDataSource*/);
     }
 
     public AirQualityApiService getBeerApiService() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://airquality.googleapis.com/v1/mapTypes/" + "US_AQI" + "/heatmapTiles/" + "2" + "/" + "0" + "/" + "1" + "?key=" + "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY").
                 addConverterFactory(GsonConverterFactory.create()).build();
         return retrofit.create(AirQualityApiService.class);
+    }
+
+    public AirQualityDatabase getAirQualityDao(Application application) {
+        return AirQualityDatabase.getDatabase(application);
     }
 
 }

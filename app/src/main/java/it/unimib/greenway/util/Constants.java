@@ -16,6 +16,9 @@ public class Constants {
     public static final String SHARED_PREFERENCES_FILE_NAME = "it.unimib.greenway.preferences";
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.unimib.greenway.encrypted_file.txt";
     public static final boolean USE_NAVIGATION_COMPONENT = true;
+    public static final int DATABASE_VERSION = 1;
+
+    public static final String AIRQUALITY_DATABASE_NAME = "AirQDb";
 
 
 

@@ -58,9 +58,12 @@ public class WelcomeActivity extends AppCompatActivity {
 
         try {
             // Leggi i dati di login dal file
+
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
             Log.d("test", storedLoginData);
-            progressIndicator = findViewById(R.id.progressBar);
+            if(storedLoginData.isEmpty()) {
+                Log.d("test", "è null");
+            }
 
             if (storedLoginData != null && !storedLoginData.isEmpty()) {
 
@@ -74,6 +77,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
                 }
             }
+
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
