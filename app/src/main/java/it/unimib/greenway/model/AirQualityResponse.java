@@ -18,6 +18,10 @@ public class AirQualityResponse implements Parcelable {
         this.airQualities = airQualities;
     }
 
+    public AirQualityResponse(AirQuality airQuality) {
+        this.airQualities = (List<AirQuality>) airQuality;
+    }
+
     public List<AirQuality> getAirQualities() {
         return airQualities;
     }

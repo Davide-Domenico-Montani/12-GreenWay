@@ -44,6 +44,7 @@ import java.net.URL;
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.database.AirQualityDao;
 import it.unimib.greenway.data.database.AirQualityDatabase;
+import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
 import it.unimib.greenway.model.AirQuality;
@@ -64,6 +65,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private UserViewModel userViewModel;
     private Retrofit retrofit;
     private AirQualityApiService airQualityApiService;
+    private AirQualityViewModel airQualityViewModel;
     Button zoom;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
@@ -93,6 +95,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 .baseUrl("https://airquality.googleapis.com/")
                 .build();
         airQualityApiService = retrofit.create(AirQualityApiService.class);
+
+
+        IAirQualityRepositoryWithLiveData airQualityRepositoryWithLiveData =
+                ServiceLocator.getInstance().getAirQualityRepository(
+                        requireActivity().getApplication()
+                );
+
+
+            airQualityViewModel = new ViewModelProvider(this, new AirQualityViewModelFactory(airQualityRepositoryWithLiveData)).get(AirQualityViewModel.class);
+
     }
 
     @Override
@@ -155,8 +167,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /*airQualityViewModel.getAirQuality(0).observe(getViewLifecycleOwner(),
+                result -> {
+                    if (result.isSuccessAirQuality()) {
+                    } else {
+                    }
+                });*/
+        airQualityViewModel.getAirQuality(0);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_map);
         mapFragment.getMapAsync(this);
+
+
+
     }
 
     private void getAirQualityImage(int x, int y, int i) {

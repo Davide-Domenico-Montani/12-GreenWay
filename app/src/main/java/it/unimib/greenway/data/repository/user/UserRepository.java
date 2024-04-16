@@ -2,13 +2,17 @@ package it.unimib.greenway.data.repository.user;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
+import it.unimib.greenway.data.source.airQuality.AirQualityCallBack;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
+import it.unimib.greenway.model.AirQuality;
 import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.User;
 
-public class UserRepository implements IUserRepository, UserResponseCallback{
+public class UserRepository implements IUserRepository, UserResponseCallback, AirQualityCallBack {
 
 
     private final MutableLiveData<Result> userMutableLiveData;
@@ -24,6 +28,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback{
         this.userDataRemoteDataSource = userDataRemoteDataSource;
         this.userRemoteDataSource.setUserResponseCallback(this);
         this.userDataRemoteDataSource.setUserResponseCallback(this);
+        this.airQualityLocalDataSource.setAirQualityCallBack(this);
         userMutableLiveData = new MutableLiveData<>();
     }
 
@@ -110,4 +115,23 @@ public class UserRepository implements IUserRepository, UserResponseCallback{
         return userRemoteDataSource.getLoggedUser();
     }
 
+    @Override
+    public void onSuccessFromLocal(List<AirQuality> Response) {
+
+    }
+
+    @Override
+    public void onFailureFromLocal(Exception exception) {
+
+    }
+
+    @Override
+    public void onSuccessFromRemote(List<AirQuality> Response) {
+
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
+
+    }
 }
