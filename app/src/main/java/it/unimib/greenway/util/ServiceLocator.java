@@ -3,11 +3,15 @@ package it.unimib.greenway.util;
 import android.app.Application;
 
 import it.unimib.greenway.data.database.AirQualityDatabase;
+import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
+import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.repository.user.UserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
 import it.unimib.greenway.data.source.airQuality.AirQualityLocalDataSource;
+import it.unimib.greenway.data.source.airQuality.AirQualityRemoteDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
+import it.unimib.greenway.data.source.airQuality.BaseAirQualityRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.data.source.user.UserAuthenticationRemoteDataSource;
@@ -36,6 +40,7 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(Application application) {
+        BaseAirQualityLocalDataSource airQualityLocalDataSource;
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
 
         BaseUserAuthenticationRemoteDataSource userRemoteAuthenticationDataSource =
@@ -46,7 +51,7 @@ public class ServiceLocator {
                 new UserDataRemoteDataSource();
         /*DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 */
-        BaseAirQualityLocalDataSource airQualityLocalDataSource =
+         airQualityLocalDataSource =
                 new AirQualityLocalDataSource(getAirQualityDao(application), sharedPreferencesUtil);
 
 
@@ -62,6 +67,31 @@ public class ServiceLocator {
 
     public AirQualityDatabase getAirQualityDao(Application application) {
         return AirQualityDatabase.getDatabase(application);
+    }
+
+    public IAirQualityRepositoryWithLiveData getAirQualityRepository(Application application){
+        BaseAirQualityLocalDataSource airQualityLocalDataSource;
+        BaseAirQualityRemoteDataSource airQualityRemoteDataSource;
+
+
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
+
+        airQualityRemoteDataSource =
+                new AirQualityRemoteDataSource();
+
+
+        airQualityLocalDataSource =
+                new AirQualityLocalDataSource(getAirQualityDao(application), sharedPreferencesUtil);
+
+        return new AirQualityRepositoryWithLiveData(airQualityLocalDataSource, airQualityRemoteDataSource);
+
+    }
+
+    public AirQualityApiService getAirQualityApiService(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://airquality.googleapis.com/")
+                .build();
+        return retrofit.create(AirQualityApiService.class);
     }
 
 }

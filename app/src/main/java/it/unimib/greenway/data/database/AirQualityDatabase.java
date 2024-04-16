@@ -4,6 +4,7 @@ import static it.unimib.greenway.util.Constants.AIRQUALITY_DATABASE_NAME;
 import static it.unimib.greenway.util.Constants.DATABASE_VERSION;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -31,6 +32,7 @@ abstract public class AirQualityDatabase extends RoomDatabase {
         if(INSTANCE == null){
             synchronized (AirQualityDatabase.class){
                 if(INSTANCE == null){
+                    Log.d("AirQualityDatabase", "Creating new database instance");
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AirQualityDatabase.class, AIRQUALITY_DATABASE_NAME).build();
                 }

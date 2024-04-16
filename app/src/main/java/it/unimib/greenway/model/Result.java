@@ -7,6 +7,9 @@ public class Result {
         return this instanceof UserResponseSuccess;
     }
 
+    public boolean isSuccessAirQuality() {
+        return this instanceof AirQualityResponseSuccess;
+    }
 
 
     public static final class UserResponseSuccess extends Result {
@@ -19,6 +22,16 @@ public class Result {
         }
     }
 
+
+    public static final class AirQualityResponseSuccess extends Result {
+        private final AirQualityResponse airQuality;
+        public AirQualityResponseSuccess(AirQualityResponse airQuality) {
+            this.airQuality = airQuality;
+        }
+        public AirQualityResponse getData() {
+            return airQuality;
+        }
+    }
     public static final class Error extends Result {
         private final String message;
         public Error(String message) {

@@ -1,5 +1,7 @@
 package it.unimib.greenway.data.source.airQuality;
 
+import java.util.List;
+
 import it.unimib.greenway.data.database.AirQualityDao;
 import it.unimib.greenway.data.database.AirQualityDatabase;
 import it.unimib.greenway.model.AirQuality;
@@ -8,6 +10,7 @@ import it.unimib.greenway.util.SharedPreferencesUtil;
 public class AirQualityLocalDataSource extends BaseAirQualityLocalDataSource{
     private final AirQualityDao airQualityDao;
     private final SharedPreferencesUtil sharedPreferencesUtil;
+    protected AirQualityCallBack airQualityCallBack;
 
 
     public AirQualityLocalDataSource(AirQualityDatabase airQualityDatabase,
@@ -16,9 +19,12 @@ public class AirQualityLocalDataSource extends BaseAirQualityLocalDataSource{
         this.sharedPreferencesUtil = sharedPreferencesUtil;
     }
     @Override
-    public void insertAirQuality(AirQuality airQuality) {
+    public void insertAirQuality(List<AirQuality> response) {
         AirQualityDatabase.databaseWriteExecutor.execute(() -> {
-            airQualityDao.insertAirQuality(airQuality);
+            for(AirQuality airQuality : response) {
+                airQualityDao.insertAirQuality(airQuality);
+            }
+            //airQualityCallBack.onSuccessFromLocal(response);
         });
     }
 
