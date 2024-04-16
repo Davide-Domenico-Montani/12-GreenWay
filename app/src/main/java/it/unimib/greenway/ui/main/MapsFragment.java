@@ -110,7 +110,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         } else {
             gMap.setMyLocationEnabled(true);
         }
-        //getAirQualityImage(0, 0, 1);
+        getAirQualityImage(0, 0, 1);
         String mapType = "US_AQI";
         String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
         int zoomLevel = 6;
