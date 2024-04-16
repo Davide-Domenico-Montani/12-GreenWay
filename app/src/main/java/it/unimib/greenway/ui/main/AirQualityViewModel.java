@@ -3,7 +3,11 @@ package it.unimib.greenway.ui.main;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
+import it.unimib.greenway.model.AirQuality;
 import it.unimib.greenway.model.Result;
 
 public class AirQualityViewModel extends ViewModel {
@@ -28,5 +32,11 @@ public class AirQualityViewModel extends ViewModel {
     public void fetchAirQuality(long lastUpdate) {
         airQualityListLiveData = airQualityRepositoryWithLiveData.fetchAllAirQUality(lastUpdate);
     }
+
+    public List<AirQuality> getAirQualityList() throws ExecutionException, InterruptedException {
+
+         return airQualityRepositoryWithLiveData.getAirQualityList();
+    }
+
 
 }
