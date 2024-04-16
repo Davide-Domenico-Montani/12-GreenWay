@@ -30,7 +30,11 @@ public class AirQualityRepositoryWithLiveData implements IAirQualityRepositoryWi
 
     @Override
     public MutableLiveData<Result> fetchAllAirQUality(long lastUpdate) {
-        airQualityRemoteDataSource.getAirQuality();
+        if (lastUpdate == 0 || System.currentTimeMillis() - lastUpdate >= 2 * 60 * 60 * 1000){
+            airQualityRemoteDataSource.getAirQuality();
+        }else{
+            airQualityLocalDataSource.getAirQuality();
+        }
         return airQualityListLiveData;
     }
 

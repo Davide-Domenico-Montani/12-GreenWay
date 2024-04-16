@@ -38,4 +38,18 @@ public class SharedPreferencesUtil {
                 Context.MODE_PRIVATE);
         return sharedPref.getBoolean(key, false);
     }
+
+    public void writeStringData(String sharedPreferencesFileName, String key, String value) {
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public String readStringData(String sharedPreferencesFileName, String key) {
+        SharedPreferences sharedPref = application.getSharedPreferences(sharedPreferencesFileName,
+                Context.MODE_PRIVATE);
+        return sharedPref.getString(key, null);
+    }
 }

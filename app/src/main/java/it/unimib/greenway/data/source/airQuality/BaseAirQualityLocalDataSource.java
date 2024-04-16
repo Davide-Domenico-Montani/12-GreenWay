@@ -11,6 +11,6 @@ public abstract class BaseAirQualityLocalDataSource {
         this.airQualityCallBack = airQualityCallBack;
     }
     public abstract void insertAirQuality(List<AirQuality> airQuality);
-    public abstract AirQuality getAirQuality(String id);
+    public abstract void getAirQuality();
 
 }

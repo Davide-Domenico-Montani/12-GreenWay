@@ -1,5 +1,8 @@
 package it.unimib.greenway.data.source.airQuality;
 
+import static it.unimib.greenway.util.Constants.LAST_UPDATE;
+import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import java.util.List;
 
 import it.unimib.greenway.data.database.AirQualityDao;
@@ -24,12 +27,17 @@ public class AirQualityLocalDataSource extends BaseAirQualityLocalDataSource{
             for(AirQuality airQuality : response) {
                 airQualityDao.insertAirQuality(airQuality);
             }
+            sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                    LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             //airQualityCallBack.onSuccessFromLocal(response);
         });
     }
 
     @Override
-    public AirQuality getAirQuality(String id) {
-        return airQualityDao.getAirQuality(id);
+    public void getAirQuality() {
+        AirQualityDatabase.databaseWriteExecutor.execute(() -> {
+            List<AirQuality> airQualityList = airQualityDao.getAll();
+            //airQualityCallBack.onSuccessFromLocal(airQualityList);
+        });
     }
 }

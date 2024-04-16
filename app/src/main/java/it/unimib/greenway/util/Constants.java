@@ -19,6 +19,7 @@ public class Constants {
     public static final int DATABASE_VERSION = 1;
 
     public static final String AIRQUALITY_DATABASE_NAME = "AirQDb";
+    public static final String LAST_UPDATE = "last_update";
 
 
 

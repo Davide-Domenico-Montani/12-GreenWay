@@ -1,5 +1,8 @@
 package it.unimib.greenway.ui.main;
 
+import static it.unimib.greenway.util.Constants.LAST_UPDATE;
+import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -52,6 +55,7 @@ import it.unimib.greenway.model.AirQualityApiResponse;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ServiceLocator;
+import it.unimib.greenway.util.SharedPreferencesUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,9 +67,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap gMap;
     private UserViewModel userViewModel;
-    private Retrofit retrofit;
-    private AirQualityApiService airQualityApiService;
     private AirQualityViewModel airQualityViewModel;
+    private SharedPreferencesUtil sharedPreferencesUtil;
     Button zoom;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
@@ -89,12 +92,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
         userViewModel = new ViewModelProvider(this, new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://airquality.googleapis.com/")
-                .build();
-        airQualityApiService = retrofit.create(AirQualityApiService.class);
 
 
         IAirQualityRepositoryWithLiveData airQualityRepositoryWithLiveData =
@@ -123,37 +123,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             gMap.setMyLocationEnabled(true);
         }
         //getAirQualityImage(0, 0, 1);
-        String mapType = "US_AQI";
-        String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
-        int zoomLevel = 6;
-        int xCoord = 0;
-        int yCoord = 1;
-        Log.d("MapBounds", "Coordinate X: " + xCoord);
-        Log.d("MapBounds", "Coordinate Y: " + yCoord);
 
-
-
-
-        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                // Ottieni la porzione visibile della mappa
-                VisibleRegion visibleRegion = googleMap.getProjection().getVisibleRegion();
-                LatLng northeast = visibleRegion.latLngBounds.northeast;
-                LatLng southwest = visibleRegion.latLngBounds.southwest;
-
-                // Ottieni il livello di zoom attuale della mappa
-                float zoomLevel = googleMap.getCameraPosition().zoom;
-
-                // Stampalo in console di log
-                Log.d("MapZoom", "Zoom Level: " + zoomLevel);
-                // Stampa le coordinate
-                Log.d("MapBounds", "Northeast Lat: " + northeast.latitude);
-                Log.d("MapBounds", "Northeast Lng: " + northeast.longitude);
-                Log.d("MapBounds", "Southwest Lat: " + southwest.latitude);
-                Log.d("MapBounds", "Southwest Lng: " + southwest.longitude);
-            }
-        });
     }
 
     private LatLng getLatLngFromTile(int x, int y, float zoom) {
@@ -167,21 +137,19 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*airQualityViewModel.getAirQuality(0).observe(getViewLifecycleOwner(),
-                result -> {
-                    if (result.isSuccessAirQuality()) {
-                    } else {
-                    }
-                });*/
-        airQualityViewModel.getAirQuality(0);
+        String lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+        }
+        airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_map);
         mapFragment.getMapAsync(this);
 
-
-
     }
 
-    private void getAirQualityImage(int x, int y, int i) {
+    /*private void getAirQualityImage(int x, int y, int i) {
         Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 3, x, y, "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -237,7 +205,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 Log.d("Prova","no", t );
             }
         });
-    }
+    }*/
 
 
 
