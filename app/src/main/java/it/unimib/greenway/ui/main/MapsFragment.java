@@ -43,7 +43,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import it.unimib.greenway.R;
@@ -121,6 +125,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         gMap = googleMap;
         try {
             List<AirQuality> listAirQuality = airQualityViewModel.getAirQualityList();
+            Log.d("prova", String.valueOf(listAirQuality.size()));
             //Log.d("prova", String.valueOf(list.size()));
             if(listAirQuality.size() == 64){
                 printimage(listAirQuality);
@@ -157,7 +162,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             lastUpdate = sharedPreferencesUtil.readStringData(
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
         }
-        airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
+
+         airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
 
 
 

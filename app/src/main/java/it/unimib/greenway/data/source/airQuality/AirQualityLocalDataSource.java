@@ -3,6 +3,8 @@ package it.unimib.greenway.data.source.airQuality;
 import static it.unimib.greenway.util.Constants.LAST_UPDATE;
 import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
+import android.util.Log;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -42,6 +44,7 @@ public class AirQualityLocalDataSource extends BaseAirQualityLocalDataSource{
 
     @Override
     public List<AirQuality> getAirQualityList() throws ExecutionException, InterruptedException {
+
         return AirQualityDatabase.databaseWriteExecutor.submit(() -> {
             return airQualityDao.getAll();
         }).get();
