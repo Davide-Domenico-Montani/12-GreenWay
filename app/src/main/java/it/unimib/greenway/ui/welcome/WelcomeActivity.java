@@ -56,7 +56,6 @@ public class WelcomeActivity extends AppCompatActivity {
         dataEncryptionUtil = new DataEncryptionUtil(this);
         try {
             // Leggi i dati di login dal file
-
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
             Log.d("test", storedLoginData);
             if(storedLoginData.isEmpty()) {
