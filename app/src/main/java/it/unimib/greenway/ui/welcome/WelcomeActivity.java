@@ -54,11 +54,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         dataEncryptionUtil = new DataEncryptionUtil(this);
-
-
         try {
             // Leggi i dati di login dal file
-
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
             Log.d("test", storedLoginData);
             if(storedLoginData.isEmpty()) {
@@ -70,6 +67,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 String[] loginInfo = storedLoginData.split(":");
                 String storedEmail = loginInfo[1];
                 String storedPassword = loginInfo[2];
+                Log.d("test", storedEmail);
+                Log.d("test", storedPassword);
                 if(!storedPassword.equals(".")) {
                     //Se sono presenti informazioni di login, effettua il login automatico
                     performAutoLogin(storedEmail, storedPassword);
@@ -79,6 +78,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
 
         } catch (GeneralSecurityException | IOException e) {
+            Log.e("Error reading login data from file", e.toString());
             e.printStackTrace();
         }
     }

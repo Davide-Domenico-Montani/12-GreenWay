@@ -180,6 +180,7 @@ public class LoginFragment extends Fragment {
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME,
                     id.concat(":").concat(email).concat(":").concat(password));
         } catch (GeneralSecurityException | IOException e) {
+            Log.e("Error saving login data", e.toString());
             e.printStackTrace();
         }
     }

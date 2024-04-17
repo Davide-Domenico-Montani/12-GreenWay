@@ -77,6 +77,10 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    //places
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.0"))
+    implementation("com.google.android.libraries.places:places:3.3.0")
+
     //room
     val room_version = "2.6.0"
     implementation ("androidx.room:room-runtime:$room_version")
