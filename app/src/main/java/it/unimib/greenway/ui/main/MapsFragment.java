@@ -1,5 +1,8 @@
 package it.unimib.greenway.ui.main;
 
+import static it.unimib.greenway.util.Constants.LAST_UPDATE;
+import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -40,6 +43,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.database.AirQualityDao;
@@ -49,9 +58,11 @@ import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
 import it.unimib.greenway.model.AirQuality;
 import it.unimib.greenway.model.AirQualityApiResponse;
+import it.unimib.greenway.model.Result;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ServiceLocator;
+import it.unimib.greenway.util.SharedPreferencesUtil;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,9 +74,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap gMap;
     private UserViewModel userViewModel;
-    private Retrofit retrofit;
-    private AirQualityApiService airQualityApiService;
     private AirQualityViewModel airQualityViewModel;
+    private SharedPreferencesUtil sharedPreferencesUtil;
     Button zoom;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
@@ -89,12 +99,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
         userViewModel = new ViewModelProvider(this, new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://airquality.googleapis.com/")
-                .build();
-        airQualityApiService = retrofit.create(AirQualityApiService.class);
 
 
         IAirQualityRepositoryWithLiveData airQualityRepositoryWithLiveData =
@@ -116,44 +123,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+        try {
+            List<AirQuality> listAirQuality = airQualityViewModel.getAirQualityList();
+            Log.d("prova", String.valueOf(listAirQuality.size()));
+            //Log.d("prova", String.valueOf(list.size()));
+            if(listAirQuality.size() == 64){
+                printimage(listAirQuality);
+            }
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         //TODO: SIstemare bottone che compare solo quando accetti i permessi
         if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
         } else {
             gMap.setMyLocationEnabled(true);
         }
-        getAirQualityImage(0, 0, 1);
-        String mapType = "US_AQI";
-        String apiKey = "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY";
-        int zoomLevel = 6;
-        int xCoord = 0;
-        int yCoord = 1;
-        Log.d("MapBounds", "Coordinate X: " + xCoord);
-        Log.d("MapBounds", "Coordinate Y: " + yCoord);
 
-
-
-
-        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                // Ottieni la porzione visibile della mappa
-                VisibleRegion visibleRegion = googleMap.getProjection().getVisibleRegion();
-                LatLng northeast = visibleRegion.latLngBounds.northeast;
-                LatLng southwest = visibleRegion.latLngBounds.southwest;
-
-                // Ottieni il livello di zoom attuale della mappa
-                float zoomLevel = googleMap.getCameraPosition().zoom;
-
-                // Stampalo in console di log
-                Log.d("MapZoom", "Zoom Level: " + zoomLevel);
-                // Stampa le coordinate
-                Log.d("MapBounds", "Northeast Lat: " + northeast.latitude);
-                Log.d("MapBounds", "Northeast Lng: " + northeast.longitude);
-                Log.d("MapBounds", "Southwest Lat: " + southwest.latitude);
-                Log.d("MapBounds", "Southwest Lng: " + southwest.longitude);
-            }
-        });
     }
 
     private LatLng getLatLngFromTile(int x, int y, float zoom) {
@@ -166,82 +154,42 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        /*airQualityViewModel.getAirQuality(0).observe(getViewLifecycleOwner(),
-                result -> {
-                    if (result.isSuccessAirQuality()) {
-                    } else {
-                    }
-                });*/
-        airQualityViewModel.getAirQuality(0);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.id_map);
         mapFragment.getMapAsync(this);
+        String lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+        }
+
+         airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
+
 
 
 
     }
+    private void printimage(List <AirQuality> listAirQuality){
+        for(int i = 1; i <= listAirQuality.size(); i++){
+            AirQuality airQuality = listAirQuality.get(i-1);
+            byte[] imageBytes = airQuality.getImage();
+            int x = airQuality.getX();
+            int y = airQuality.getY();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            LatLng northeast = getLatLngFromTile(x + 1, y, 3);
+            LatLng southwest = getLatLngFromTile(x, y + 1, 3);
+            LatLngBounds bounds = new LatLngBounds(southwest, northeast);
 
-    private void getAirQualityImage(int x, int y, int i) {
-        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 3, x, y, "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                        if(i <= 64) {
-                            try {
-                                // Ottieni i byte dall'input stream
-                                byte[] imageBytes = response.body().bytes();
+            // Crea l'overlay
+            GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
+                    .image(BitmapDescriptorFactory.fromBitmap(bitmap))
+                    .positionFromBounds(bounds);
+            overlayOptions.transparency(0.5f);
 
-                                // Decodifica i byte in un'immagine Bitmap
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                                // Carica l'immagine scaricata come bitmap
-                                Log.d("Prova", "CaricatA");
+            // Aggiungi l'overlay alla mappa
+            gMap.addGroundOverlay(overlayOptions);
 
-                                // Imposta le coordinate per l'overlay
-                                LatLng northeast = getLatLngFromTile(x + 1, y, 3);
-                                LatLng southwest = getLatLngFromTile(x, y + 1, 3);
-                                LatLngBounds bounds = new LatLngBounds(southwest, northeast);
-
-                                // Crea l'overlay
-                                GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
-                                        .image(BitmapDescriptorFactory.fromBitmap(bitmap))
-                                        .positionFromBounds(bounds);
-                                overlayOptions.transparency(0.5f);
-
-                                // Aggiungi l'overlay alla mappa
-                                gMap.addGroundOverlay(overlayOptions);
-                                if(i%8==0) {
-                                    getAirQualityImage(0, y + 1, i+1);
-
-                                }else{
-                                    getAirQualityImage(x+1 , y, i+1);
-
-                                }
-                            } catch (Exception e) {
-                                Log.e("Prova", "Errore nel caricare l'immagine come overlay", e);
-                            }
-                        }
-
-                } else {
-                    // handle request errors
-                    Log.d("Prova2","no" );
-
-                    Log.d("Prova2", "Codice di stato HTTP: " + response.code());
-                    Log.d("Prova2", "Messaggio di errore: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                // handle network errors
-                Log.d("Prova","no", t );
-            }
-        });
+        }
     }
-
-
-
-
-
 }
 

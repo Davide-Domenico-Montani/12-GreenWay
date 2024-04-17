@@ -17,4 +17,6 @@ public interface AirQualityDao {
 
     @Query("SELECT * FROM airquality WHERE id = :id")
     AirQuality getAirQuality(String id);
+    @Query("SELECT * FROM airquality")
+    List<AirQuality> getAll();
 }

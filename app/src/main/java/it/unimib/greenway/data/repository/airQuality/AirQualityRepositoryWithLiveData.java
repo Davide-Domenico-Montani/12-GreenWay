@@ -3,6 +3,7 @@ package it.unimib.greenway.data.repository.airQuality;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import it.unimib.greenway.data.source.airQuality.AirQualityCallBack;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
@@ -30,15 +31,24 @@ public class AirQualityRepositoryWithLiveData implements IAirQualityRepositoryWi
 
     @Override
     public MutableLiveData<Result> fetchAllAirQUality(long lastUpdate) {
-        airQualityRemoteDataSource.getAirQuality();
+        if (lastUpdate == 0 || System.currentTimeMillis() - lastUpdate >= 2 * 60 * 60 * 1000){
+            airQualityRemoteDataSource.getAirQuality();
+        }else{
+            airQualityLocalDataSource.getAirQuality();
+        }
         return airQualityListLiveData;
     }
 
     @Override
+    public List<AirQuality> getAirQualityList() throws ExecutionException, InterruptedException {
+        return airQualityLocalDataSource.getAirQualityList();
+    }
+
+
+    @Override
     public void onSuccessFromLocal(List<AirQuality> response) {
             Result.AirQualityResponseSuccess result = new Result.AirQualityResponseSuccess(new AirQualityResponse(response));
-            //airQualityListLiveData.postValue(result);
-
+            airQualityListLiveData.postValue(result);
     }
 
     @Override
