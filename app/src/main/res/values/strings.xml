@@ -45,5 +45,8 @@
     <string name="co2Saved">CO2 Saved:</string>
     <string name="co2">0g</string>
     <string name="co2consumed">CO2 Consumed:</string>
+    <string name="select">Select</string>
+    <string name="distance">Distance:</string>
+    <string name="emission">Emission produced:</string>
 
 </resources>
