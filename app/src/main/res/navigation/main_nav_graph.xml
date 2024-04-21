@@ -16,7 +16,11 @@
         android:id="@+id/navigatorFragment"
         android:name="it.unimib.greenway.ui.main.NavigatorFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_navigator" />
+        tools:layout="@layout/fragment_navigator" >
+
+    </fragment>
+
+
 
     <fragment
         android:id="@+id/challengeFragment"

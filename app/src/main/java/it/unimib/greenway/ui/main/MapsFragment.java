@@ -123,10 +123,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-        try {
+
+        //TODO: Togliere commento quando si riattiva chiamata per mappa
+        /*try {
             List<AirQuality> listAirQuality = airQualityViewModel.getAirQualityList();
-            Log.d("prova", String.valueOf(listAirQuality.size()));
-            //Log.d("prova", String.valueOf(list.size()));
+            Log.d("prova", String.valueOf(list.size()));
             if(listAirQuality.size() == 64){
                 printimage(listAirQuality);
             }
@@ -134,7 +135,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         //TODO: SIstemare bottone che compare solo quando accetti i permessi
         if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
