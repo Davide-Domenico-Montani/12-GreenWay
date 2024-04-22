@@ -8,6 +8,7 @@ import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLi
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.repository.user.UserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
+import it.unimib.greenway.data.service.RoutesApiService;
 import it.unimib.greenway.data.source.airQuality.AirQualityLocalDataSource;
 import it.unimib.greenway.data.source.airQuality.AirQualityRemoteDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
@@ -59,11 +60,7 @@ public class ServiceLocator {
                 airQualityLocalDataSource /*userDataRemoteDataSource*/);
     }
 
-    public AirQualityApiService getBeerApiService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://airquality.googleapis.com/v1/mapTypes/" + "US_AQI" + "/heatmapTiles/" + "2" + "/" + "0" + "/" + "1" + "?key=" + "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY").
-                addConverterFactory(GsonConverterFactory.create()).build();
-        return retrofit.create(AirQualityApiService.class);
-    }
+
 
     public AirQualityDatabase getAirQualityDao(Application application) {
         return AirQualityDatabase.getDatabase(application);
@@ -92,6 +89,12 @@ public class ServiceLocator {
                 .baseUrl("https://airquality.googleapis.com/")
                 .build();
         return retrofit.create(AirQualityApiService.class);
+    }public RoutesApiService getRoutesApiService(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("")
+                .build();
+        return retrofit.create(RoutesApiService.class);
     }
+
 
 }

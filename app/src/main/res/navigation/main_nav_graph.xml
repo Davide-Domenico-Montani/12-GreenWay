@@ -18,6 +18,9 @@
         android:label="fragment_maps"
         tools:layout="@layout/fragment_navigator" >
 
+        <action
+            android:id="@+id/action_navigatorFragment_to_navigatorRoutesFragment"
+            app:destination="@id/navigatorRoutesFragment" />
     </fragment>
 
 
@@ -33,5 +36,10 @@
         android:name="it.unimib.greenway.ui.main.UserFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/navigatorRoutesFragment"
+        android:name="it.unimib.greenway.ui.main.NavigatorRoutesFragment"
+        android:label="fragment_navigator_routes"
+        tools:layout="@layout/fragment_navigator_routes" />
 
 </navigation>

@@ -8,12 +8,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -29,9 +32,13 @@ import com.google.android.material.search.SearchBar;
 import java.util.Arrays;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.User;
 
 
 public class NavigatorFragment extends Fragment {
+
+    Button btnNavRoutes;
 
     public NavigatorFragment() {
         // Required empty public constructor
@@ -61,6 +68,19 @@ public class NavigatorFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnNavRoutes = view.findViewById(R.id.buttonNavRoutes);
+
+        btnNavRoutes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_navigatorFragment_to_navigatorRoutesFragment);
+            }
+        });
+
     }
 
     private void initAutocompleteFragment(int fragmentId) {
