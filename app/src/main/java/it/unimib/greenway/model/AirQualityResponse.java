@@ -33,7 +33,7 @@ public class AirQualityResponse implements Parcelable {
     @Override
     public String toString() {
         return "AirQualityResponse{" +
-                "beerList=" + airQualities +
+                "imageList=" + airQualities +
                 '}';
     }
 
