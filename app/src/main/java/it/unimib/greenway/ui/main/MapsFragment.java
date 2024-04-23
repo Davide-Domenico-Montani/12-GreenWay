@@ -164,7 +164,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
         }
 
-         airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
+         //airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
 
 
 

@@ -7,13 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.adapter.RoutesRecyclerViewAdapter;
 import it.unimib.greenway.data.service.RoutesApiService;
 import it.unimib.greenway.model.AirQuality;
+import it.unimib.greenway.model.Polyline;
 import it.unimib.greenway.model.Route;
 import it.unimib.greenway.model.RoutesApiResponse;
 import it.unimib.greenway.model.RoutesResponse;
@@ -33,6 +41,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * create an instance of this fragment.
  */
 public class NavigatorRoutesFragment extends Fragment {
+
+    private List<Route> routeList;
+    private RecyclerView recyclerViewRoutes;
+
 
 
     public static NavigatorRoutesFragment newInstance() {
@@ -80,7 +92,7 @@ public class NavigatorRoutesFragment extends Fragment {
                 "  },\n" +
                 "  \"travelMode\": \"DRIVE\",\n" +
                 "  \"routingPreference\": \"TRAFFIC_AWARE\",\n" +
-                "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n" +
+                "  \"departureTime\": \"2024-10-24T15:01:23.045123456Z\",\n" +
                 "  \"computeAlternativeRoutes\": false,\n" +
                 "  \"routeModifiers\": {\n" +
                 "    \"avoidTolls\": false,\n" +
@@ -100,9 +112,9 @@ public class NavigatorRoutesFragment extends Fragment {
                 if (response.isSuccessful()) {
 
                     RoutesApiResponse route = response.body();
-                    List<Route> routeList = route.getRoutes();
+                    List<Route> routeList2 = route.getRoutes();
 
-                    Log.d("routeProva", "" + routeList.get(0).toString());
+                    Log.d("routeProva", "" + routeList2.get(0).toString());
                 } else {
                     // handle request errors
                     Log.d("routeProva","errore" );
@@ -120,4 +132,36 @@ public class NavigatorRoutesFragment extends Fragment {
     }
 
 
-}
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        List<Route> routeList3 = new ArrayList<>();
+        Route route1 = new Route(1000, "10 min", new Polyline("encodedPolyline"));
+        Route route2 = new Route(2000, "20 min", new Polyline("encodedPolyline"));
+        routeList3.add(route1);
+        routeList3.add(route2);
+        recyclerViewRoutes = view.findViewById(R.id.recyclerViewRoutes);
+        RecyclerView.LayoutManager layoutManager;
+        layoutManager =
+                new LinearLayoutManager(requireContext(),
+                        LinearLayoutManager.VERTICAL, false);
+
+
+        RoutesRecyclerViewAdapter routeRecyclerViewAdapter = new RoutesRecyclerViewAdapter(routeList3,
+                requireActivity().getApplication(),
+                new RoutesRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onRouteItemClick(Route route) {
+                        Snackbar.make(recyclerViewRoutes, route.getDistanceMeters(), Snackbar.LENGTH_SHORT).show();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("route", route);
+                    }
+                });
+
+        recyclerViewRoutes.setLayoutManager(layoutManager);
+        recyclerViewRoutes.setAdapter(routeRecyclerViewAdapter);
+        routeRecyclerViewAdapter.notifyItemRangeInserted(0,1  );
+
+    }
+
+
+    }
