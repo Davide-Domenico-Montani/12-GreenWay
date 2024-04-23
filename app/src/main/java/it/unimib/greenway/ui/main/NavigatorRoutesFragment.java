@@ -109,8 +109,8 @@ public class NavigatorRoutesFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<Route> routeList3 = new ArrayList<>();
-        Route route1 = new Route(1000, "10 min", new Polyline("encodedPolyline"));
-        Route route2 = new Route(2000, "20 min", new Polyline("encodedPolyline"));
+        Route route1 = new Route(1000, "10 min", new Polyline("encodedPolyline"), "walking");
+        Route route2 = new Route(2000, "20 min", new Polyline("encodedPolyline"), "walking");
         routeList3.add(route1);
         routeList3.add(route2);
         recyclerViewRoutes = view.findViewById(R.id.recyclerViewRoutes);
