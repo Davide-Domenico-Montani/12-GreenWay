@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -49,13 +50,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NavigatorRoutesFragment extends Fragment {
 
     private UserViewModel userViewModel;
-
+    private ProgressBar progressBar;
     private RoutesRecyclerViewAdapter routeRecyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private RoutesViewModel routesViewModel;
     private SharedPreferencesUtil sharedPreferencesUtil;
     private List<Route> routeList;
     private RecyclerView recyclerViewRoutes;
+    private LatLng startLatLng;
+    private LatLng destinationLatLng;
 
 
 
@@ -70,9 +73,6 @@ public class NavigatorRoutesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         routeList = new ArrayList<>();
-        if (getArguments() != null) {
-
-        }
 
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
@@ -94,14 +94,19 @@ public class NavigatorRoutesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+             startLatLng = bundle.getParcelable("startLatLng");
+             destinationLatLng = bundle.getParcelable("destinationLatLng");
+            // Utilizzare i parametri come necessario
+        }
         return inflater.inflate(R.layout.fragment_navigator_routes, container, false);
     }
 
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        progressBar = view.findViewById(R.id.routesProgressBar);
         recyclerViewRoutes = view.findViewById(R.id.recyclerViewRoutes);
 
         layoutManager =
@@ -122,15 +127,18 @@ public class NavigatorRoutesFragment extends Fragment {
 
         recyclerViewRoutes.setLayoutManager(layoutManager);
         recyclerViewRoutes.setAdapter(routeRecyclerViewAdapter);
-
-        routesViewModel.getRoutes(45.498830,
-                9.196702,
-                45.506355,
-                9.222862).observe(getViewLifecycleOwner(),
+        progressBar.setVisibility(View.VISIBLE);
+        routesViewModel.getRoutes(startLatLng.latitude,
+                startLatLng.longitude,
+                destinationLatLng.latitude,
+                destinationLatLng.longitude).observe(getViewLifecycleOwner(),
                 result -> {
                     if(result.isSuccessRoutes()){
+                        this.routeList.clear();
                         this.routeList.addAll(((Result.RouteResponseSuccess) result).getData().getRoutes());
+                        progressBar.setVisibility(View.GONE);
                         routeRecyclerViewAdapter.notifyDataSetChanged();
+
                     }
                 });
 

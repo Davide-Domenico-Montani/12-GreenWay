@@ -82,7 +82,11 @@ public class NavigatorFragment extends Fragment {
                     Snackbar.make(rootView, getString(R.string.insertStartAndDestination), Snackbar.LENGTH_SHORT).show();
                 } else {
                     //TODO: Gestione per mandare LatLng a fragment per navigazione
-                    Navigation.findNavController(rootView).navigate(R.id.action_navigatorFragment_to_navigatorRoutesFragment);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("startLatLng", startLatLng);
+                    bundle.putParcelable("destinationLatLng", destinationLatLng);
+
+                    Navigation.findNavController(rootView).navigate(R.id.action_navigatorFragment_to_navigatorRoutesFragment, bundle);
                 }
             }
         });
@@ -111,8 +115,6 @@ public class NavigatorFragment extends Fragment {
                 } else {
                     destinationLatLng = place.getLatLng();
                 }
-                // TODO: Get info about the selected place.
-                Log.i("Ciao", "Place: " + place.getName() + ", " + place.getId() /*+ ", " + place.getLatLng()*/);
             }
 
             @Override
