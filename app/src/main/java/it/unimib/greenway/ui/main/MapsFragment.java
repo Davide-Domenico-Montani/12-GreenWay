@@ -136,6 +136,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }*/
+
         //TODO: SIstemare bottone che compare solo quando accetti i permessi
         if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
@@ -164,7 +165,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
         }
 
-         airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
+         //airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
 
 
 

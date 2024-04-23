@@ -6,9 +6,11 @@ import android.os.Parcelable;
 import java.util.Objects;
 
 public class Route implements Parcelable {
+    private String travelMode;
     private int distanceMeters;
     private String duration;
     private Polyline polyline;
+
 
     @Override
     public String toString() {
@@ -16,6 +18,7 @@ public class Route implements Parcelable {
                 "distanceMeters=" + distanceMeters +
                 ", duration=" + duration +
                 ", polyline='" + polyline + '\'' +
+                ", travelMode='" + travelMode + '\'' +
                 '}';
     }
 
@@ -24,18 +27,27 @@ public class Route implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return distanceMeters == route.distanceMeters && duration == route.duration && Objects.equals(polyline, route.polyline);
+        return distanceMeters == route.distanceMeters && duration == route.duration && Objects.equals(polyline, route.polyline) && Objects.equals(travelMode, route.travelMode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(distanceMeters, duration, polyline);
+        return Objects.hash(distanceMeters, duration, polyline, travelMode);
     }
 
-    public Route(int distanceMeters, String duration, Polyline polyline) {
+    public Route(int distanceMeters, String duration, Polyline polyline, String travelMode) {
         this.distanceMeters = distanceMeters;
         this.duration = duration;
         this.polyline = polyline;
+        this.travelMode = travelMode;
+    }
+
+    public String getTravelMode() {
+        return travelMode;
+    }
+
+    public void setTravelMode(String travelMode) {
+        this.travelMode = travelMode;
     }
 
     public void setDistanceMeters(int distanceMeters) {
@@ -62,6 +74,7 @@ public class Route implements Parcelable {
         return polyline;
     }
     protected Route(Parcel in) {
+        travelMode = in.readString();
         duration = in.readString();
         polyline = in.readParcelable(Polyline.class.getClassLoader());
         distanceMeters = in.readInt();

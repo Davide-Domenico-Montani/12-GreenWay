@@ -61,7 +61,6 @@ dependencies {
     // Maps SDK for Android
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation(libs.play.services.location)
-    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
