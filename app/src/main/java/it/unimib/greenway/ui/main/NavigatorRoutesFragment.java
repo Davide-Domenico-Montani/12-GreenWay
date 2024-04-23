@@ -50,6 +50,8 @@ public class NavigatorRoutesFragment extends Fragment {
 
     private UserViewModel userViewModel;
 
+    private RoutesRecyclerViewAdapter routeRecyclerViewAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private RoutesViewModel routesViewModel;
     private SharedPreferencesUtil sharedPreferencesUtil;
     private List<Route> routeList;
@@ -67,6 +69,7 @@ public class NavigatorRoutesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        routeList = new ArrayList<>();
         if (getArguments() != null) {
 
         }
@@ -91,36 +94,22 @@ public class NavigatorRoutesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        routesViewModel.getRoutes(45.498830,
-                9.196702,
-                45.506355,
-                9.222862).observe(getViewLifecycleOwner(),
-                result -> {
-                    if(result.isSuccessRoutes()){
-                        List<Route> route = ((Result.RouteResponseSuccess) result).getData().getRoutes();
 
-                        Log.d("routeprova" , route.toString());
-                    }
-        });
         return inflater.inflate(R.layout.fragment_navigator_routes, container, false);
     }
 
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        List<Route> routeList3 = new ArrayList<>();
-        Route route1 = new Route(1000, "10 min", new Polyline("encodedPolyline"), "walking");
-        Route route2 = new Route(2000, "20 min", new Polyline("encodedPolyline"), "walking");
-        routeList3.add(route1);
-        routeList3.add(route2);
+
         recyclerViewRoutes = view.findViewById(R.id.recyclerViewRoutes);
-        RecyclerView.LayoutManager layoutManager;
+
         layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
 
-        RoutesRecyclerViewAdapter routeRecyclerViewAdapter = new RoutesRecyclerViewAdapter(routeList3,
+         routeRecyclerViewAdapter = new RoutesRecyclerViewAdapter(routeList,
                 requireActivity().getApplication(),
                 new RoutesRecyclerViewAdapter.OnItemClickListener() {
                     @Override
@@ -133,7 +122,17 @@ public class NavigatorRoutesFragment extends Fragment {
 
         recyclerViewRoutes.setLayoutManager(layoutManager);
         recyclerViewRoutes.setAdapter(routeRecyclerViewAdapter);
-        routeRecyclerViewAdapter.notifyItemRangeInserted(0,1  );
+
+        routesViewModel.getRoutes(45.498830,
+                9.196702,
+                45.506355,
+                9.222862).observe(getViewLifecycleOwner(),
+                result -> {
+                    if(result.isSuccessRoutes()){
+                        this.routeList.addAll(((Result.RouteResponseSuccess) result).getData().getRoutes());
+                        routeRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                });
 
     }
 
