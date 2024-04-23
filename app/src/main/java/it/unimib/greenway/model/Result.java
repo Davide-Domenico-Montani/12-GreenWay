@@ -11,7 +11,9 @@ public class Result {
         return this instanceof AirQualityResponseSuccess;
     }
 
-
+    public boolean isSuccessRoutes(){
+        return this instanceof RouteResponseSuccess;
+    }
     public static final class UserResponseSuccess extends Result {
         private final User user;
         public UserResponseSuccess(User user) {
@@ -30,6 +32,16 @@ public class Result {
         }
         public AirQualityResponse getData() {
             return airQuality;
+        }
+    }
+
+    public static final class RouteResponseSuccess extends Result {
+        private final RoutesResponse routesResponse;
+        public RouteResponseSuccess(RoutesResponse routeResponse) {
+            this.routesResponse = routeResponse;
+        }
+        public RoutesResponse getData() {
+            return routesResponse;
         }
     }
     public static final class Error extends Result {

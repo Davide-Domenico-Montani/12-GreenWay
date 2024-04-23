@@ -5,6 +5,8 @@ import android.app.Application;
 import it.unimib.greenway.data.database.AirQualityDatabase;
 import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
+import it.unimib.greenway.data.repository.routes.IRoutesRepositoryWithLiveData;
+import it.unimib.greenway.data.repository.routes.RoutesRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.data.repository.user.UserRepository;
 import it.unimib.greenway.data.service.AirQualityApiService;
@@ -13,6 +15,8 @@ import it.unimib.greenway.data.source.airQuality.AirQualityLocalDataSource;
 import it.unimib.greenway.data.source.airQuality.AirQualityRemoteDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityRemoteDataSource;
+import it.unimib.greenway.data.source.routes.BaseRoutesRemoteDataSource;
+import it.unimib.greenway.data.source.routes.RoutesRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.data.source.user.UserAuthenticationRemoteDataSource;
@@ -84,15 +88,35 @@ public class ServiceLocator {
 
     }
 
+
+    public IRoutesRepositoryWithLiveData getRoutesRepository(Application application){
+        BaseRoutesRemoteDataSource routesRemoteDataSource;
+
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
+
+        routesRemoteDataSource =
+                new RoutesRemoteDataSource();
+
+
+
+        return new RoutesRepositoryWithLiveData(routesRemoteDataSource);
+
+    }
+
+
     public AirQualityApiService getAirQualityApiService(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://airquality.googleapis.com/")
                 .build();
         return retrofit.create(AirQualityApiService.class);
-    }public RoutesApiService getRoutesApiService(){
+    }
+
+    public RoutesApiService getRoutesApiService(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://routes.googleapis.com")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         return retrofit.create(RoutesApiService.class);
     }
 

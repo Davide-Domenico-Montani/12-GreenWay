@@ -21,6 +21,10 @@ public class Constants {
     public static final String AIRQUALITY_DATABASE_NAME = "AirQDb";
     public static final String LAST_UPDATE = "last_update";
 
+    public static final String DRIVE_CONSTANT = "DRIVE";
+    public static final String TRANSIT_CONSTANT = "TRANSIT";
+    public static final String WALK_CONSTANT = "WALK";
+
 
 
 
