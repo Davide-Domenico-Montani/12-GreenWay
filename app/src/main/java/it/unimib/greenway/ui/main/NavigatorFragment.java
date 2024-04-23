@@ -8,8 +8,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Arrays;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.User;
 
 
 public class NavigatorFragment extends Fragment {
