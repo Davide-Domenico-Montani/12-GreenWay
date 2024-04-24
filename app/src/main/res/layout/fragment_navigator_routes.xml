@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.NavigatorRoutesFragment">
+    tools:context=".ui.main.NavigatorRoutesFragment"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,49 +16,52 @@
         android:id="@+id/tabLayout">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItemDrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_car"
-            android:text="1 h, 30 min"
-            />
+            android:text="---"/>
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItemTransit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_publict"
-            />
+            android:text="---"/>
 
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItemWalk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_walk"
-            />
+            android:text="---" />
 
     </com.google.android.material.tabs.TabLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewRoutes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tabLayout"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_marginTop="8dp"
-             />
 
         <ProgressBar
             android:id="@+id/routesProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"
-            android:layout_marginTop="300dp"
             android:layout_marginStart="177dp"
+            android:layout_marginTop="500dp"
             android:layout_marginEnd="180dp"
-            />
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRoutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tabLayout"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="8dp"
+             />
+
+
 
     </RelativeLayout>
 </FrameLayout>

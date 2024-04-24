@@ -15,7 +15,7 @@
         android:layout_marginTop="100dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh">
+        app:cardBackgroundColor="@color/material_dynamic_neutral90">
     <fragment
         android:id="@+id/autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
@@ -34,7 +34,7 @@
 
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/md_theme_surfaceContainerHigh">
+        app:cardBackgroundColor="@color/material_dynamic_neutral90">
     <fragment
         android:id="@+id/autocomplete_fragment2"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"

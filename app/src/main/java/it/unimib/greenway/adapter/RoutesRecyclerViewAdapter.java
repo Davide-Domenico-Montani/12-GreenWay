@@ -83,13 +83,30 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         public void bind(Route route) {
+            int totalSeconds = Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1));
+            int hours = totalSeconds / 3600;
+            int minutes = (totalSeconds % 3600) / 60;
+            int seconds = totalSeconds % 60;
+
+            if(hours != 0)
+                routeDuration.setText(hours +"h " + minutes + "m");
+            else
+                routeDuration.setText(minutes + "m " + seconds + "s");
             routeDistance.setText(String.valueOf(route.getDistanceMeters()));
-            routeDuration.setText(route.getDuration());
+
         }
 
         @Override
         public void onClick(View v) {
 
         }
+    }
+
+    public void clear() {
+        routeList.clear();
+    }
+
+    public void addAll(List<Route> newList) {
+        routeList.addAll(newList);
     }
 }

@@ -34,18 +34,28 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
 
             String transport;
             String routingPreference;
+            String departureTime;
+            String transitPreference;
             count= 0;
             List<Route> routeList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             if(i == 0) {
                 transport = DRIVE_CONSTANT;
                 routingPreference = " \"routingPreference\": \"TRAFFIC_AWARE\",\n";
+                departureTime = "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n";
+                transitPreference = "";
             }else if(i == 1) {
                 transport = TRANSIT_CONSTANT;
                 routingPreference = "";
+                departureTime = "";
+                transitPreference = "\"transitPreferences\": {\n" +
+                        "\"routingPreference\": \"LESS_WALKING\", \n" +
+                        "\"allowedTravelModes\": [\"BUS\", \"SUBWAY\", \"TRAIN\", \"LIGHT_RAIL\", \"RAIL\"]},";
             } else {
                 transport = WALK_CONSTANT;
                 routingPreference = "";
+                departureTime = "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n";
+                transitPreference = "";
             }
 
             String body = "{\n" +
@@ -67,7 +77,8 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                     "  },\n" +
                     "  \"travelMode\": \"" + transport + "\",\n" +
                          routingPreference +
-                    "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n" +
+                        departureTime +
+                    transitPreference +
                     "  \"computeAlternativeRoutes\": true,\n" +
                     "  \"routeModifiers\": {\n" +
                     "    \"avoidTolls\": false,\n" +
