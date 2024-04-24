@@ -2,10 +2,12 @@ package it.unimib.greenway.data.source.routes;
 
 import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import static it.unimib.greenway.util.Constants.DEPARTURE_TIME_CONSTANT;
+import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
 import static it.unimib.greenway.util.Constants.FIELDMASK_ROUTE;
 import static it.unimib.greenway.util.Constants.ROUTING_PREFERENCE_CONSTANT;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
+import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT_PREFERENCES;
 import static it.unimib.greenway.util.Constants.WALK_CONSTANT;
 
 import android.util.Log;
@@ -54,9 +56,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                 transport = TRANSIT_CONSTANT;
                 routingPreference = "";
                 departureTime = "";
-                transitPreference = "\"transitPreferences\": {\n" +
-                        "\"routingPreference\": \"LESS_WALKING\", \n" +
-                        "\"allowedTravelModes\": [\"BUS\", \"SUBWAY\", \"TRAIN\", \"LIGHT_RAIL\", \"RAIL\"]},";
+                transitPreference = TRANSIT_CONSTANT_PREFERENCES;
             } else {
                 transport = WALK_CONSTANT;
                 routingPreference = "";
