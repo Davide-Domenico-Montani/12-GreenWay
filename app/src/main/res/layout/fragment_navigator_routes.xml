@@ -16,14 +16,12 @@
         android:id="@+id/tabLayout">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItemDrive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_car"
             android:text="---"/>
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItemTransit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_publict"
@@ -31,7 +29,6 @@
 
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItemWalk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_walk"
@@ -39,15 +36,6 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-        <ProgressBar
-            android:id="@+id/routesProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="177dp"
-            android:layout_marginTop="500dp"
-            android:layout_marginEnd="180dp"
-            android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewRoutes"

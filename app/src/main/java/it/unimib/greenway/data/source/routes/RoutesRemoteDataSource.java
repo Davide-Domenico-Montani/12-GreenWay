@@ -1,10 +1,16 @@
 package it.unimib.greenway.data.source.routes;
 
+import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
+import static it.unimib.greenway.util.Constants.DEPARTURE_TIME_CONSTANT;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
+import static it.unimib.greenway.util.Constants.FIELDMASK_ROUTE;
+import static it.unimib.greenway.util.Constants.ROUTING_PREFERENCE_CONSTANT;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
 import static it.unimib.greenway.util.Constants.WALK_CONSTANT;
 
 import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +47,8 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
         for (int i = 0; i < 3; i++) {
             if(i == 0) {
                 transport = DRIVE_CONSTANT;
-                routingPreference = " \"routingPreference\": \"TRAFFIC_AWARE\",\n";
-                departureTime = "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n";
+                routingPreference = ROUTING_PREFERENCE_CONSTANT;
+                departureTime = DEPARTURE_TIME_CONSTANT;
                 transitPreference = "";
             }else if(i == 1) {
                 transport = TRANSIT_CONSTANT;
@@ -54,7 +60,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
             } else {
                 transport = WALK_CONSTANT;
                 routingPreference = "";
-                departureTime = "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n";
+                departureTime = DEPARTURE_TIME_CONSTANT;
                 transitPreference = "";
             }
 
@@ -91,7 +97,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
 
-            Call<RoutesApiResponse> call = routesApiService.createRoute(requestBody, "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline", "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+            Call<RoutesApiResponse> call = routesApiService.createRoute(requestBody, FIELDMASK_ROUTE, MAPS_API_KEY);
             String finalDrive = transport;
 
             call.enqueue(new Callback<RoutesApiResponse>() {
@@ -101,6 +107,8 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                         if (response.body().getRoutes() != null){ List<Route> route = response.body().getRoutes();
                             for(int i = 0; i < response.body().getRoutes().size(); i++){
                                 route.get(i).setTravelMode(finalDrive);
+                                route.get(i).setStart(new LatLng(latStart, lonStart));
+                                route.get(i).setDestination(new LatLng(latEnd, lonEnd));
                             }
                             routeList.addAll(route);
                         }

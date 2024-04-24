@@ -1,5 +1,7 @@
 package it.unimib.greenway.data.source.airQuality;
 
+import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -33,7 +35,7 @@ public class AirQualityRemoteDataSource extends BaseAirQualityRemoteDataSource {
     @Override
     public void getAirQuality() {
         List<AirQuality> airQualities = new ArrayList<>();
-        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 3, x, y, "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+        Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 3, x, y, MAPS_API_KEY);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

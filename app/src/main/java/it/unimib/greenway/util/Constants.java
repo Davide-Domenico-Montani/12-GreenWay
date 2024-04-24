@@ -25,6 +25,12 @@ public class Constants {
     public static final String TRANSIT_CONSTANT = "TRANSIT";
     public static final String WALK_CONSTANT = "WALK";
 
+    public static final String FIELDMASK_ROUTE = "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline";
+
+    public static final String DEPARTURE_TIME_CONSTANT = "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n";
+    public static final String ROUTING_PREFERENCE_CONSTANT = " \"routingPreference\": \"TRAFFIC_AWARE\",\n";
+
+
 
 
 

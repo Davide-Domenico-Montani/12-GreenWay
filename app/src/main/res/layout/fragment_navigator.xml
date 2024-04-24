@@ -53,14 +53,6 @@
         android:text="@string/find"
         android:layout_marginTop="240dp"/>
 
-    <ProgressBar
-        android:id="@+id/progressIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="310dp"
-        android:visibility="visible"/>
-        />
 
 
 </FrameLayout>

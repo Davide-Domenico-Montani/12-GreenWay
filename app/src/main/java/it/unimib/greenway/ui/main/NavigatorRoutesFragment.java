@@ -56,7 +56,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NavigatorRoutesFragment extends Fragment {
 
     private UserViewModel userViewModel;
-    private ProgressBar progressBar;
     private RoutesRecyclerViewAdapter routeRecyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private RoutesViewModel routesViewModel;
@@ -120,13 +119,9 @@ public class NavigatorRoutesFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar = view.findViewById(R.id.routesProgressBar);
         recyclerViewRoutes = view.findViewById(R.id.recyclerViewRoutes);
         tabLayout = view.findViewById(R.id.tabLayout);
-        tabItemDrive = view.findViewById(R.id.tabItemDrive);
-        tabItemTransit = view.findViewById(R.id.tabItemTransit);
-        tabItemWalk = view.findViewById(R.id.tabItemWalk);
-        progressBar.setVisibility(View.VISIBLE);
+
         TabLayout.Tab tab0 = tabLayout.getTabAt(0);
         TabLayout.Tab tab1 = tabLayout.getTabAt(1);
         TabLayout.Tab tab2 = tabLayout.getTabAt(2);
@@ -186,7 +181,6 @@ public class NavigatorRoutesFragment extends Fragment {
                         if (result.isSuccessRoutes()) {
                             this.routeList.clear();
                             this.routeList.addAll(((Result.RouteResponseSuccess) result).getData().getRoutes());
-                            progressBar.setVisibility(View.GONE);
                             divideList(routeList);
                             if(driveList.size() != 0) {
                                 tab0.setText(convertSecond(Integer.parseInt(String.valueOf(driveList.get(0).getDuration().substring(0, driveList.get(0).getDuration().length() - 1)))));

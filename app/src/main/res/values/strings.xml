@@ -48,13 +48,13 @@
     <string name="select">Select</string>
     <string name="distance">Distance:</string>
     <string name="emission">Emission produced:</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="find">Find</string>
     <string name="insertStart">Insert start field</string>
     <string name="start">Start</string>
     <string name="destination">Destination</string>
     <string name="insertDestination">Insert Destination field</string>
     <string name="insertStartAndDestination">Insert both fields</string>
+
 
 </resources>

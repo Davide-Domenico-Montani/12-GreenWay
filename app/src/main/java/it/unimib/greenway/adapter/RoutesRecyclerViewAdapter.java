@@ -1,10 +1,16 @@
 package it.unimib.greenway.adapter;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -73,12 +79,13 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public class RoutesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView routeDistance;
         private final TextView routeDuration;
+        private final Button buttonNavigation;
 
         public RoutesViewHolder(@NonNull View itemView) {
             super(itemView);
             routeDuration = itemView.findViewById(R.id.time_card_route);
             routeDistance = itemView.findViewById(R.id.distance_value);
-            Log.d("routeHolder", "onBindViewHolder: " + routeDistance);
+            buttonNavigation = itemView.findViewById(R.id.buttonNavigate);
             itemView.setOnClickListener(this);
         }
 
@@ -87,6 +94,10 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             int hours = totalSeconds / 3600;
             int minutes = (totalSeconds % 3600) / 60;
             int seconds = totalSeconds % 60;
+            String polyline = "enc:" + route.getPolyline().getEncodedPolyline();
+            LatLng start = route.getStart();
+            LatLng destination = route.getDestination();
+            String uri = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=" + start.latitude+ ","+ start.longitude  + "&destination=" + destination.latitude + "," + destination.longitude + "&polyline=" + polyline;
 
             if(hours != 0)
                 routeDuration.setText(hours +"h " + minutes + "m");
@@ -94,6 +105,16 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 routeDuration.setText(minutes + "m " + seconds + "s");
             routeDistance.setText(String.valueOf(route.getDistanceMeters()));
 
+            buttonNavigation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri gmmIntentUri = Uri.parse(uri);
+                    Context context = v.getContext();
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps"); // Specifica che vuoi aprire l'app Google Maps
+                    context.startActivity(mapIntent);
+                }
+            });
         }
 
         @Override

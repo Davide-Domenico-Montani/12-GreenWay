@@ -3,6 +3,8 @@ package it.unimib.greenway.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Objects;
 
 public class Route implements Parcelable {
@@ -10,15 +12,27 @@ public class Route implements Parcelable {
     private int distanceMeters;
     private String duration;
     private Polyline polyline;
+    private LatLng start;
+    private LatLng destination;
 
+    public Route(String travelMode, int distanceMeters, String duration, Polyline polyline, LatLng start, LatLng destination) {
+        this.travelMode = travelMode;
+        this.distanceMeters = distanceMeters;
+        this.duration = duration;
+        this.polyline = polyline;
+        this.start = start;
+        this.destination = destination;
+    }
 
     @Override
     public String toString() {
         return "Route{" +
-                "distanceMeters=" + distanceMeters +
-                ", duration=" + duration +
-                ", polyline='" + polyline + '\'' +
-                ", travelMode='" + travelMode + '\'' +
+                "travelMode='" + travelMode + '\'' +
+                ", distanceMeters=" + distanceMeters +
+                ", duration='" + duration + '\'' +
+                ", polyline=" + polyline +
+                ", start=" + start +
+                ", destination=" + destination +
                 '}';
     }
 
@@ -27,19 +41,28 @@ public class Route implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return distanceMeters == route.distanceMeters && duration == route.duration && Objects.equals(polyline, route.polyline) && Objects.equals(travelMode, route.travelMode);
+        return distanceMeters == route.distanceMeters && Objects.equals(travelMode, route.travelMode) && Objects.equals(duration, route.duration) && Objects.equals(polyline, route.polyline) && Objects.equals(start, route.start) && Objects.equals(destination, route.destination);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(distanceMeters, duration, polyline, travelMode);
+        return Objects.hash(travelMode, distanceMeters, duration, polyline, start, destination);
     }
 
-    public Route(int distanceMeters, String duration, Polyline polyline, String travelMode) {
-        this.distanceMeters = distanceMeters;
-        this.duration = duration;
-        this.polyline = polyline;
-        this.travelMode = travelMode;
+    public LatLng getStart() {
+        return start;
+    }
+
+    public void setStart(LatLng start) {
+        this.start = start;
+    }
+
+    public LatLng getDestination() {
+        return destination;
+    }
+
+    public void setDestination(LatLng destination) {
+        this.destination = destination;
     }
 
     public String getTravelMode() {
@@ -78,6 +101,8 @@ public class Route implements Parcelable {
         duration = in.readString();
         polyline = in.readParcelable(Polyline.class.getClassLoader());
         distanceMeters = in.readInt();
+        start = in.readParcelable(LatLng.class.getClassLoader());
+        destination = in.readParcelable(LatLng.class.getClassLoader());
     }
 
 
