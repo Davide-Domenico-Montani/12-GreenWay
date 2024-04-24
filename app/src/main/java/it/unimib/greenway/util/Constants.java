@@ -25,6 +25,10 @@ public class Constants {
     public static final String TRANSIT_CONSTANT = "TRANSIT";
     public static final String WALK_CONSTANT = "WALK";
 
+    public static final String TRANSIT_CONSTANT_PREFERENCES = "\"transitPreferences\": {\n" +
+            "\"routingPreference\": \"LESS_WALKING\", \n" +
+            "\"allowedTravelModes\": [\"BUS\", \"SUBWAY\", \"TRAIN\", \"LIGHT_RAIL\", \"RAIL\"]},";
+
 
 
 

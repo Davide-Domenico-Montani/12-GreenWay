@@ -1,5 +1,7 @@
 package it.unimib.greenway.ui.main;
 
+import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,7 +59,7 @@ public class NavigatorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Places.initialize(requireContext(), "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+        Places.initialize(requireContext(), MAPS_API_KEY);
         PlacesClient placesClient = Places.createClient(requireContext());
     }
 

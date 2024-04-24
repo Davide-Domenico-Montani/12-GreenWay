@@ -1,7 +1,9 @@
 package it.unimib.greenway.data.source.routes;
 
+import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
+import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT_PREFERENCES;
 import static it.unimib.greenway.util.Constants.WALK_CONSTANT;
 
 import android.util.Log;
@@ -48,9 +50,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                 transport = TRANSIT_CONSTANT;
                 routingPreference = "";
                 departureTime = "";
-                transitPreference = "\"transitPreferences\": {\n" +
-                        "\"routingPreference\": \"LESS_WALKING\", \n" +
-                        "\"allowedTravelModes\": [\"BUS\", \"SUBWAY\", \"TRAIN\", \"LIGHT_RAIL\", \"RAIL\"]},";
+                transitPreference = TRANSIT_CONSTANT_PREFERENCES;
             } else {
                 transport = WALK_CONSTANT;
                 routingPreference = "";
@@ -91,7 +91,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
 
-            Call<RoutesApiResponse> call = routesApiService.createRoute(requestBody, "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline", "AIzaSyBqYE0984H0veT8WIyDLXudEnBhO1RW_MY");
+            Call<RoutesApiResponse> call = routesApiService.createRoute(requestBody, "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline", MAPS_API_KEY);
             String finalDrive = transport;
 
             call.enqueue(new Callback<RoutesApiResponse>() {
