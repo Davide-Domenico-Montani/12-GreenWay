@@ -182,12 +182,14 @@ public class NavigatorRoutesFragment extends Fragment {
                         if (result.isSuccessRoutes()) {
                             this.routeList.clear();
                             this.routeList.addAll(((Result.RouteResponseSuccess) result).getData().getRoutes());
+                            Log.d("prova", routeList.toString());
                             divideList(routeList);
                             if(driveList.size() != 0) {
                                 tab0.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(driveList.get(0).getDuration().substring(0, driveList.get(0).getDuration().length() - 1)))));
                             }
                             if(transitList.size() != 0) {
                                 tab1.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(transitList.get(0).getDuration().substring(0, transitList.get(0).getDuration().length() - 1)))));
+                                Log.d("prova", transitList.toString());
                             }
                             if(walkList.size() != 0) {
                                 tab2.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(walkList.get(0).getDuration().substring(0, walkList.get(0).getDuration().length() - 1)))));

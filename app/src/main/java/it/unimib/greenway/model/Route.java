@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Route implements Parcelable {
@@ -14,14 +16,16 @@ public class Route implements Parcelable {
     private Polyline polyline;
     private LatLng start;
     private LatLng destination;
+    private List<Legs> legs;
 
-    public Route(String travelMode, int distanceMeters, String duration, Polyline polyline, LatLng start, LatLng destination) {
+    public Route(String travelMode, int distanceMeters, String duration, Polyline polyline, LatLng start, LatLng destination, List<Legs> legs) {
         this.travelMode = travelMode;
         this.distanceMeters = distanceMeters;
         this.duration = duration;
         this.polyline = polyline;
         this.start = start;
         this.destination = destination;
+        this.legs = legs;
     }
 
     @Override
@@ -33,20 +37,30 @@ public class Route implements Parcelable {
                 ", polyline=" + polyline +
                 ", start=" + start +
                 ", destination=" + destination +
+                ", legs=" + legs +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return distanceMeters == route.distanceMeters && Objects.equals(travelMode, route.travelMode) && Objects.equals(duration, route.duration) && Objects.equals(polyline, route.polyline) && Objects.equals(start, route.start) && Objects.equals(destination, route.destination);
+        return distanceMeters == route.distanceMeters && Objects.equals(travelMode, route.travelMode) && Objects.equals(duration, route.duration) && Objects.equals(polyline, route.polyline) && Objects.equals(start, route.start) && Objects.equals(destination, route.destination) && Objects.equals(legs, route.legs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(travelMode, distanceMeters, duration, polyline, start, destination);
+        return Objects.hash(travelMode, distanceMeters, duration, polyline, start, destination, legs);
+    }
+
+    public List<Legs> getLegs() {
+        return legs;
+    }
+
+    public void setLegs(List<Legs> legs) {
+        this.legs = legs;
     }
 
     public LatLng getStart() {
@@ -96,28 +110,45 @@ public class Route implements Parcelable {
     public Polyline getPolyline() {
         return polyline;
     }
-    protected Route(Parcel in) {
-        travelMode = in.readString();
-        duration = in.readString();
-        polyline = in.readParcelable(Polyline.class.getClassLoader());
-        distanceMeters = in.readInt();
-        start = in.readParcelable(LatLng.class.getClassLoader());
-        destination = in.readParcelable(LatLng.class.getClassLoader());
-    }
 
 
     @Override
     public int describeContents() {
         return 0;
     }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-      /*  dest.writeString(duration);
-        dest.writeParcelable(polyline, flags);
-        dest.writeInt(distanceMeters);*/
+        dest.writeString(this.travelMode);
+        dest.writeInt(this.distanceMeters);
+        dest.writeString(this.duration);
+        dest.writeParcelable((Parcelable) this.polyline, flags);
+        dest.writeParcelable(this.start, flags);
+        dest.writeParcelable(this.destination, flags);
+        dest.writeList(this.legs);
     }
 
-    public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {
+    public void readFromParcel(Parcel source) {
+        this.travelMode = source.readString();
+        this.distanceMeters = source.readInt();
+        this.duration = source.readString();
+        this.polyline = source.readParcelable(Polyline.class.getClassLoader());
+        this.start = source.readParcelable(LatLng.class.getClassLoader());
+        this.destination = source.readParcelable(LatLng.class.getClassLoader());
+        this.legs = source.createTypedArrayList(Legs.CREATOR);
+    }
+
+    protected Route(Parcel in) {
+        this.travelMode = in.readString();
+        this.distanceMeters = in.readInt();
+        this.duration = in.readString();
+        this.polyline = in.readParcelable(Polyline.class.getClassLoader());
+        this.start = in.readParcelable(LatLng.class.getClassLoader());
+        this.destination = in.readParcelable(LatLng.class.getClassLoader());
+        this.legs = in.createTypedArrayList(Legs.CREATOR);
+    }
+
+    public static final Creator<Route> CREATOR = new Creator<Route>() {
         @Override
         public Route createFromParcel(Parcel source) {
             return new Route(source);

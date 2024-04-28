@@ -5,31 +5,33 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Legs implements Parcelable {
-    private int distanceMeters;
-    private String duration;
-    private Polyline polyline;
 
     private List<Steps> steps;
 
-    protected Legs(Parcel in) {
-        distanceMeters = in.readInt();
-        duration = in.readString();
+    public Legs(List<Steps> steps) {
+        this.steps = steps;
     }
 
-    public static final Creator<Legs> CREATOR = new Creator<Legs>() {
-        @Override
-        public Legs createFromParcel(Parcel in) {
-            return new Legs(in);
-        }
 
-        @Override
-        public Legs[] newArray(int size) {
-            return new Legs[size];
-        }
-    };
+    public List<Steps> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Steps> steps) {
+        this.steps = steps;
+    }
+
+    @Override
+    public String toString() {
+        return "Legs{" +
+                "steps=" + steps +
+                '}';
+    }
+
 
     @Override
     public int describeContents() {
@@ -37,8 +39,27 @@ public class Legs implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(distanceMeters);
-        dest.writeString(duration);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.steps);
     }
+
+    public void readFromParcel(Parcel source) {
+        this.steps = source.createTypedArrayList(Steps.CREATOR);
+    }
+
+    protected Legs(Parcel in) {
+        this.steps = in.createTypedArrayList(Steps.CREATOR);
+    }
+
+    public static final Creator<Legs> CREATOR = new Creator<Legs>() {
+        @Override
+        public Legs createFromParcel(Parcel source) {
+            return new Legs(source);
+        }
+
+        @Override
+        public Legs[] newArray(int size) {
+            return new Legs[size];
+        }
+    };
 }

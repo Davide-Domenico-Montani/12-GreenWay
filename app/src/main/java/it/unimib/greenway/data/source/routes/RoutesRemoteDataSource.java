@@ -41,58 +41,35 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
     public void getRoutes(double latStart, double lonStart, double latEnd, double lonEnd) {
 
             String transport;
-            String routingPreference;
-            String departureTime;
-            String transitPreference;
             count= 0;
             List<Route> routeList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             if(i == 0) {
                 transport = DRIVE_CONSTANT;
-                routingPreference = ROUTING_PREFERENCE_CONSTANT;
-                departureTime = DEPARTURE_TIME_CONSTANT;
-                transitPreference = "";
             }else if(i == 1) {
                 transport = TRANSIT_CONSTANT;
-                routingPreference = "";
-                departureTime = "";
-                transitPreference = TRANSIT_CONSTANT_PREFERENCES;
             } else {
                 transport = WALK_CONSTANT;
-                routingPreference = "";
-                departureTime = DEPARTURE_TIME_CONSTANT;
-                transitPreference = "";
             }
 
-            String body = "{\n" +
-                    "  \"origin\":{\n" +
-                    "    \"location\":{\n" +
-                    "      \"latLng\":{\n" +
-                    "        \"latitude\": " + latStart + ",\n" +
-                    "        \"longitude\": " + lonStart + "\n" +
-                    "      }\n" +
-                    "    }\n" +
+            String body = "{\"origin\": {\n" +
+                    "   \"location\":{ \n" +
+                    "               \"latLng\": {\n" +
+                    "                    \"latitude\" :  "+ latStart +",\n" +
+                    "                    \"longitude\":  "+ lonStart +"\n" +
+                    "                    } \n" +
+                    "            } \n" +
                     "  },\n" +
-                    "  \"destination\":{\n" +
-                    "    \"location\":{\n" +
-                    "      \"latLng\":{\n" +
-                    "        \"latitude\": " + latEnd + ",\n" +
-                    "        \"longitude\": " + lonEnd + "\n" +
-                    "      }\n" +
-                    "    }\n" +
+                    "  \"destination\": {\n" +
+                    "    \"location\":{ \n" +
+                    "               \"latLng\": {\n" +
+                    "                    \"latitude\" :  "+latEnd + ",\n" +
+                    "                    \"longitude\":  "+ lonEnd+"\n" +
+                    "                    } \n" +
+                    "            } \n" +
                     "  },\n" +
-                    "  \"travelMode\": \"" + transport + "\",\n" +
-                         routingPreference +
-                        departureTime +
-                    transitPreference +
-                    "  \"computeAlternativeRoutes\": true,\n" +
-                    "  \"routeModifiers\": {\n" +
-                    "    \"avoidTolls\": false,\n" +
-                    "    \"avoidHighways\": false,\n" +
-                    "    \"avoidFerries\": false\n" +
-                    "  },\n" +
-                    "  \"languageCode\": \"en-US\",\n" +
-                    "  \"units\": \"IMPERIAL\"\n" +
+                    "  \"travelMode\": \"" +transport +"\",\n" +
+                    "  \"computeAlternativeRoutes\": true\n" +
                     "}";
 
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
@@ -105,6 +82,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                 public void onResponse(Call<RoutesApiResponse> call, Response<RoutesApiResponse> response) {
                     if (response.isSuccessful()) {
                         if (response.body().getRoutes() != null){ List<Route> route = response.body().getRoutes();
+
                             for(int i = 0; i < response.body().getRoutes().size(); i++){
                                 route.get(i).setTravelMode(finalDrive);
                                 route.get(i).setStart(new LatLng(latStart, lonStart));
