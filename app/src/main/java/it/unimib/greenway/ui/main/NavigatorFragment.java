@@ -114,8 +114,10 @@ public class NavigatorFragment extends Fragment {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 if(fragmentId == R.id.autocomplete_fragment){
+                    Log.d("ciao", place.getId());
                     startLatLng = place.getLatLng();
                 } else {
+                    Log.d("ciao", place.toString());
                     destinationLatLng = place.getLatLng();
                 }
             }

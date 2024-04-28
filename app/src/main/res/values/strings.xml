@@ -55,6 +55,7 @@
     <string name="destination">Destination</string>
     <string name="insertDestination">Insert Destination field</string>
     <string name="insertStartAndDestination">Insert both fields</string>
+    <string name="ApriMappa">Open Map</string>
 
 
 </resources>

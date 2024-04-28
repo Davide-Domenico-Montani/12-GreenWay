@@ -41,6 +41,7 @@ import it.unimib.greenway.model.RoutesApiResponse;
 import it.unimib.greenway.model.RoutesResponse;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
+import it.unimib.greenway.util.ConverterUtil;
 import it.unimib.greenway.util.ServiceLocator;
 import it.unimib.greenway.util.SharedPreferencesUtil;
 import okhttp3.MediaType;
@@ -70,7 +71,7 @@ public class NavigatorRoutesFragment extends Fragment {
     private LatLng startLatLng;
     private LatLng destinationLatLng;
     private TabItem tabItemDrive, tabItemTransit, tabItemWalk;
-
+    private ConverterUtil converterUtil;
 
 
     public static NavigatorRoutesFragment newInstance() {
@@ -92,7 +93,7 @@ public class NavigatorRoutesFragment extends Fragment {
                 getUserRepository(requireActivity().getApplication());
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
-
+        converterUtil = new ConverterUtil();
 
         IRoutesRepositoryWithLiveData routesRepositoryWithLiveData =
                 ServiceLocator.getInstance().getRoutesRepository(
@@ -183,13 +184,13 @@ public class NavigatorRoutesFragment extends Fragment {
                             this.routeList.addAll(((Result.RouteResponseSuccess) result).getData().getRoutes());
                             divideList(routeList);
                             if(driveList.size() != 0) {
-                                tab0.setText(convertSecond(Integer.parseInt(String.valueOf(driveList.get(0).getDuration().substring(0, driveList.get(0).getDuration().length() - 1)))));
+                                tab0.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(driveList.get(0).getDuration().substring(0, driveList.get(0).getDuration().length() - 1)))));
                             }
                             if(transitList.size() != 0) {
-                                tab1.setText(convertSecond(Integer.parseInt(String.valueOf(transitList.get(0).getDuration().substring(0, transitList.get(0).getDuration().length() - 1)))));
+                                tab1.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(transitList.get(0).getDuration().substring(0, transitList.get(0).getDuration().length() - 1)))));
                             }
                             if(walkList.size() != 0) {
-                                tab2.setText(convertSecond(Integer.parseInt(String.valueOf(walkList.get(0).getDuration().substring(0, walkList.get(0).getDuration().length() - 1)))));
+                                tab2.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(walkList.get(0).getDuration().substring(0, walkList.get(0).getDuration().length() - 1)))));
                             }
                             switch (tabLayout.getSelectedTabPosition()) {
                                 case 0:
