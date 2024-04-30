@@ -61,7 +61,7 @@ public class ConverterUtil {
                     }
                 }
             }
-          return (totalCO2 / 1000) + " kg";
+          return co2Converter(totalCO2);
         }
         if(route.getTravelMode().equals(Constants.WALK_CONSTANT)){
             return "0 kg";
@@ -72,7 +72,9 @@ public class ConverterUtil {
 
     public String co2Converter(double co2) {
         double kilograms = co2 / 1000;
-        return kilograms + "kg";
+        String format = "%." + 3 + "f";
+        String formattedString = String.format(format, kilograms);
+        return formattedString + "kg";
     }
 
 }
