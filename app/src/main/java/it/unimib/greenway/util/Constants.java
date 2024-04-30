@@ -29,6 +29,18 @@ public class Constants {
             "routes.staticDuration,routes.legs.steps.distanceMeters,routes.distanceMeters," +
             "routes.polyline,routes.legs.steps.staticDuration";
 
+    //valori produzione co2 per passeggero
+    public static final double CO2_PRODUCTION_CAR_GASOLINE = 150;
+    public static final double CO2_PRODUCTION_CAR_DIESEL = 120;
+    public static final double CO2_PRODUCTION_CAR_GPL = 100;
+    public static final double CO2_PRODUCTION_CAR_METHANE = 80;
+    public static final double CO2_PRODUCTION_ELECTRIC = 0;
+
+    public static final double CO2_PRODUCTION_BUS = 35;
+    public static final double CO2_PRODUCTION_TRAM = 15;
+    public static final double CO2_PRODUCTION_TRAIN = 25;
+    public static final double CO2_PRODUCTION_METRO = 20;
+
     public static final String URI_STRING_MAPS = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=";
 
 
