@@ -106,8 +106,10 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             String uri = URI_STRING_MAPS + start.latitude+ ","+ start.longitude  + "&destination=" +
                     destination.latitude + "," + destination.longitude + "&polyline=" + polyline;
 
+            String distanceString = converterUtil.convertMeter(route.getDistanceMeters()) + "km";
+
             routeDuration.setText(converterUtil.convertSecond(Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1))));
-            routeDistance.setText(String.valueOf(route.getDistanceMeters()));
+            routeDistance.setText(distanceString);
             co2Value.setText(String.valueOf(converterUtil.co2Calculator(route)));
             buttonNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override

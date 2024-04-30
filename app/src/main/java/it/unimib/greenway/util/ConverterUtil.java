@@ -23,12 +23,16 @@ public class ConverterUtil {
             return minutes + "m ";
     }
 
+    public static double convertMeter(int meters) {
+        return meters / 1000.0; // Dividi i metri per 1000 per ottenere i chilometri
+    }
     public String co2Calculator(Route route) {
         if (route.getTravelMode().equals(Constants.DRIVE_CONSTANT)) {
-            return co2Converter(route.getDistanceMeters() * 108.2);
+            return co2Converter(convertMeter(route.getDistanceMeters()) * 108.2);
         }
         else return "32";
     }
+
     public String co2Converter(double co2) {
         double remainingGrams = co2 % 1000;
         double kilograms = (co2 - remainingGrams) / 1000;
@@ -40,7 +44,7 @@ public class ConverterUtil {
         String formattedHectograms = String.format("%.0f", hectograms);
         String formattedRemainingHectograms = String.format("%.0f", remainingHectograms);
 
-        return formattedKilograms + "," + formattedHectograms  + formattedRemainingHectograms + " kg/km";
+        return formattedKilograms + "," + formattedHectograms  + formattedRemainingHectograms + " kg";
     }
 
 }
