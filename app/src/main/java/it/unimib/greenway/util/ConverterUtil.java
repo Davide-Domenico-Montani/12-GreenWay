@@ -34,17 +34,8 @@ public class ConverterUtil {
     }
 
     public String co2Converter(double co2) {
-        double remainingGrams = co2 % 1000;
-        double kilograms = (co2 - remainingGrams) / 1000;
-        double remainingHectograms = remainingGrams % 100;
-        double hectograms = (remainingGrams - remainingHectograms) / 100;
-
-        // Formattazione dei valori numerici
-        String formattedKilograms = String.format("%.0f", kilograms);
-        String formattedHectograms = String.format("%.0f", hectograms);
-        String formattedRemainingHectograms = String.format("%.0f", remainingHectograms);
-
-        return formattedKilograms + "," + formattedHectograms  + formattedRemainingHectograms + " kg";
+        double kilograms = co2 / 1000;
+        return kilograms + "kg";
     }
 
 }
