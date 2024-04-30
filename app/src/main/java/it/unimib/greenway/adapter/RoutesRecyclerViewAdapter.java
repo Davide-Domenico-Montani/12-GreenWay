@@ -2,6 +2,8 @@ package it.unimib.greenway.adapter;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import static it.unimib.greenway.util.Constants.URI_STRING_MAPS;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ import java.util.List;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.model.Route;
+import it.unimib.greenway.util.ConverterUtil;
 
 public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnItemClickListener {
@@ -31,6 +35,8 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private final List<Route> routeList;
     private final OnItemClickListener onItemClickListener;
     private final Application application;
+    private final ConverterUtil converterUtil = new ConverterUtil();
+
 
     public RoutesRecyclerViewAdapter(List<Route> routeList, Application application,
                                      OnItemClickListener onItemClickListener) {
@@ -55,7 +61,6 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         View view = null;
         view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.route_card_item, parent, false);
-        Log.d("routeHolder", "onBindViewHolder: " + view);
         return new RoutesViewHolder(view);
 
     }
@@ -64,6 +69,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof RoutesViewHolder) {
             ((RoutesViewHolder) holder).bind(routeList.get(position));
+
         }
     }
 
@@ -80,31 +86,29 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         private final TextView routeDistance;
         private final TextView routeDuration;
         private final Button buttonNavigation;
+        private final TextView co2Value;
 
         public RoutesViewHolder(@NonNull View itemView) {
             super(itemView);
             routeDuration = itemView.findViewById(R.id.time_card_route);
             routeDistance = itemView.findViewById(R.id.distance_value);
             buttonNavigation = itemView.findViewById(R.id.buttonNavigate);
+            co2Value = itemView.findViewById(R.id.co2Value);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Route route) {
-            int totalSeconds = Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1));
-            int hours = totalSeconds / 3600;
-            int minutes = (totalSeconds % 3600) / 60;
-            int seconds = totalSeconds % 60;
+
             String polyline = "enc:" + route.getPolyline().getEncodedPolyline();
             LatLng start = route.getStart();
             LatLng destination = route.getDestination();
-            String uri = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=" + start.latitude+ ","+ start.longitude  + "&destination=" + destination.latitude + "," + destination.longitude + "&polyline=" + polyline;
 
-            if(hours != 0)
-                routeDuration.setText(hours +"h " + minutes + "m");
-            else
-                routeDuration.setText(minutes + "m " + seconds + "s");
+            String uri = URI_STRING_MAPS + start.latitude+ ","+ start.longitude  + "&destination=" +
+                    destination.latitude + "," + destination.longitude + "&polyline=" + polyline;
+
+            routeDuration.setText(converterUtil.convertSecond(Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1))));
             routeDistance.setText(String.valueOf(route.getDistanceMeters()));
-
+            co2Value.setText(String.valueOf(converterUtil.co2Calculator(route)));
             buttonNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

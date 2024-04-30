@@ -12,16 +12,16 @@ import java.util.Objects;
 public class Route implements Parcelable {
     private String travelMode;
     private int distanceMeters;
-    private String duration;
+    private String staticDuration;
     private Polyline polyline;
     private LatLng start;
     private LatLng destination;
     private List<Legs> legs;
 
-    public Route(String travelMode, int distanceMeters, String duration, Polyline polyline, LatLng start, LatLng destination, List<Legs> legs) {
+    public Route(String travelMode, int distanceMeters, String staticDuration, Polyline polyline, LatLng start, LatLng destination, List<Legs> legs) {
         this.travelMode = travelMode;
         this.distanceMeters = distanceMeters;
-        this.duration = duration;
+        this.staticDuration = staticDuration;
         this.polyline = polyline;
         this.start = start;
         this.destination = destination;
@@ -33,7 +33,7 @@ public class Route implements Parcelable {
         return "Route{" +
                 "travelMode='" + travelMode + '\'' +
                 ", distanceMeters=" + distanceMeters +
-                ", duration='" + duration + '\'' +
+                ", duration='" + staticDuration + '\'' +
                 ", polyline=" + polyline +
                 ", start=" + start +
                 ", destination=" + destination +
@@ -47,12 +47,12 @@ public class Route implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return distanceMeters == route.distanceMeters && Objects.equals(travelMode, route.travelMode) && Objects.equals(duration, route.duration) && Objects.equals(polyline, route.polyline) && Objects.equals(start, route.start) && Objects.equals(destination, route.destination) && Objects.equals(legs, route.legs);
+        return distanceMeters == route.distanceMeters && Objects.equals(travelMode, route.travelMode) && Objects.equals(staticDuration, route.staticDuration) && Objects.equals(polyline, route.polyline) && Objects.equals(start, route.start) && Objects.equals(destination, route.destination) && Objects.equals(legs, route.legs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(travelMode, distanceMeters, duration, polyline, start, destination, legs);
+        return Objects.hash(travelMode, distanceMeters, staticDuration, polyline, start, destination, legs);
     }
 
     public List<Legs> getLegs() {
@@ -91,8 +91,8 @@ public class Route implements Parcelable {
         this.distanceMeters = distanceMeters;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setDuration(String staticDuration) {
+        this.staticDuration = staticDuration;
     }
 
     public void setPolyline(Polyline polyline) {
@@ -104,7 +104,7 @@ public class Route implements Parcelable {
     }
 
     public String getDuration() {
-        return duration;
+        return staticDuration;
     }
 
     public Polyline getPolyline() {
@@ -121,7 +121,7 @@ public class Route implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.travelMode);
         dest.writeInt(this.distanceMeters);
-        dest.writeString(this.duration);
+        dest.writeString(this.staticDuration);
         dest.writeParcelable((Parcelable) this.polyline, flags);
         dest.writeParcelable(this.start, flags);
         dest.writeParcelable(this.destination, flags);
@@ -131,7 +131,7 @@ public class Route implements Parcelable {
     public void readFromParcel(Parcel source) {
         this.travelMode = source.readString();
         this.distanceMeters = source.readInt();
-        this.duration = source.readString();
+        this.staticDuration = source.readString();
         this.polyline = source.readParcelable(Polyline.class.getClassLoader());
         this.start = source.readParcelable(LatLng.class.getClassLoader());
         this.destination = source.readParcelable(LatLng.class.getClassLoader());
@@ -141,7 +141,7 @@ public class Route implements Parcelable {
     protected Route(Parcel in) {
         this.travelMode = in.readString();
         this.distanceMeters = in.readInt();
-        this.duration = in.readString();
+        this.staticDuration = in.readString();
         this.polyline = in.readParcelable(Polyline.class.getClassLoader());
         this.start = in.readParcelable(LatLng.class.getClassLoader());
         this.destination = in.readParcelable(LatLng.class.getClassLoader());

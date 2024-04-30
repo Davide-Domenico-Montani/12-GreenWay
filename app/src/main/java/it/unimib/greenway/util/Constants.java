@@ -25,16 +25,11 @@ public class Constants {
     public static final String TRANSIT_CONSTANT = "TRANSIT";
     public static final String WALK_CONSTANT = "WALK";
 
-    public static final String FIELDMASK_ROUTE = "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline";
+    public static final String FIELDMASK_ROUTE = "routes.legs.steps.transitDetails.transitLine.vehicle.type," +
+            "routes.staticDuration,routes.legs.steps.distanceMeters,routes.distanceMeters," +
+            "routes.polyline,routes.legs.steps.staticDuration";
 
-    public static final String DEPARTURE_TIME_CONSTANT = "  \"departureTime\": \"2024-10-23T15:01:23.045123456Z\",\n";
-    public static final String ROUTING_PREFERENCE_CONSTANT = " \"routingPreference\": \"TRAFFIC_AWARE\",\n";
-
-
-    public static final String TRANSIT_CONSTANT_PREFERENCES = "\"transitPreferences\": {\n" +
-            "\"routingPreference\": \"LESS_WALKING\", \n" +
-            "\"allowedTravelModes\": [\"BUS\", \"SUBWAY\", \"TRAIN\", \"LIGHT_RAIL\", \"RAIL\"]},";
-
+    public static final String URI_STRING_MAPS = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=";
 
 
 

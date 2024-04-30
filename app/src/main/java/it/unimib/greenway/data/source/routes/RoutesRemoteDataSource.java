@@ -1,13 +1,10 @@
 package it.unimib.greenway.data.source.routes;
 
 import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
-import static it.unimib.greenway.util.Constants.DEPARTURE_TIME_CONSTANT;
 import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
 import static it.unimib.greenway.util.Constants.FIELDMASK_ROUTE;
-import static it.unimib.greenway.util.Constants.ROUTING_PREFERENCE_CONSTANT;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
-import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT_PREFERENCES;
 import static it.unimib.greenway.util.Constants.WALK_CONSTANT;
 
 import android.util.Log;
@@ -68,10 +65,9 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                     "                    } \n" +
                     "            } \n" +
                     "  },\n" +
-                    "  \"travelMode\": \"" +transport +"\",\n" +
+                    "  \"travelMode\" :\"" + transport + "\",\n" +
                     "  \"computeAlternativeRoutes\": true\n" +
                     "}";
-
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), body);
 
             Call<RoutesApiResponse> call = routesApiService.createRoute(requestBody, FIELDMASK_ROUTE, MAPS_API_KEY);
@@ -81,7 +77,8 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                 @Override
                 public void onResponse(Call<RoutesApiResponse> call, Response<RoutesApiResponse> response) {
                     if (response.isSuccessful()) {
-                        if (response.body().getRoutes() != null){ List<Route> route = response.body().getRoutes();
+                        if (response.body().getRoutes() != null){
+                            List<Route> route = response.body().getRoutes();
 
                             for(int i = 0; i < response.body().getRoutes().size(); i++){
                                 route.get(i).setTravelMode(finalDrive);
