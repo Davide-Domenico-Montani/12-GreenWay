@@ -18,6 +18,7 @@ import it.unimib.greenway.data.service.RoutesApiService;
 import it.unimib.greenway.model.Route;
 import it.unimib.greenway.model.RoutesApiResponse;
 import it.unimib.greenway.model.RoutesResponse;
+import it.unimib.greenway.util.ConverterUtil;
 import it.unimib.greenway.util.ServiceLocator;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -36,7 +37,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
 
     @Override
     public void getRoutes(double latStart, double lonStart, double latEnd, double lonEnd) {
-
+        ConverterUtil converterUtil = new ConverterUtil();
             String transport;
             count= 0;
             List<Route> routeList = new ArrayList<>();
@@ -78,14 +79,18 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                 public void onResponse(Call<RoutesApiResponse> call, Response<RoutesApiResponse> response) {
                     if (response.isSuccessful()) {
                         if (response.body().getRoutes() != null){
-                            List<Route> route = response.body().getRoutes();
+                            List<Route> routelist = response.body().getRoutes();
 
-                            for(int i = 0; i < response.body().getRoutes().size(); i++){
-                                route.get(i).setTravelMode(finalDrive);
-                                route.get(i).setStart(new LatLng(latStart, lonStart));
-                                route.get(i).setDestination(new LatLng(latEnd, lonEnd));
+                            for(Route route : routelist){
+                                route.setTravelMode(finalDrive);
+                                route.setStart(new LatLng(latStart, lonStart));
+                                route.setDestination(new LatLng(latEnd, lonEnd));
+
+                                String co2 = converterUtil.co2Calculator(route);
+                                co2= co2.replace(",", ".");
+                                route.setCo2(Double.valueOf(co2.substring(0, co2.length()-2)));
                             }
-                            routeList.addAll(route);
+                            routeList.addAll(routelist);
                         }
                        
                         if(count == 2){

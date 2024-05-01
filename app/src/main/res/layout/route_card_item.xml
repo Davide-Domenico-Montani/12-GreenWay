@@ -6,13 +6,16 @@
     android:layout_marginEnd="25dp"
     android:layout_marginStart="25dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/comment_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCardRoute"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/time_card_route"
             android:layout_width="wrap_content"
@@ -68,7 +71,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             android:layout_marginEnd="10dp"
-            android:layout_gravity="end"
+            android:layout_alignLeft="@id/buttonSelect"
+            android:layout_marginStart="150dp"
+
             android:text="@string/ApriMappa" />
 
         <com.google.android.material.button.MaterialButton
@@ -78,6 +83,18 @@
             android:layout_marginTop="100dp"
             android:layout_marginStart="10dp"
             android:text="@string/select" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/textViewRouteSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complimenti"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"
+
+            />
 
     </com.google.android.material.card.MaterialCardView>
 

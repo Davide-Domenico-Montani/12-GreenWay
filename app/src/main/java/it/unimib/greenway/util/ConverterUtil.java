@@ -9,7 +9,6 @@ public class ConverterUtil {
     public String convertSecond(int totalSeconds){
         int hours = totalSeconds / 3600;
         int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
         int day = 0;
         while(hours >= 24){
             day++;
@@ -64,10 +63,10 @@ public class ConverterUtil {
           return co2Converter(totalCO2);
         }
         if(route.getTravelMode().equals(Constants.WALK_CONSTANT)){
-            return "0 kg";
+            return "0kg";
         }
 
-        else return "32";
+        return "0kg";
     }
 
     public String co2Converter(double co2) {

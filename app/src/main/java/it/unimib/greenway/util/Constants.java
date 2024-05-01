@@ -43,6 +43,10 @@ public class Constants {
 
     public static final String URI_STRING_MAPS = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=";
 
+    public static final String CHANNEL_ID = "greenway_channel";
+    public static final String CHANNEL_NAME = "GreenWay channel";
+    public static final String CHANNEL_DESCRIPTION = "channel for GreenWay notifications about co2";
+
 
 
 }

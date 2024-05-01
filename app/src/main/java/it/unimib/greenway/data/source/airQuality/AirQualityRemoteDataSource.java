@@ -46,9 +46,6 @@ public class AirQualityRemoteDataSource extends BaseAirQualityRemoteDataSource {
                             byte[] imageBytes = response.body().bytes();
                             airQualities.add(new AirQuality(imageBytes, x, y));
                             airQualityCallBack.onSuccessFromRemote(airQualities);
-                            // Carica l'immagine scaricata come bitmap
-                            Log.d("Prova", "CaricatA");
-
 
                             if(i%8==0) {
                                 x = 0;

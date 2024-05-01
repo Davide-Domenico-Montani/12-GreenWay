@@ -25,6 +25,8 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import it.unimib.greenway.R;
@@ -215,31 +217,33 @@ public class NavigatorRoutesFragment extends Fragment {
         for (Route route : routeList) {
             if (route.getTravelMode().equals(DRIVE_CONSTANT)) {
                 driveList.add(route);
+                reorderList(driveList);
+
             } else if (route.getTravelMode().equals(TRANSIT_CONSTANT)) {
                 transitList.add(route);
+                reorderList(transitList);
             } else if (route.getTravelMode().equals(WALK_CONSTANT)) {
                 walkList.add(route);
             }
         }
     }
+    public void reorderList(List<Route> routeList) {
+        Comparator<Route> comparator = new Comparator<Route>() {
+            @Override
+            public int compare(Route route1, Route route2) {
+                return Double.compare(route1.getCo2(), route2.getCo2());
+            }
+        };
 
+        //Ordina lista per campo co2
+        Collections.sort(routeList, comparator);
+    }
     private void updateRecyclerView (List<Route> routeList) {
         if (routeRecyclerViewAdapter != null) {
             routeRecyclerViewAdapter.clear();
             routeRecyclerViewAdapter.addAll(routeList);
             routeRecyclerViewAdapter.notifyDataSetChanged();
         }
-    }
-
-    private String convertSecond(int totalSeconds){
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-
-        if(hours != 0)
-            return hours +"h " + minutes + "m";
-        else
-            return minutes + "m " + seconds + "s";
     }
 
 }

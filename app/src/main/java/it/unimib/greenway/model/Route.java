@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Route implements Parcelable {
+    private double co2;
     private String travelMode;
     private int distanceMeters;
     private String staticDuration;
@@ -18,7 +19,7 @@ public class Route implements Parcelable {
     private LatLng destination;
     private List<Legs> legs;
 
-    public Route(String travelMode, int distanceMeters, String staticDuration, Polyline polyline, LatLng start, LatLng destination, List<Legs> legs) {
+    public Route(String travelMode, int distanceMeters, String staticDuration, Polyline polyline, LatLng start, LatLng destination, List<Legs> legs, double co2) {
         this.travelMode = travelMode;
         this.distanceMeters = distanceMeters;
         this.staticDuration = staticDuration;
@@ -26,6 +27,7 @@ public class Route implements Parcelable {
         this.start = start;
         this.destination = destination;
         this.legs = legs;
+        this.co2 = co2;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class Route implements Parcelable {
                 ", start=" + start +
                 ", destination=" + destination +
                 ", legs=" + legs +
+                ", co2="+co2 +
                 '}';
     }
 
@@ -53,6 +56,22 @@ public class Route implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(travelMode, distanceMeters, staticDuration, polyline, start, destination, legs);
+    }
+
+    public double getCo2() {
+        return co2;
+    }
+
+    public void setCo2(double co2) {
+        this.co2 = co2;
+    }
+
+    public String getStaticDuration() {
+        return staticDuration;
+    }
+
+    public void setStaticDuration(String staticDuration) {
+        this.staticDuration = staticDuration;
     }
 
     public List<Legs> getLegs() {
