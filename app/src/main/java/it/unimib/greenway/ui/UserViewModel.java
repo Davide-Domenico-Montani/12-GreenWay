@@ -75,4 +75,12 @@ public class UserViewModel extends ViewModel {
         return userRepository.getLoggedUser();
     }
 
+    public MutableLiveData<Result> updateCo2SavedMutableLiveData(String idToken, String transportType, double co2Saved, double kmTravel){
+        updateCo2Saved(idToken, transportType, co2Saved, kmTravel);
+        return userMutableLiveData;
+    }
+
+    public void updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel){
+        userMutableLiveData = userRepository.updateCo2Saved(idToken, transportType, co2Saved, kmTravel);
+    }
 }

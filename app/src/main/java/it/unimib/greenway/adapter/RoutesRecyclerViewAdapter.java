@@ -1,36 +1,24 @@
 package it.unimib.greenway.adapter;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import static it.unimib.greenway.util.Constants.URI_STRING_MAPS;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
@@ -47,14 +35,16 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     private final List<Route> routeList;
     private final OnItemClickListener onItemClickListener;
     private final Application application;
+    private final RecylclerViewClickListener mlistener;
     private final ConverterUtil converterUtil = new ConverterUtil();
 
 
     public RoutesRecyclerViewAdapter(List<Route> routeList, Application application,
-                                     OnItemClickListener onItemClickListener) {
+                                     OnItemClickListener onItemClickListener, RecylclerViewClickListener listener) {
         this.routeList = routeList;
         this.onItemClickListener = onItemClickListener;
         this.application = application;
+        mlistener = listener;
 
     }
 
@@ -73,7 +63,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         View view = null;
         view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.route_card_item, parent, false);
-        return new RoutesViewHolder(view);
+        return new RoutesViewHolder(view, mlistener);
 
     }
 
@@ -100,17 +90,16 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         private final Button buttonNavigation;
         private final TextView co2Value;
         private final Button select;
-        private final TextView textView;
-        private final RelativeLayout mainLayout;
-        public RoutesViewHolder(@NonNull View itemView) {
+
+        private final RecylclerViewClickListener mlistener;
+        public RoutesViewHolder(@NonNull View itemView, RecylclerViewClickListener listener) {
             super(itemView);
             routeDuration = itemView.findViewById(R.id.time_card_route);
             routeDistance = itemView.findViewById(R.id.distance_value);
             buttonNavigation = itemView.findViewById(R.id.buttonNavigate);
             co2Value = itemView.findViewById(R.id.co2Value);
             select = itemView.findViewById(R.id.buttonSelect);
-            textView = itemView.findViewById(R.id.textViewRouteSelect);
-            mainLayout = itemView.findViewById(R.id.relativeLayoutCardRoute);
+             mlistener = listener;
             itemView.setOnClickListener(this);
         }
 
@@ -131,6 +120,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             co2Value.setText(String.valueOf(route.getCo2()));
 
 
+
             buttonNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -143,40 +133,11 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             });
 
 
-            Animation animation2 = AnimationUtils.loadAnimation(application.getApplicationContext(), R.anim.scale_animation);
-
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mlistener.onClick(route);
 
-                    Animation animation = AnimationUtils.loadAnimation(application.getApplicationContext(), R.anim.blur_animation);
-
-                    // Aggiungi un listener per gestire l'evento di completamento dell'animazione
-                    animation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            // Metodo chiamato all'inizio dell'animazione
-                            textView.setVisibility(View.VISIBLE);
-                            textView.startAnimation(animation2);
-                            NotificationUtil.showNotification(application.getApplicationContext(), "GreenWay", "Route selected");
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            // Metodo chiamato alla fine dell'animazione
-                            // Puoi eseguire qui l'azione "complimenti"
-                            textView.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                            // Metodo chiamato quando l'animazione si ripete (non utilizzato in questo caso)
-                        }
-                    });
-
-                    // Applica l'animazione al pulsante
-                    mainLayout.startAnimation(animation);
                 }
             });
         }

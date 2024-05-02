@@ -1,7 +1,5 @@
 package it.unimib.greenway.model;
 
-import android.graphics.Bitmap;
-
 public class User {
     String userId;
     String name;
@@ -14,19 +12,20 @@ public class User {
     double kmTransit;
     double kmWalk;
 
-    double coSavedCar;
-    double coSavedTransit;
-    double coSavedWalk;
+    double co2SavedCar;
+    double co2SavedTransit;
+    double co2SavedWalk;
 
     int point;
 
 
 
-
+    public User() {
+    }
 
     //User normale
 
-    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double coSavedCar, double coSavedTransit, double coSavedWalk, int point) {
+    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -36,16 +35,16 @@ public class User {
         this.kmCar = kmCar;
         this.kmTransit = kmTransit;
         this.kmWalk = kmWalk;
-        this.coSavedCar = coSavedCar;
-        this.coSavedTransit = coSavedTransit;
-        this.coSavedWalk = coSavedWalk;
+        this.co2SavedCar = co2SavedCar;
+        this.co2SavedTransit = co2SavedTransit;
+        this.co2SavedWalk = co2SavedWalk;
         this.point = point;
     }
 
 
     //User Google
 
-    public User(String userId, String name, String surname, String email, String photoUrlGoogle, double kmCar, double kmTransit, double kmWalk, double coSavedCar, double coSavedTransit, double coSavedWalk, int point) {
+    public User(String userId, String name, String surname, String email, String photoUrlGoogle, double kmCar, double kmTransit, double kmWalk, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -54,9 +53,9 @@ public class User {
         this.kmCar = kmCar;
         this.kmTransit = kmTransit;
         this.kmWalk = kmWalk;
-        this.coSavedCar = coSavedCar;
-        this.coSavedTransit = coSavedTransit;
-        this.coSavedWalk = coSavedWalk;
+        this.co2SavedCar = co2SavedCar;
+        this.co2SavedTransit = co2SavedTransit;
+        this.co2SavedWalk = co2SavedWalk;
         this.point = point;
     }
     //Costruttore per login
@@ -154,28 +153,28 @@ public class User {
         this.userId = userId;
     }
 
-    public double getCoSavedCar() {
-        return coSavedCar;
+    public double getCo2SavedCar() {
+        return co2SavedCar;
     }
 
-    public void setCoSavedCar(double coSavedCar) {
-        this.coSavedCar = coSavedCar;
+    public void setCo2SavedCar(double co2SavedCar) {
+        this.co2SavedCar = co2SavedCar;
     }
 
-    public double getCoSavedTransit() {
-        return coSavedTransit;
+    public double getCo2SavedTransit() {
+        return co2SavedTransit;
     }
 
-    public void setCoSavedTransit(double coSavedTransit) {
-        this.coSavedTransit = coSavedTransit;
+    public void setCo2SavedTransit(double co2SavedTransit) {
+        this.co2SavedTransit = co2SavedTransit;
     }
 
-    public double getCoSavedWalk() {
-        return coSavedWalk;
+    public double getCo2SavedWalk() {
+        return co2SavedWalk;
     }
 
-    public void setCoSavedWalk(double coSavedWalk) {
-        this.coSavedWalk = coSavedWalk;
+    public void setCo2SavedWalk(double co2SavedWalk) {
+        this.co2SavedWalk = co2SavedWalk;
     }
 
     public int getPoint() {

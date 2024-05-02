@@ -116,6 +116,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     }
 
     @Override
+    public MutableLiveData<Result> updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel) {
+        userDataRemoteDataSource.updateCo2Saved(idToken, transportType, co2Saved, kmTravel);
+        return userMutableLiveData;
+    }
+
+    @Override
     public void onSuccessFromLocal(List<AirQuality> Response) {
 
     }

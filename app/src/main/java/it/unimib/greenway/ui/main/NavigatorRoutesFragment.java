@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.adapter.RecylclerViewClickListener;
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.routes.IRoutesRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
@@ -56,7 +58,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class NavigatorRoutesFragment extends Fragment {
+public class NavigatorRoutesFragment extends Fragment implements RecylclerViewClickListener {
 
     private UserViewModel userViewModel;
     private RoutesRecyclerViewAdapter routeRecyclerViewAdapter;
@@ -72,8 +74,10 @@ public class NavigatorRoutesFragment extends Fragment {
     private RecyclerView recyclerViewRoutes;
     private LatLng startLatLng;
     private LatLng destinationLatLng;
-    private TabItem tabItemDrive, tabItemTransit, tabItemWalk;
     private ConverterUtil converterUtil;
+    private RecylclerViewClickListener listener;
+    private FragmentManager fragmentManager;
+
 
 
     public static NavigatorRoutesFragment newInstance() {
@@ -90,9 +94,15 @@ public class NavigatorRoutesFragment extends Fragment {
         driveList = new ArrayList<>();
         transitList = new ArrayList<>();
         walkList = new ArrayList<>();
+        listener= this;
 
+        fragmentManager = requireActivity().getSupportFragmentManager();
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
         converterUtil = new ConverterUtil();
@@ -172,7 +182,7 @@ public class NavigatorRoutesFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("route", route);
                     }
-                });
+                },listener);
 
         recyclerViewRoutes.setLayoutManager(layoutManager);
         recyclerViewRoutes.setAdapter(routeRecyclerViewAdapter);
@@ -246,4 +256,19 @@ public class NavigatorRoutesFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(Route route) {
+        double co2Saved;
+        double kmTravel = (double) route.getDistanceMeters() / 1000;
+        String transportType = route.getTravelMode();
+
+        if(transportType.equals(DRIVE_CONSTANT) || transportType.equals(TRANSIT_CONSTANT)) {
+            co2Saved = driveList.get(driveList.size()-1).getCo2() - route.getCo2();
+        }else{
+            co2Saved = driveList.get(driveList.size()-1).getCo2();
+        }
+        userViewModel.updateCo2SavedMutableLiveData(userViewModel.getLoggedUser().getUserId(), transportType, co2Saved, kmTravel);
+        Snackbar.make(recyclerViewRoutes, "Hai risparmiato: " + co2Saved + " kg!", Snackbar.LENGTH_SHORT).show();
+        fragmentManager.popBackStack();
+    }
 }
