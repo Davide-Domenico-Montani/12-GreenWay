@@ -128,11 +128,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             routeDuration.setText(converterUtil.convertSecond(Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1))));
             routeDistance.setText(distanceString);
 
-            //Setta co2 a route e testo card
-            String co2 = converterUtil.co2Calculator(route);
-            co2= co2.replace(",", ".");
-            route.setCo2(Double.valueOf(co2.substring(0, co2.length()-2)));
-            co2Value.setText(co2);
+            co2Value.setText(String.valueOf(route.getCo2()));
 
 
             buttonNavigation.setOnClickListener(new View.OnClickListener() {
