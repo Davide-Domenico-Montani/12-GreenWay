@@ -76,4 +76,12 @@ public class ConverterUtil {
         return formattedString + "kg";
     }
 
+    public int co2SavedProgressBar(double co2){
+        int co2Progress;
+        co2Progress =(int)co2*(100);//TODO: aggiornare co2*(100/totalco2Saved)
+        return co2Progress;
+    }
+
+    //TODO: fare funzione che calcola la co2 consumata attraverso i km fatti e funzione che calcola il massimo aggiungendo la co2 salvata
+
 }
