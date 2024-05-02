@@ -11,12 +11,22 @@ public class User {
     String photoUrl;
     String photoUrlGoogle;
     double kmCar;
-    double kmTrain;
-    double kmBus;
+    double kmTransit;
     double kmWalk;
+
+    double coSavedCar;
+    double coSavedTransit;
+    double coSavedWalk;
+
+    int point;
+
+
+
+
+
     //User normale
 
-    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTrain, double kmBus,double kmWalk) {
+    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double coSavedCar, double coSavedTransit, double coSavedWalk, int point) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -24,22 +34,30 @@ public class User {
         this.password = password;
         this.photoUrl = photoUrl;
         this.kmCar = kmCar;
-        this.kmTrain = kmTrain;
-        this.kmBus = kmBus;
+        this.kmTransit = kmTransit;
         this.kmWalk = kmWalk;
+        this.coSavedCar = coSavedCar;
+        this.coSavedTransit = coSavedTransit;
+        this.coSavedWalk = coSavedWalk;
+        this.point = point;
     }
+
+
     //User Google
 
-    public User(String userId, String name, String surname, String email, String photoUrlGoogle, double kmCar, double kmTrain, double kmBus,double kmWalk) {
+    public User(String userId, String name, String surname, String email, String photoUrlGoogle, double kmCar, double kmTransit, double kmWalk, double coSavedCar, double coSavedTransit, double coSavedWalk, int point) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.photoUrlGoogle = photoUrlGoogle;
         this.kmCar = kmCar;
-        this.kmTrain = kmTrain;
-        this.kmBus = kmBus;
+        this.kmTransit = kmTransit;
         this.kmWalk = kmWalk;
+        this.coSavedCar = coSavedCar;
+        this.coSavedTransit = coSavedTransit;
+        this.coSavedWalk = coSavedWalk;
+        this.point = point;
     }
     //Costruttore per login
 
@@ -59,7 +77,7 @@ public class User {
         return name;
     }
 
-    public void setNome(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -111,21 +129,14 @@ public class User {
         this.kmCar = kmCar;
     }
 
-    public double getKmTrain() {
-        return kmTrain;
+    public double getKmTransit() {
+        return kmTransit;
     }
 
-    public void setKmTrain(double kmTrain) {
-        this.kmTrain = kmTrain;
+    public void setKmTransit(double kmTransit) {
+        this.kmTransit = kmTransit;
     }
 
-    public double getKmBus() {
-        return kmBus;
-    }
-
-    public void setKmBus(double kmBus) {
-        this.kmBus = kmBus;
-    }
 
     public double getKmWalk() {
         return kmWalk;
@@ -142,5 +153,38 @@ public class User {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public double getCoSavedCar() {
+        return coSavedCar;
+    }
+
+    public void setCoSavedCar(double coSavedCar) {
+        this.coSavedCar = coSavedCar;
+    }
+
+    public double getCoSavedTransit() {
+        return coSavedTransit;
+    }
+
+    public void setCoSavedTransit(double coSavedTransit) {
+        this.coSavedTransit = coSavedTransit;
+    }
+
+    public double getCoSavedWalk() {
+        return coSavedWalk;
+    }
+
+    public void setCoSavedWalk(double coSavedWalk) {
+        this.coSavedWalk = coSavedWalk;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
 }
 

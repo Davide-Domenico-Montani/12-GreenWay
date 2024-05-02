@@ -48,7 +48,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                                         nome, cognome,
                                         firebaseUser.getEmail(),
                                         firebaseUser.getPhotoUrl().toString(),
-                                        0, 0, 0, 0
+                                        0, 0, 0, 0, 0, 0, 0
                                         ));
                     } else {
                         userResponseCallback.onFailureFromAuthentication(
@@ -70,7 +70,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                 Log.d("Ciao", firebaseUser.getUid());
                 if (firebaseUser != null) {
                     userResponseCallback.onSuccessFromAuthentication(
-                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0, 0)
+                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0, 0, 0, 0, 0)
                     );
                 } else {
                     userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
