@@ -119,7 +119,7 @@
                     android:layout_marginStart="250dp"/>
             </LinearLayout>
             <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progressWalk"
+                android:id="@+id/progressTransit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -148,7 +148,7 @@
                     android:layout_marginStart="250dp"/>
             </LinearLayout>
             <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progressTrain"
+                android:id="@+id/progressWalk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

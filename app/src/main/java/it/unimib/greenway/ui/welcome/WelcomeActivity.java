@@ -96,11 +96,11 @@ public class WelcomeActivity extends AppCompatActivity {
                         retrieveUserInformationAndStartActivity(user, R.id.action_welcomeActivity_to_mainActivity);
 
                     } else {
-                        progressIndicator.setVisibility(View.GONE);
-                        textView.setVisibility(View.GONE);
-                        Snackbar.make(this.findViewById(android.R.id.content),
-                                getErrorMessage(((Result.Error) result).getMessage()),
-                                Snackbar.LENGTH_SHORT).show();
+                            progressIndicator.setVisibility(View.GONE);
+                            textView.setVisibility(View.GONE);
+                            Snackbar.make(this.findViewById(android.R.id.content),
+                                    getErrorMessage(((Result.Error) result).getMessage()),
+                                    Snackbar.LENGTH_SHORT).show();
                     }
                 });
     }

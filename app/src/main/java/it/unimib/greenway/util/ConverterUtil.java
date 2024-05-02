@@ -22,7 +22,7 @@ public class ConverterUtil {
             return minutes + "m ";
     }
 
-    public static double convertMeter(int meters) {
+    public double convertMeter(int meters) {
         return meters / 1000.0; // Dividi i metri per 1000 per ottenere i chilometri
     }
     public String co2Calculator(Route route) {
@@ -47,13 +47,10 @@ public class ConverterUtil {
                                 totalCO2 += Constants.CO2_PRODUCTION_TRAIN * route.getLegs().get(i).getSteps().get(j).getDistanceMeters()/1000;
                                 break;
                             case "METRO" :
-                                totalCO2 += Constants.CO2_PRODUCTION_METRO * route.getLegs().get(i).getSteps().get(j).getDistanceMeters()/1000;
-                                break;
                             case "HEAVY_RAIL" :
                                 totalCO2 += Constants.CO2_PRODUCTION_METRO * route.getLegs().get(i).getSteps().get(j).getDistanceMeters()/1000;
                                 break;
                             default:
-                                totalCO2 = totalCO2;
                                 break;
 
                         }
@@ -76,12 +73,17 @@ public class ConverterUtil {
         return formattedString + "kg";
     }
 
-    public int co2SavedProgressBar(double co2){
+    public int co2SavedProgressBar(double co2, double co2SavedCar, double co2SavedTransit, double co2SavedWalk){
         int co2Progress;
-        co2Progress =(int)co2*(100);//TODO: aggiornare co2*(100/totalco2Saved)
+        co2Progress =(int)(co2*(100/(co2SavedCar + co2SavedTransit + co2SavedWalk)));//TODO: aggiornare co2*(100/totalco2Saved)
         return co2Progress;
     }
 
     //TODO: fare funzione che calcola la co2 consumata attraverso i km fatti e funzione che calcola il massimo aggiungendo la co2 salvata
 
+    /* double co2ConsumedProgressBarMax(double kmCar,double kmTransit, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, double co2Car) {
+        double co2ConsumedProgress;
+        co2ConsumedProgress = kmCar
+        return co2ConsumedProgress;
+    }*/
 }
