@@ -3,11 +3,15 @@ package it.unimib.greenway.ui.main;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import it.unimib.greenway.R;
@@ -15,6 +19,7 @@ import it.unimib.greenway.R;
 
 public class UserFragment extends Fragment {
 
+    private ImageButton buttonSettings;
     private LinearProgressIndicator linearProgress;
 
     public UserFragment() {
@@ -35,9 +40,15 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
-
+        buttonSettings = view.findViewById(R.id.settingsButton);
         // Inflate the layout for this fragment
 
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_userFragment_to_settingFragment);
+            }
+        });
 
         return view;
     }

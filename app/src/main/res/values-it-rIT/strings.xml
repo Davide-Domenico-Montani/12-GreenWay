@@ -53,6 +53,13 @@
     <string name="insertDestination">Inserisci campo destinazione</string>
     <string name="insertStartAndDestination">Inserisci entrambi i campi</string>
     <string name="ApriMappa">Apri Mappa</string>
+    <string name="changePw">Cambia Password</string>
+    <string name="oldPw">Vecchia Password</string>
+    <string name="newPw">Nuova Password</string>
+    <string name="repeatPw">Ripeti Password</string>
+    <string name="confirm">Conferma</string>
+    <string name="changePhoto">Cambia foto profilo</string>
+    <string name="fuelCarInfo">Inserisci dati benzina</string>
 
 
 </resources>
