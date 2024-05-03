@@ -106,7 +106,10 @@ public class UserFragment extends Fragment {
                         co2SavedWalkTextView.setText(converterUtil.co2Converter(co2SavedWalk));
                         LinearProgressIndicator co2SavedWalkProgressBar = view.findViewById(R.id.progressWalk);
                         co2SavedWalkProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedWalk, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
+                    }else {
 
+                    }
+                });
 
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,10 +118,7 @@ public class UserFragment extends Fragment {
             }
         });
 
-                    }else {
 
-                    }
-                });
         return view;
     }
 
