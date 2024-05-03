@@ -26,7 +26,6 @@
             android:textStyle="bold"
             android:text="@string/changePw"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
             />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textFieldOldPw"
@@ -107,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="200dp"
             android:text="@string/fuelCarInfo" />
 
     </LinearLayout>

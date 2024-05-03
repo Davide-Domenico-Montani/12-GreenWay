@@ -13,9 +13,8 @@ public class User {
     double kmCar;
     double kmTransit;
     double kmWalk;
-
+    double co2Produced;
     double co2Car;
-
     double co2SavedCar;
     double co2SavedTransit;
     double co2SavedWalk;
@@ -28,7 +27,7 @@ public class User {
 
 //User normale
 
-    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
+    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Produced, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -38,6 +37,7 @@ public class User {
         this.kmCar = kmCar;
         this.kmTransit = kmTransit;
         this.kmWalk = kmWalk;
+        this.co2Produced = co2Produced;
         this.co2Car = co2Car;
         this.co2SavedCar = co2SavedCar;
         this.co2SavedTransit = co2SavedTransit;
@@ -57,6 +57,7 @@ public class User {
         this.kmCar = kmCar;
         this.kmTransit = kmTransit;
         this.kmWalk = kmWalk;
+        this.co2Produced = co2Produced;
         this.co2Car = co2Car;
         this.co2SavedCar = co2SavedCar;
         this.co2SavedTransit = co2SavedTransit;
@@ -148,6 +149,14 @@ public class User {
 
     public void setKmWalk(double kmWalk) {
         this.kmWalk = kmWalk;
+    }
+
+    public double getCo2Produced() {
+        return co2Produced;
+    }
+
+    public void setCo2Produced(double co2Produced) {
+        this.co2Produced = co2Produced;
     }
 
     public String getUserId() {
