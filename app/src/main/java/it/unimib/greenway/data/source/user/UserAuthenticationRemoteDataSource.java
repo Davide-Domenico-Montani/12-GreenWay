@@ -8,6 +8,8 @@ import static it.unimib.greenway.util.Constants.WEAK_PASSWORD_ERROR;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -127,6 +129,23 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
         }else{
             return new User(firebaseUser.getUid(), firebaseUser.getEmail());
         }
+    }
+
+    @Override
+    public void logout() {
+        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    firebaseAuth.removeAuthStateListener(this);
+                    Log.d(TAG, "User logged out");
+                    userResponseCallback.onSuccessLogout();
+                }
+            }
+        };
+        firebaseAuth.addAuthStateListener(authStateListener);
+        firebaseAuth.signOut();
+
     }
 
     private String getErrorMessage(Exception exception) {
