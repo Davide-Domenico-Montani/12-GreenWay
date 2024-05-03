@@ -5,13 +5,17 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -27,6 +31,7 @@ import it.unimib.greenway.util.ServiceLocator;
 
 public class UserFragment extends Fragment {
 
+    private ImageButton buttonSettings;
     private ConverterUtil converterUtil;
 
     private LinearProgressIndicator linearProgress;
@@ -68,7 +73,7 @@ public class UserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
-
+        buttonSettings = view.findViewById(R.id.settingsButton);
         // Inflate the layout for this fragment
 
 
@@ -102,6 +107,13 @@ public class UserFragment extends Fragment {
                         LinearProgressIndicator co2SavedWalkProgressBar = view.findViewById(R.id.progressWalk);
                         co2SavedWalkProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedWalk, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
 
+
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_userFragment_to_settingFragment);
+            }
+        });
 
                     }else {
 

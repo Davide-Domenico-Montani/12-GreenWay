@@ -35,11 +35,24 @@
         android:id="@+id/userFragment"
         android:name="it.unimib.greenway.ui.main.UserFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigatorRoutesFragment"
         android:name="it.unimib.greenway.ui.main.NavigatorRoutesFragment"
         android:label="fragment_navigator_routes"
         tools:layout="@layout/fragment_navigator_routes" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="it.unimib.greenway.ui.main.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+    </fragment>
 
 </navigation>

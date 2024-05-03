@@ -46,6 +46,15 @@ public class Constants {
     public static final String CHANNEL_ID = "greenway_channel";
     public static final String CHANNEL_NAME = "GreenWay channel";
     public static final String CHANNEL_DESCRIPTION = "channel for GreenWay notifications about co2";
+    public static final String CAR_PARAMETER_DATABASE = "co2SavedCar";
+    public static final String TRANSIT_PARAMETER_DATABASE = "co2SavedTransit";
+    public static final String WALK_PARAMETER_DATABASE = "co2SavedWalk";
+    public static final String DATABASE_URL = "https://greenway-f23bb-default-rtdb.firebaseio.com/";
+
+    public static final String CARKM_PARAMETER_DATABASE = "kmCar";
+    public static final String TRANSITKM_PARAMETER_DATABASE = "kmTransit";
+    public static final String WALKKM_PARAMETER_DATABASE = "kmWalk";
+
 
 
 
