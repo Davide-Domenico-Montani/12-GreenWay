@@ -112,7 +112,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
 
     @Override
     public void onSuccessLogout() {
-        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0));
+        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0,0));
         userMutableLiveData.postValue(result);
     }
 
