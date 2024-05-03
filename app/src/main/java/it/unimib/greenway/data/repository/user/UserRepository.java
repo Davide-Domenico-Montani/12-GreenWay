@@ -111,6 +111,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     }
 
     @Override
+    public void onSuccessLogout() {
+        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0));
+        userMutableLiveData.postValue(result);
+    }
+
+    @Override
     public User getLoggedUser() {
         return userRemoteDataSource.getLoggedUser();
     }
@@ -118,6 +124,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     @Override
     public MutableLiveData<Result> updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel) {
         userDataRemoteDataSource.updateCo2Saved(idToken, transportType, co2Saved, kmTravel);
+        return userMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> logout() {
+        userRemoteDataSource.logout();
         return userMutableLiveData;
     }
 

@@ -15,6 +15,7 @@ public abstract class BaseUserAuthenticationRemoteDataSource {
     public abstract void login(String email, String password);
     public abstract void getUserCredential(String email, String password);
     public abstract User getLoggedUser();
+    public abstract void logout();
 
 
 

@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_userFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_welcomeActivity2"
+            app:destination="@id/welcomeActivity2" />
     </fragment>
     <fragment
         android:id="@+id/navigatorRoutesFragment"
@@ -54,5 +57,10 @@
             android:id="@+id/action_settingFragment_to_userFragment"
             app:destination="@id/userFragment" />
     </fragment>
+    <activity
+        android:id="@+id/welcomeActivity2"
+        android:name="it.unimib.greenway.ui.welcome.WelcomeActivity"
+        android:label="activity_welcome"
+        tools:layout="@layout/activity_welcome" />
 
 </navigation>
