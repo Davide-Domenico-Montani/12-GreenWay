@@ -21,4 +21,6 @@ public interface IUserRepository {
      MutableLiveData<Result> updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel);
 
     MutableLiveData<Result> logout();
+    MutableLiveData<Result> changePassword(String token, String newPw, String oldPw);
+    MutableLiveData<Result> changePhoto(String token, String imageBitmap);
 }

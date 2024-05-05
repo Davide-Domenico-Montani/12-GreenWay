@@ -144,12 +144,9 @@ public class LoginFragment extends Fragment {
     private void retrieveUserInformationAndStartActivity(User user, int destination) {
 
 
-        userViewModel.getUserDataMutableLiveData(user.getUserId()).observe(
-                getViewLifecycleOwner(), userDataRetrivalResul -> {
 
                     startActivityBasedOnCondition(MainActivity.class, destination);
-                }
-        );
+
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {

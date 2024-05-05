@@ -1,5 +1,11 @@
 package it.unimib.greenway.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
+
 import it.unimib.greenway.model.Route;
 
 public class ConverterUtil {
@@ -86,4 +92,18 @@ public class ConverterUtil {
         co2ConsumedProgress = kmCar
         return co2ConsumedProgress;
     }*/
+
+
+    //conversione immagine BitMap a string per salvarla su realtime
+    public static String bitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
+
+    public static Bitmap stringToBitmap(String encodedString) {
+        byte[] decodedBytes = Base64.decode(encodedString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
 }

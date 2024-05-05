@@ -1,5 +1,6 @@
 package it.unimib.greenway.ui.main;
 
+import static android.content.ContentValues.TAG;
 import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 
 import android.app.Activity;
@@ -124,7 +125,7 @@ public class NavigatorFragment extends Fragment {
 
             @Override
             public void onError(@NonNull Status status) {
-                Log.i("Ciao", "An error occurred: " + status);
+                Log.i(TAG, "An error occurred: " + status);
             }
         });
     }

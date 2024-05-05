@@ -56,8 +56,6 @@
     <string name="insertDestination">Insert Destination field</string>
     <string name="insertStartAndDestination">Insert both fields</string>
     <string name="ApriMappa">Open Map</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="changePw">Change Password</string>
     <string name="oldPw">Old Password</string>
     <string name="newPw">New Password</string>
@@ -65,6 +63,15 @@
     <string name="confirm">Confirm</string>
     <string name="changePhoto">Change profile photo</string>
     <string name="fuelCarInfo">Insert fuel car info</string>
+    <string name="empty_field">Please fill in this field</string>
+    <string name="error_password_google">Error: change password with google account</string>
+    <string name="error_oldpassword">Old password wrong</string>
+    <string name="error_password_match">Password doesn\'t match</string>
+    <string name="password_changed">Password changed!</string>
+    <string name="new_password_error">Old password same as the new one</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="error_retrieving_user_info">Error retrieving user info</string>
+    <string name="error_retrieving_routes">Error retrieving routes</string>
 
 
 </resources>

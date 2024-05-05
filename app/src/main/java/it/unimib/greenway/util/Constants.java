@@ -54,8 +54,16 @@ public class Constants {
     public static final String CARKM_PARAMETER_DATABASE = "kmCar";
     public static final String TRANSITKM_PARAMETER_DATABASE = "kmTransit";
     public static final String WALKKM_PARAMETER_DATABASE = "kmWalk";
+    public static final String PASSWORD_DATABASE_REFERENCE = "password";
 
+    public static final String NEW_PASSWORD_ERROR = "new_password_error";
 
+    public static final String OLD_PASSWORD_ERROR = "old_password_error";
 
+    public static final String PASSWORD_ERROR_GOOGLE = "google_password_error";
+    public static final String PHOTOURL_DATABASE_REFERENCE = "photoUrl";
+
+    public static final String ERROR_RETRIEVING_USER_INFO = "error_retrieving_user_info";
+    public static final String ERROR_RETRIEVING_ROUTES = "error_retrieving_routes";
 
 }

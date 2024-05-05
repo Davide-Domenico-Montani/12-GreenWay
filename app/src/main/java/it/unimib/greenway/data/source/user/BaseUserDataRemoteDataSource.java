@@ -15,4 +15,6 @@ public abstract class BaseUserDataRemoteDataSource {
 
     public abstract void updateCo2Saved(String idToken,String transportType,double co2Saved,double kmTravel);
     public abstract void updateKmTravelled(String idToken,String transportType,double kmTravel);
+    public abstract void changePassword(String token,String newPw,String oldPw);
+    public abstract void changePhoto(String token,String imageBitmap);
 }

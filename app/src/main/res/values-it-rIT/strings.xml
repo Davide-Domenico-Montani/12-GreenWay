@@ -60,6 +60,15 @@
     <string name="confirm">Conferma</string>
     <string name="changePhoto">Cambia foto profilo</string>
     <string name="fuelCarInfo">Inserisci dati benzina</string>
+    <string name="empty_field">Riempire il campo</string>
+    <string name="error_password_google">Errore: cambio password con accesso google</string>
+    <string name="error_oldpassword">Password precedente errata</string>
+    <string name="error_password_match">La password non corrisponde</string>
+    <string name="password_changed">Password cambiata!</string>
+    <string name="new_password_error">Vecchia password uguale a quella nuova</string>
+    <string name="camera_permission_denied">Permesso fotocamera non concesso</string>
+    <string name="error_retrieving_user_info">Errore nel recuperare le informazioni</string>
+    <string name="error_retrieving_routes">Errore nel recuperare i percorsi</string>
 
 
 </resources>

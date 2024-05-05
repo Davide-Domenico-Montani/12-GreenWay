@@ -134,6 +134,18 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     }
 
     @Override
+    public MutableLiveData<Result> changePassword(String token, String newPw, String oldPw) {
+        userDataRemoteDataSource.changePassword(token, newPw, oldPw);
+        return userMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> changePhoto(String token, String imageBitmap) {
+        userDataRemoteDataSource.changePhoto(token, imageBitmap);
+        return userMutableLiveData;
+    }
+
+    @Override
     public void onSuccessFromLocal(List<AirQuality> Response) {
 
     }

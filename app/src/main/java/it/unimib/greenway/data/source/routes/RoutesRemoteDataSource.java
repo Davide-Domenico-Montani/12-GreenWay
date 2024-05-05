@@ -3,6 +3,7 @@ package it.unimib.greenway.data.source.routes;
 import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ROUTES;
 import static it.unimib.greenway.util.Constants.FIELDMASK_ROUTE;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
 import static it.unimib.greenway.util.Constants.WALK_CONSTANT;
@@ -98,8 +99,10 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                         }
                         count++;
                     } else {
-                        // handle request errors
 
+
+
+                        routesCallBack.onFailureFromRemote(ERROR_RETRIEVING_ROUTES);
                     }
                 }
 
