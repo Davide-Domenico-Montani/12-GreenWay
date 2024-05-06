@@ -26,11 +26,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.repository.user.IUserRepository;
@@ -53,6 +59,12 @@ public class SettingFragment extends Fragment {
     private SharedPreferencesUtil sharedPreferencesUtil;
     private Button changePhoto;
     private ConverterUtil converterUtil;
+
+    private ArrayList<String> engine_types;
+    private ArrayAdapter<String> arrayAdapter_engine;
+    private TextInputLayout menu;
+    private AutoCompleteTextView autoCompleteTextView;
+
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -77,6 +89,18 @@ public class SettingFragment extends Fragment {
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
+        //menù
+        menu =requireActivity().findViewById(R.id.menu);
+        autoCompleteTextView = requireActivity().findViewById(R.id.list_items);
+        engine_types = new ArrayList<>();
+        engine_types.add("Benzina");
+        engine_types.add("Diesel");
+        engine_types.add("GPL");
+        engine_types.add("Elettrica");
+
+        arrayAdapter_engine = new ArrayAdapter<>(getActivity().getApplicationContext(),R.layout.list_items, engine_types);
+        autoCompleteTextView.setAdapter(arrayAdapter_engine);
+
     }
 
     @Override
@@ -90,6 +114,7 @@ public class SettingFragment extends Fragment {
         changePwButton = view.findViewById(R.id.buttonConfirm);
         changePhoto = view.findViewById(R.id.buttonChangePhoto);
         fragmentManager = requireActivity().getSupportFragmentManager();
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +149,8 @@ public class SettingFragment extends Fragment {
                                 }
                             });
                 }
-
-
             }
         });
-
         changePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +164,6 @@ public class SettingFragment extends Fragment {
                 }
             }
         });
-
 
 
         return view;
