@@ -61,9 +61,7 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<Result> getUserDataMutableLiveData(
             String idToken) {
-        if (userMutableLiveData == null) {
             getUser(idToken);
-        }
         return userMutableLiveData;
     }
 
@@ -92,5 +90,25 @@ public class UserViewModel extends ViewModel {
         }
 
         return userMutableLiveData;
+    }
+
+    public MutableLiveData<Result> changePasswordMutableLiveData(String token, String newPw, String oldPw){
+             changePassword(token, newPw, oldPw);
+
+        return userMutableLiveData;
+    }
+
+    private void changePassword(String token, String newPw, String oldPw){
+        userMutableLiveData = userRepository.changePassword(token, newPw, oldPw);
+    }
+
+    public MutableLiveData<Result> changePhotoMutableLiveData(String token, String imageBitmap){
+        changePhoto(token, imageBitmap);
+
+        return userMutableLiveData;
+    }
+
+    private void changePhoto(String token, String imageBitmap){
+        userMutableLiveData = userRepository.changePhoto(token, imageBitmap);
     }
 }

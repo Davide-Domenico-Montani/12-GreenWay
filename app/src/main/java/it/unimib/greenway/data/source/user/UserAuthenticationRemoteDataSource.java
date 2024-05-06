@@ -49,7 +49,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                                 new User(firebaseUser.getUid(),
                                         nome, cognome,
                                         firebaseUser.getEmail(),
-                                        firebaseUser.getPhotoUrl().toString(),
+                                        firebaseUser.getPhotoUrl().toString(),"",
                                         0, 0, 0, 0, 0, 0, 0,0
                                         ));
                     } else {

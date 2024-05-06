@@ -1,6 +1,10 @@
 package it.unimib.greenway.ui.main;
 
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ROUTES;
+import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
+import static it.unimib.greenway.util.Constants.OLD_PASSWORD_ERROR;
+import static it.unimib.greenway.util.Constants.PASSWORD_ERROR_GOOGLE;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
 import static it.unimib.greenway.util.Constants.WALK_CONSTANT;
 
@@ -218,6 +222,10 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
                                     break;
                             }
 
+                        }else{
+                            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                    getErrorMessage(((Result.Error) result).getMessage()),
+                                    Snackbar.LENGTH_SHORT).show();
                         }
                     });
 
@@ -270,5 +278,15 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
         userViewModel.updateCo2SavedMutableLiveData(userViewModel.getLoggedUser().getUserId(), transportType, co2Saved, kmTravel);
         Snackbar.make(recyclerViewRoutes, "Hai risparmiato: " + co2Saved + " kg!", Snackbar.LENGTH_SHORT).show();
         fragmentManager.popBackStack();
+    }
+
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case ERROR_RETRIEVING_ROUTES:
+                return requireActivity().getString(R.string.error_retrieving_routes);
+
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
     }
 }

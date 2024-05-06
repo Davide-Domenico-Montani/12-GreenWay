@@ -33,7 +33,7 @@ public class RoutesRepositoryWithLiveData implements IRoutesRepositoryWithLiveDa
     }
 
     @Override
-    public void onFailureFromRemote(Exception exception) {
+    public void onFailureFromRemote(String message) {
 
     }
 }

@@ -48,7 +48,7 @@ public class User {
 
     //User Google
 
-    public User(String userId, String name, String surname, String email, String photoUrlGoogle, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
+    public User(String userId, String name, String surname, String email, String photoUrlGoogle, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -63,6 +63,7 @@ public class User {
         this.co2SavedTransit = co2SavedTransit;
         this.co2SavedWalk = co2SavedWalk;
         this.point = point;
+        this.photoUrl = photoUrl;
     }
     //Costruttore per login
 
