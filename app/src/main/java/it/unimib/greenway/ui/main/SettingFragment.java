@@ -89,17 +89,7 @@ public class SettingFragment extends Fragment {
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
-        //menù
-        menu =requireActivity().findViewById(R.id.menu);
-        autoCompleteTextView = requireActivity().findViewById(R.id.list_items);
-        engine_types = new ArrayList<>();
-        engine_types.add("Benzina");
-        engine_types.add("Diesel");
-        engine_types.add("GPL");
-        engine_types.add("Elettrica");
 
-        arrayAdapter_engine = new ArrayAdapter<>(getActivity().getApplicationContext(),R.layout.list_items, engine_types);
-        autoCompleteTextView.setAdapter(arrayAdapter_engine);
 
     }
 
@@ -114,6 +104,19 @@ public class SettingFragment extends Fragment {
         changePwButton = view.findViewById(R.id.buttonConfirm);
         changePhoto = view.findViewById(R.id.buttonChangePhoto);
         fragmentManager = requireActivity().getSupportFragmentManager();
+
+
+        //menù
+        menu =view.findViewById(R.id.menu);
+        autoCompleteTextView = view.findViewById(R.id.list_items);
+        engine_types = new ArrayList<>();
+        engine_types.add("Benzina");
+        engine_types.add("Diesel");
+        engine_types.add("GPL");
+        engine_types.add("Elettrica");
+
+        arrayAdapter_engine = new ArrayAdapter<>(requireActivity().getApplicationContext(), R.layout.list_items, engine_types);
+        autoCompleteTextView.setAdapter(arrayAdapter_engine);
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
