@@ -1,5 +1,10 @@
 package it.unimib.greenway.ui.main;
 
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_DIESEL;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_ELETTRIC;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GASOLINE;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GPL;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.OLD_PASSWORD_ERROR;
@@ -26,15 +31,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ConverterUtil;
@@ -53,6 +65,14 @@ public class SettingFragment extends Fragment {
     private SharedPreferencesUtil sharedPreferencesUtil;
     private Button changePhoto;
     private ConverterUtil converterUtil;
+    private ArrayList<String> engineTypes;
+    private double myEngineProduction;
+    private TextInputLayout textInputCo2Car;
+    private Button addCarCo2;
+    private ArrayAdapter<String> arrayAdapter_engine;
+    private TextInputLayout menu;
+    private AutoCompleteTextView autoCompleteTextView;
+
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -77,6 +97,8 @@ public class SettingFragment extends Fragment {
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
+
+
     }
 
     @Override
@@ -90,6 +112,134 @@ public class SettingFragment extends Fragment {
         changePwButton = view.findViewById(R.id.buttonConfirm);
         changePhoto = view.findViewById(R.id.buttonChangePhoto);
         fragmentManager = requireActivity().getSupportFragmentManager();
+        //menù
+        menu =view.findViewById(R.id.menu);
+        autoCompleteTextView = view.findViewById(R.id.list_items);
+        addCarCo2 = view.findViewById(R.id.addCarCo2);
+        textInputCo2Car = view.findViewById(R.id.text_input_co2Car);
+
+
+
+        engineTypes = new ArrayList<>();
+        engineTypes.add("Benzina");
+        engineTypes.add("Diesel");
+        engineTypes.add("GPL");
+        engineTypes.add("Metano");
+        engineTypes.add("Elettrica");
+        engineTypes.add("Personalizzato");
+
+
+
+        arrayAdapter_engine = new ArrayAdapter<>(requireActivity().getApplicationContext(), R.layout.list_items, engineTypes);
+        autoCompleteTextView.setAdapter(arrayAdapter_engine);
+
+
+        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId())
+                .observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessUser()) {
+                        User user = ((Result.UserResponseSuccess) result).getData();
+                        myEngineProduction = user.getCo2Car();
+                        Log.d("SettingFragment", "onCreateView: "+myEngineProduction);
+                        switch ((int)myEngineProduction){
+
+                                case -1:
+                                    autoCompleteTextView.setText(engineTypes.get(0), false);
+                                    textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_GASOLINE));
+                                    break;
+                                case -2:
+                                    autoCompleteTextView.setText(engineTypes.get(1), false);
+                                    textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_DIESEL));
+                                    break;
+                                case -3:
+                                    autoCompleteTextView.setText(engineTypes.get(2), false);
+                                    textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_GPL));
+                                    break;
+                                case -4:
+                                    autoCompleteTextView.setText(engineTypes.get(3), false);
+                                    textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_METHANE));
+                                    break;
+                                case -5:
+                                    autoCompleteTextView.setText(engineTypes.get(4), false);
+                                    textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_ELETTRIC));
+                                    break;
+                                default:
+                                    autoCompleteTextView.setText(engineTypes.get(5), false);
+                                    textInputCo2Car.getEditText().setText(String.valueOf(myEngineProduction));
+                                    break;
+                        }
+                    } else {
+                            Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                    getErrorMessage(((Result.Error) result).getMessage()),
+                                    Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedEngine = parent.getItemAtPosition(position).toString();
+                switch (selectedEngine) {
+                    case "Benzina":
+                        textInputCo2Car.setEnabled(false);
+                        myEngineProduction = -1;
+                        textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_GASOLINE));
+                        break;
+                    case "Diesel":
+                        textInputCo2Car.setEnabled(false);
+                        myEngineProduction = -2;
+                        textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_DIESEL));
+                        break;
+                    case "GPL":
+                        textInputCo2Car.setEnabled(false);
+                        myEngineProduction = -3;
+                        textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_GPL));
+                        break;
+                    case "Metano":
+                        textInputCo2Car.setEnabled(false);
+                        myEngineProduction = -4;
+                        textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_METHANE));
+                        break;
+                    case "Elettrica":
+                        textInputCo2Car.setEnabled(false);
+                        myEngineProduction = -5;
+                        textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_ELETTRIC));
+                        break;
+                    case "Personalizzato":
+                        textInputCo2Car.setEnabled(true);
+                        textInputCo2Car.getEditText().setText(String.valueOf(0.0));
+                        break;
+                }
+            }
+        });
+
+        addCarCo2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = textInputCo2Car.getEditText().getText().toString();
+                try {
+                    myEngineProduction = Double.parseDouble(input);
+                    if(myEngineProduction != 0) {
+                        userViewModel.updateCo2CarMutableLiveData(userViewModel.getLoggedUser().getUserId(), myEngineProduction)
+                                .observe(getViewLifecycleOwner(), result -> {
+                                    if (result.isSuccessUser()) {
+                                        Snackbar.make(view, getString(R.string.co2_car_emission_change), Snackbar.LENGTH_SHORT).show();
+                                    } else {
+                                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                                getErrorMessage(((Result.Error) result).getMessage()),
+                                                Snackbar.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }else{
+                        Snackbar.make(requireView(), "Car production non caricata", Snackbar.LENGTH_SHORT).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Snackbar.make(requireView(), "Il valore inserito non è un numero", Snackbar.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +274,8 @@ public class SettingFragment extends Fragment {
                                 }
                             });
                 }
-
-
             }
         });
-
         changePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +289,6 @@ public class SettingFragment extends Fragment {
                 }
             }
         });
-
 
 
         return view;

@@ -27,6 +27,9 @@
     <string name="surname">Cognome</string>
     <string name="repeat_password">Ripeti Password</string>
 
+    <string name="co2_production_custom">Produzione co2 della mia auto</string>
+    <string name="co2_car_emission_change">Emissione auto cambiata</string>
+
     <string name="error_no_google_account_found_message">No google account found</string>
     <string name="unexpected_error">unexpected error</string>
     <string name="password_not_match">Password non coincidono</string>

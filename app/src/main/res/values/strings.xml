@@ -48,6 +48,9 @@
     <string name="select">Select</string>
     <string name="distance">Distance:</string>
     <string name="emission">Emission produced:</string>
+    <string name="co2_production_custom">My car co2 production</string>
+    <string name="co2_car_emission_change">Car emission changed!</string>
+
 
     <string name="find">Find</string>
     <string name="insertStart">Insert start field</string>

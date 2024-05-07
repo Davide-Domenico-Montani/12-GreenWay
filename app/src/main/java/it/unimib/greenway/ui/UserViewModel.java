@@ -112,6 +112,16 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.changePhoto(token, imageBitmap);
     }
 
+    //update co2Car
+    public MutableLiveData<Result> updateCo2CarMutableLiveData(String idToken, double co2Car){
+        updateCo2Car(idToken, co2Car);
+        return userMutableLiveData;
+    }
+
+    public void updateCo2Car(String idToken, double co2Car){
+        userMutableLiveData = userRepository.updateCo2Car(idToken, co2Car);
+    }
+
     public double getCo2Car(String token){
         return userRepository.getCo2Car(token);
     }

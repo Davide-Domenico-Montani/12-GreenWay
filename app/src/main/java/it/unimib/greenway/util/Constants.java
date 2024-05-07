@@ -34,7 +34,7 @@ public class Constants {
     public static final double CO2_PRODUCTION_CAR_DIESEL = 120;
     public static final double CO2_PRODUCTION_CAR_GPL = 100;
     public static final double CO2_PRODUCTION_CAR_METHANE = 80;
-    public static final double CO2_PRODUCTION_ELECTRIC = 0;
+    public static final double CO2_PRODUCTION_CAR_ELETTRIC= 0;
 
     public static final double CO2_PRODUCTION_BUS = 35;
     public static final double CO2_PRODUCTION_TRAM = 15;
@@ -55,6 +55,7 @@ public class Constants {
     public static final String TRANSITKM_PARAMETER_DATABASE = "kmTransit";
     public static final String WALKKM_PARAMETER_DATABASE = "kmWalk";
     public static final String PASSWORD_DATABASE_REFERENCE = "password";
+    public static final String CO2_CAR_PARAMETER_DATABASE = "co2Car";
 
     public static final String NEW_PASSWORD_ERROR = "new_password_error";
 
