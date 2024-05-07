@@ -29,10 +29,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.model.Challenge;
 import it.unimib.greenway.model.User;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
@@ -51,6 +54,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
+
                     userResponseCallback.onSuccessFromRemoteDatabase(user);
                 }else{
                     databaseReference.child(USER_DATABASE_REFERENCE).child(user.getUserId()).setValue(user);
@@ -218,5 +222,19 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
         });
     }
 
+    /*public void addChallenge(){
+    //Richiamato nell getuserinfo
+        List<Challenge> challengeList = new ArrayList<>();
+        challengeList.add(new Challenge(1, "Percorri almeno 50 km a piedi", 100, 50000.0, false, false, false, false, false, true));
+        challengeList.add(new Challenge(2, "Risparmia 10 kg di CO2 riducendo l'uso dell'auto.", 70, 10000.0, false, true, false, false, false, false));
+        challengeList.add(new Challenge(3, "Percorri 100 km utilizzando i mezzi pubblici.", 200, 100000.0, false, false, false, false, true, false));
+        challengeList.add(new Challenge(4, "Risparmia 20 kg di CO2 scegliendo mezzi pubblici.", 130, 20000.0, false, false, true, false, false, false));
+        challengeList.add(new Challenge(5, "Percorri 150 km a piedi per ridurre le emissioni di CO2.", 400, 150000.0, false, false, false, false, false, true));
+        challengeList.add(new Challenge(6, "Utilizza i mezzi pubblici e risparmia 15 kg di CO2.", 120, 15000.0, false, false, true, false, false, false));
+        challengeList.add(new Challenge(7, "Percorri 300km a piedi oppure con i mezzi pubblici.", 300, 300000.0, false, false, false, false, true, true));
 
+        for(Challenge challenge: challengeList) {
+            databaseReference.child("challenge").child(String.valueOf(challenge.getId())).setValue(challenge);
+        }
+    }*/
 }

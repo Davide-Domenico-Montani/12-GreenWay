@@ -10,6 +10,10 @@ public class Result {
     public boolean isSuccessAirQuality() {
         return this instanceof AirQualityResponseSuccess;
     }
+    public boolean isSuccessChallenge() {
+        return this instanceof ChallengeResponseSuccess;
+    }
+
 
     public boolean isSuccessRoutes(){
         return this instanceof RouteResponseSuccess;
@@ -44,6 +48,16 @@ public class Result {
             return routesResponse;
         }
     }
+
+    public static final class ChallengeResponseSuccess extends Result {
+        private final ChallengeResponse challengeResponse;
+        public ChallengeResponseSuccess(ChallengeResponse challengeResponse) {
+            this.challengeResponse = challengeResponse;
+        }
+        public ChallengeResponse getData() {
+            return challengeResponse;
+        }
+    }
     public static final class Error extends Result {
         private final String message;
         public Error(String message) {
@@ -53,4 +67,6 @@ public class Result {
             return message;
         }
     }
+
+
 }

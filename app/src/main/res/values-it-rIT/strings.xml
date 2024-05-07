@@ -69,6 +69,7 @@
     <string name="camera_permission_denied">Permesso fotocamera non concesso</string>
     <string name="error_retrieving_user_info">Errore nel recuperare le informazioni</string>
     <string name="error_retrieving_routes">Errore nel recuperare i percorsi</string>
+    <string name="error_retrieving_challenge">Errore nel recuperare le sfide</string>
 
 
 </resources>

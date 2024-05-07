@@ -7,5 +7,5 @@ public abstract class BaseAirQualityRemoteDataSource {
         this.airQualityCallBack = airQualityCallBack;
     }
 
-    public abstract void getAirQuality(); //Ottiene birre da back-end
+    public abstract void getAirQuality();
 }

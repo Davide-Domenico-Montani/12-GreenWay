@@ -5,6 +5,8 @@ import android.app.Application;
 import it.unimib.greenway.data.database.AirQualityDatabase;
 import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
+import it.unimib.greenway.data.repository.challenge.ChallengeRepositoryWithLiveData;
+import it.unimib.greenway.data.repository.challenge.IChallengeRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.routes.IRoutesRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.routes.RoutesRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
@@ -15,6 +17,8 @@ import it.unimib.greenway.data.source.airQuality.AirQualityLocalDataSource;
 import it.unimib.greenway.data.source.airQuality.AirQualityRemoteDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityRemoteDataSource;
+import it.unimib.greenway.data.source.challenge.BaseChallengeRemoteDataSource;
+import it.unimib.greenway.data.source.challenge.ChallengeRemoteDataSource;
 import it.unimib.greenway.data.source.routes.BaseRoutesRemoteDataSource;
 import it.unimib.greenway.data.source.routes.RoutesRemoteDataSource;
 import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSource;
@@ -88,7 +92,16 @@ public class ServiceLocator {
 
     }
 
+    public IChallengeRepositoryWithLiveData getChallengeRepository(Application application){
+        BaseChallengeRemoteDataSource challengeRemoteDataSource;
 
+        challengeRemoteDataSource =
+                new ChallengeRemoteDataSource();
+
+
+        return new ChallengeRepositoryWithLiveData(challengeRemoteDataSource);
+
+    }
     public IRoutesRepositoryWithLiveData getRoutesRepository(Application application){
         BaseRoutesRemoteDataSource routesRemoteDataSource;
 
