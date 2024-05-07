@@ -145,6 +145,9 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
         return userMutableLiveData;
     }
 
+    public double getCo2Car(String token){
+        return userDataRemoteDataSource.getCo2Car(token);
+    }
     @Override
     public void onSuccessFromLocal(List<AirQuality> Response) {
 

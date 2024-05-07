@@ -41,11 +41,12 @@ import it.unimib.greenway.model.User;
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     private static final String TAG = UserDataRemoteDataSource.class.getSimpleName();
 
-
+    private double co2Car;
     private final DatabaseReference databaseReference;
     public UserDataRemoteDataSource() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().getRef();
+        co2Car = 0.0;
     }
 
     @Override
@@ -220,6 +221,17 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 userResponseCallback.onSuccessFromRemoteDatabase(user);
             }
         });
+    }
+    @Override
+    public double getCo2Car(String token){
+        databaseReference.child(USER_DATABASE_REFERENCE).child(token).child("co2Car").get().addOnSuccessListener(dataSnapshot -> {
+            if(dataSnapshot.exists()){
+                co2Car = (double) dataSnapshot.getValue(Double.class);
+            }else{
+
+            }
+        });
+        return co2Car;
     }
 
     /*public void addChallenge(){
