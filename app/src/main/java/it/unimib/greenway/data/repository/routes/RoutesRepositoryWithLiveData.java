@@ -21,8 +21,8 @@ public class RoutesRepositoryWithLiveData implements IRoutesRepositoryWithLiveDa
     }
 
     @Override
-    public MutableLiveData<Result> fetchRoutes(double latStart, double lonStart, double latEnd, double lonEnd) {
-        routesRemoteDataSource.getRoutes(latStart, lonStart, latEnd, lonEnd);
+    public MutableLiveData<Result> fetchRoutes(double latStart, double lonStart, double latEnd, double lonEnd, double co2Car) {
+        routesRemoteDataSource.getRoutes(latStart, lonStart, latEnd, lonEnd, co2Car);
         return routesListLiveData;
     }
 

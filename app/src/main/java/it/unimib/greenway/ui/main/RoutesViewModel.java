@@ -16,13 +16,13 @@ public class RoutesViewModel extends ViewModel {
         this.routesRepositoryWithLiveData = routesRepositoryWithLiveData;
     }
 
-    public MutableLiveData<Result> getRoutes(double latSta, double lonSta, double latEnd, double lonEnd) {
-            fetchRoutes(latSta, lonSta, latEnd, lonEnd);
+    public MutableLiveData<Result> getRoutes(double latSta, double lonSta, double latEnd, double lonEnd, double co2Car) {
+            fetchRoutes(latSta, lonSta, latEnd, lonEnd, co2Car);
         return routesListLiveData;
     }
 
-    public void fetchRoutes(double latSta, double lonSta, double latEnd, double lonEnd) {
-        routesListLiveData = routesRepositoryWithLiveData.fetchRoutes(latSta, lonSta, latEnd, lonEnd);
+    public void fetchRoutes(double latSta, double lonSta, double latEnd, double lonEnd, double co2Car) {
+        routesListLiveData = routesRepositoryWithLiveData.fetchRoutes(latSta, lonSta, latEnd, lonEnd, co2Car);
     }
 
 

@@ -8,5 +8,5 @@ public abstract class BaseRoutesRemoteDataSource {
         this.routesCallBack = routesCallBack;
     }
 
-    public abstract void getRoutes(double latStart, double lonStart, double latEnd, double lonEnd); //Ottiene birre da back-end
+    public abstract void getRoutes(double latStart, double lonStart, double latEnd, double lonEnd, double co2Car); //Ottiene birre da back-end
 }

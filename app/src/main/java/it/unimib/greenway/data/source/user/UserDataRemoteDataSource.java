@@ -47,7 +47,7 @@ import it.unimib.greenway.model.User;
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     private static final String TAG = UserDataRemoteDataSource.class.getSimpleName();
 
-    private double co2Car;
+    public double co2Car;
     private final DatabaseReference databaseReference;
     public UserDataRemoteDataSource() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -234,17 +234,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             }
         });
     }
-    @Override
-    public double getCo2Car(String token){
-        databaseReference.child(USER_DATABASE_REFERENCE).child(token).child("co2Car").get().addOnSuccessListener(dataSnapshot -> {
-            if(dataSnapshot.exists()){
-                co2Car = (double) dataSnapshot.getValue(Double.class);
-            }else{
 
-            }
-        });
-        return co2Car;
-    }
 
     /*public void addChallenge(){
     //Richiamato nell getuserinfo

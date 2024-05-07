@@ -37,9 +37,10 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
     }
 
     @Override
-    public void getRoutes(double latStart, double lonStart, double latEnd, double lonEnd) {
+    public void getRoutes(double latStart, double lonStart, double latEnd, double lonEnd, double co2Car) {
         ConverterUtil converterUtil = new ConverterUtil();
             String transport;
+            Log.d("ciccio2", "" + co2Car);
             count= 0;
             List<Route> routeList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {

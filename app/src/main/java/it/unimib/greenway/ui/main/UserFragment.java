@@ -101,8 +101,6 @@ public class UserFragment extends Fragment {
          co2SavedWalkTextView = view.findViewById(R.id.co2WalkTextView);
          co2SavedWalkProgressBar = view.findViewById(R.id.progressWalk);
 
-        double co2 = userViewModel.getCo2Car(userViewModel.getLoggedUser().getUserId());
-        Log.d("ciccio", "" + co2);
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

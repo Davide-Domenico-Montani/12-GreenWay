@@ -1,15 +1,24 @@
 package it.unimib.greenway.util;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import java.io.ByteArrayOutputStream;
 
+import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.model.Route;
+import it.unimib.greenway.ui.UserViewModel;
+import it.unimib.greenway.ui.UserViewModelFactory;
 
 public class ConverterUtil {
-    public ConverterUtil() {}
+    UserViewModel userViewModel;
+    public ConverterUtil() {
+
+    }
 
     //Convert second in to houre and minute
     public String convertSecond(int totalSeconds){

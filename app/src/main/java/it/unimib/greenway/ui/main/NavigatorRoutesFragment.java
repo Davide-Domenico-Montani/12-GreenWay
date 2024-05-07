@@ -2,6 +2,7 @@ package it.unimib.greenway.ui.main;
 
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ROUTES;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.OLD_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.PASSWORD_ERROR_GOOGLE;
@@ -47,6 +48,7 @@ import it.unimib.greenway.model.Polyline;
 import it.unimib.greenway.model.Route;
 import it.unimib.greenway.model.RoutesApiResponse;
 import it.unimib.greenway.model.RoutesResponse;
+import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ConverterUtil;
@@ -187,47 +189,56 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
                         bundle.putParcelable("route", route);
                     }
                 },listener);
+       recyclerViewRoutes.setLayoutManager(layoutManager);
+       recyclerViewRoutes.setAdapter(routeRecyclerViewAdapter);
 
-        recyclerViewRoutes.setLayoutManager(layoutManager);
-        recyclerViewRoutes.setAdapter(routeRecyclerViewAdapter);
-        routesViewModel.getRoutes(startLatLng.latitude,
-                startLatLng.longitude,
-                destinationLatLng.latitude,
-                destinationLatLng.longitude).observe(getViewLifecycleOwner(),
-                    result -> {
-                        if (result.isSuccessRoutes()) {
-                            this.routeList.clear();
-                            this.routeList.addAll(((Result.RouteResponseSuccess) result).getData().getRoutes());
-                            Log.d("prova", routeList.toString());
-                            divideList(routeList);
-                            if(driveList.size() != 0) {
-                                tab0.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(driveList.get(0).getDuration().substring(0, driveList.get(0).getDuration().length() - 1)))));
-                            }
-                            if(transitList.size() != 0) {
-                                tab1.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(transitList.get(0).getDuration().substring(0, transitList.get(0).getDuration().length() - 1)))));
-                                Log.d("prova", transitList.toString());
-                            }
-                            if(walkList.size() != 0) {
-                                tab2.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(walkList.get(0).getDuration().substring(0, walkList.get(0).getDuration().length() - 1)))));
-                            }
-                            switch (tabLayout.getSelectedTabPosition()) {
-                                case 0:
-                                    updateRecyclerView(driveList);
-                                    break;
-                                case 1:
-                                    updateRecyclerView(transitList);
-                                    break;
-                                case 2:
-                                    updateRecyclerView(walkList);
-                                    break;
-                            }
+        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
+                getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessUser()) {
+                        User user = ((Result.UserResponseSuccess) result).getData();
 
-                        }else{
-                            Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                    getErrorMessage(((Result.Error) result).getMessage()),
-                                    Snackbar.LENGTH_SHORT).show();
-                        }
-                    });
+                        routesViewModel.getRoutes(startLatLng.latitude,
+                                startLatLng.longitude,
+                                destinationLatLng.latitude,
+                                destinationLatLng.longitude, user.getCo2Car()).observe(getViewLifecycleOwner(),
+                                    result2 -> {
+                                        if (result2.isSuccessRoutes()) {
+                                            this.routeList.clear();
+                                            this.routeList.addAll(((Result.RouteResponseSuccess) result2).getData().getRoutes());
+                                             divideList(routeList);
+                                                if(driveList.size() != 0) {
+                                                    tab0.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(driveList.get(0).getDuration().substring(0, driveList.get(0).getDuration().length() - 1)))));
+                                                }
+                                                if(transitList.size() != 0) {
+                                                    tab1.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(transitList.get(0).getDuration().substring(0, transitList.get(0).getDuration().length() - 1)))));
+                                                }
+                                                if(walkList.size() != 0) {
+                                                    tab2.setText(converterUtil.convertSecond(Integer.parseInt(String.valueOf(walkList.get(0).getDuration().substring(0, walkList.get(0).getDuration().length() - 1)))));
+                                                }
+                                                switch (tabLayout.getSelectedTabPosition()) {
+                                                    case 0:
+                                                        updateRecyclerView(driveList);
+                                                        break;
+                                                    case 1:
+                                                        updateRecyclerView(transitList);
+                                                        break;
+                                                    case 2:
+                                                        updateRecyclerView(walkList);
+                                                        break;
+                                                }
+
+                                            }else{
+                                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                                        Snackbar.LENGTH_SHORT).show();
+                                            }
+                                    });
+                    } else {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                            getErrorMessage(((Result.Error) result).getMessage()),
+                            Snackbar.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -282,6 +293,8 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
 
     private String getErrorMessage(String errorType) {
         switch (errorType) {
+            case ERROR_RETRIEVING_USER_INFO:
+                return requireActivity().getString(R.string.error_retrieving_user_info);
             case ERROR_RETRIEVING_ROUTES:
                 return requireActivity().getString(R.string.error_retrieving_routes);
 

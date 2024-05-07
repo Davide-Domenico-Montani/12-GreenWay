@@ -122,7 +122,5 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.updateCo2Car(idToken, co2Car);
     }
 
-    public double getCo2Car(String token){
-        return userRepository.getCo2Car(token);
-    }
+
 }
