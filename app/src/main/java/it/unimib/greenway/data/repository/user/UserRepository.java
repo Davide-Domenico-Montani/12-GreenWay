@@ -128,6 +128,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     }
 
     @Override
+    public MutableLiveData<Result> updateCo2Car(String idToken, double co2Car) {
+        userDataRemoteDataSource.updateCo2Car(idToken, co2Car);
+        return userMutableLiveData;
+    }
+
+    @Override
     public MutableLiveData<Result> logout() {
         userRemoteDataSource.logout();
         return userMutableLiveData;

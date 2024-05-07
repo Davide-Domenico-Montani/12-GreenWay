@@ -3,6 +3,12 @@ package it.unimib.greenway.data.source.user;
 import static android.provider.Settings.System.getString;
 import static it.unimib.greenway.util.Constants.CARKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CAR_PARAMETER_DATABASE;
+import static it.unimib.greenway.util.Constants.CO2_CAR_PARAMETER_DATABASE;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_DIESEL;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GASOLINE;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GPL;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_ELETTRIC;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
@@ -121,6 +127,12 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 }
             });
         }
+    }
+
+    @Override
+    public void updateCo2Car(String idToken, double co2Car) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CO2_CAR_PARAMETER_DATABASE).setValue(co2Car);
+        getUserInfo(idToken);
     }
 
     @Override
