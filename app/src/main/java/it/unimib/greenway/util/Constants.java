@@ -70,6 +70,7 @@ public class Constants {
     public static final String CHALLENGE_DATABASE_REFERENCE = "challenge";
     public static final String STATUS_CHALLENGE_DATABASE_REFERENCE = "statusChallengeList";
     public static final String POINT_DATABASE_REFERENCE = "point";
+    public static final String ERROR_LOGIN = "login_error";
 
 
 }

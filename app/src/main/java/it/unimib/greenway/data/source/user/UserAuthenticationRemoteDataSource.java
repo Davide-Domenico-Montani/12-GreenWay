@@ -1,5 +1,6 @@
 package it.unimib.greenway.data.source.user;
 
+import static it.unimib.greenway.util.Constants.ERROR_LOGIN;
 import static it.unimib.greenway.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static it.unimib.greenway.util.Constants.INVALID_USER_ERROR;
 import static it.unimib.greenway.util.Constants.UNEXPECTED_ERROR;
@@ -93,7 +94,6 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser != null) {
-
                     userResponseCallback.onSuccessFromAuthentication(
                             new User(firebaseUser.getUid(), email, password)
                     );
@@ -101,7 +101,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                     userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
                 }
             } else {
-                userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+                userResponseCallback.onFailureFromAuthentication(ERROR_LOGIN);
             }
         });
     }

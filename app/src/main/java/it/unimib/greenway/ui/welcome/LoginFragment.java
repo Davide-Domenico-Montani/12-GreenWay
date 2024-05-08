@@ -3,6 +3,7 @@ package it.unimib.greenway.ui.welcome;
 import static it.unimib.greenway.util.Constants.EMAIL_ADDRESS;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ERROR_LOGIN;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_CHALLENGE;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.ID;
@@ -120,7 +121,6 @@ public class LoginFragment extends Fragment {
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {
                                     User user = ((Result.UserResponseSuccess) result).getData();
-                                    Log.d("LoginFragment", "User: " + user.getUserId() + " " + user.getEmail());
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     saveLoginData(user.getUserId(), Email, Password);
@@ -184,6 +184,8 @@ public class LoginFragment extends Fragment {
                 return requireActivity().getString(R.string.error_retrieving_challenge);
             case ERROR_RETRIEVING_USER_INFO:
                 return requireActivity().getString(R.string.error_retrieving_user_info);
+            case ERROR_LOGIN:
+                return requireActivity().getString(R.string.error_login);
             default:
                 return requireActivity().getString(R.string.unexpected_error);
         }

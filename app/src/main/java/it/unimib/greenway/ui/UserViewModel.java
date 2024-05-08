@@ -43,9 +43,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> loginUserMutableLiveData(String email, String password) {
-        if (userMutableLiveData == null) {
             loginUser(email, password);
-        }
         return userMutableLiveData;
     }
 
