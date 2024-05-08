@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.List;
+
+import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 
 public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRemoteDataSource {
@@ -50,7 +53,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                                         nome, cognome,
                                         firebaseUser.getEmail(),
                                         firebaseUser.getPhotoUrl().toString(),"",
-                                        0, 0, 0, 0, 0, 0, 0,0
+                                        0, 0, 0, -1, 0, 0, 0,0, null
                                         ));
                     } else {
                         userResponseCallback.onFailureFromAuthentication(
@@ -65,14 +68,15 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
     }
 
     @Override
-    public void signUp(String nome, String cognome, String email, String password) {
+    public void signUp(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 Log.d("Ciao", firebaseUser.getUid());
+                Log.d("pippo2", statusChallengeList.size() + "");
                 if (firebaseUser != null) {
                     userResponseCallback.onSuccessFromAuthentication(
-                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0,  0, 0, 0, 0, 0, 0)
+                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0,  0, -1, 0, 0, 0, statusChallengeList)
                     );
                 } else {
                     userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));

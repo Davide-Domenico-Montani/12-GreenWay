@@ -5,6 +5,7 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.app.Application;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +24,19 @@ import java.util.List;
 import it.unimib.greenway.R;
 import it.unimib.greenway.model.Challenge;
 import it.unimib.greenway.model.Route;
+import it.unimib.greenway.model.StatusChallenge;
+import it.unimib.greenway.model.User;
 
 public class ChallengeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final List<Challenge> challengeList;
     private final Application application;
+    private User user;
 
-    public ChallengeRecyclerViewAdapter(List<Challenge> challengeList, Application application){
+    public ChallengeRecyclerViewAdapter(List<Challenge> challengeList, Application application, User user){
         this.challengeList = challengeList;
         this.application = application;
+        this.user = user;
     }
     @NonNull
     @Override
@@ -68,7 +73,7 @@ public class ChallengeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     public class ChallengeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView description, point;
+        private final TextView description, point, percentageTextView;
         private final ImageView image;
         private final ConstraintLayout layout;
         private final LinearProgressIndicator progressIndicator;
@@ -80,6 +85,7 @@ public class ChallengeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
             layout = itemView.findViewById(R.id.layoutChallengeCard);
             point = itemView.findViewById(R.id.challengePointTextView);
             progressIndicator = itemView.findViewById(R.id.progressBarChallenge);
+            percentageTextView = itemView.findViewById(R.id.challengePercentageTextView);
         }
 
         @Override
@@ -88,13 +94,16 @@ public class ChallengeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
         }
 
         public void bind(Challenge challenge) {
-            //TODO: Calcolo progresso challenge
+
+            int percentage = user.getStatusChallengeList().get(challenge.getId()-1).getPercentage();
+            progressIndicator.setProgressCompat(percentage, true);
+            percentageTextView.setText(percentage + "%");
             point.setText(challenge.getPoint() + "pt");
             description.setText(challenge.getDescription());
-            if(challenge.getPoint() == 100){
 
-                // Impostare il Drawable nell'ImageView
-                progressIndicator.setProgressCompat(100, true);
+            //challenge completata
+            if(percentage >= 100){
+                percentageTextView.setText("100%");
                 image.setImageResource(R.drawable.icon_check);
                 layout.setBackgroundResource(R.color.md_theme_primaryContainer);
             }

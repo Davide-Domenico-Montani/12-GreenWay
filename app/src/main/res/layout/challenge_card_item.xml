@@ -46,13 +46,23 @@
             android:text="0pt"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/challengePercentageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="43dp"
+            android:layout_toEndOf="@+id/challengeNameTextView"
+            android:text="0%"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBarChallenge"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="69dp"
 
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="50dp"

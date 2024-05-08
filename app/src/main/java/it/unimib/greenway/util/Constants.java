@@ -68,6 +68,8 @@ public class Constants {
     public static final String ERROR_RETRIEVING_ROUTES = "error_retrieving_routes";
     public static final String ERROR_RETRIEVING_CHALLENGE = "error_retrieving_challenge";
     public static final String CHALLENGE_DATABASE_REFERENCE = "challenge";
+    public static final String STATUS_CHALLENGE_DATABASE_REFERENCE = "statusChallengeList";
+    public static final String POINT_DATABASE_REFERENCE = "point";
 
 
 }

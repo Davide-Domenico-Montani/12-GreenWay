@@ -60,7 +60,7 @@ public class UserFragment extends Fragment {
     private double co2SavedCar;
     private double co2SavedTransit;
     private double co2SavedWalk;
-    private TextView co2SavedCarTextView, co2SavedTransitTextView,  co2SavedWalkTextView;
+    private TextView co2SavedCarTextView, co2SavedTransitTextView,  co2SavedWalkTextView, userPointTextView;
     private LinearProgressIndicator co2SavedCarProgressBar, co2SavedTransitProgressBar,  co2SavedWalkProgressBar;
     DataEncryptionUtil dataEncryptionUtil;
     public UserFragment() {
@@ -100,6 +100,7 @@ public class UserFragment extends Fragment {
         co2SavedTransitProgressBar = view.findViewById(R.id.progressTransit);
          co2SavedWalkTextView = view.findViewById(R.id.co2WalkTextView);
          co2SavedWalkProgressBar = view.findViewById(R.id.progressWalk);
+         userPointTextView = view.findViewById(R.id.userPoints);
 
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +137,7 @@ public class UserFragment extends Fragment {
                         co2SavedTransit = user.getCo2SavedTransit();
                         co2SavedWalk = user.getCo2SavedWalk();
                         userName.setText(user.getName() + " " + user.getSurname());
-
+                        userPointTextView.setText(user.getPoint() + "pt");
                         //co2SavedCar
                         String format = "%." + 3 + "f";
                         String formattedString = String.format(format,co2SavedCar);

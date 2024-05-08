@@ -3,6 +3,7 @@ package it.unimib.greenway.data.source.user;
 import static android.provider.Settings.System.getString;
 import static it.unimib.greenway.util.Constants.CARKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CAR_PARAMETER_DATABASE;
+import static it.unimib.greenway.util.Constants.CHALLENGE_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.CO2_CAR_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_DIESEL;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GASOLINE;
@@ -16,6 +17,8 @@ import static it.unimib.greenway.util.Constants.OLD_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.PASSWORD_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.PASSWORD_ERROR_GOOGLE;
 import static it.unimib.greenway.util.Constants.PHOTOURL_DATABASE_REFERENCE;
+import static it.unimib.greenway.util.Constants.POINT_DATABASE_REFERENCE;
+import static it.unimib.greenway.util.Constants.STATUS_CHALLENGE_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.TRANSITKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
 import static it.unimib.greenway.util.Constants.TRANSIT_PARAMETER_DATABASE;
@@ -42,6 +45,7 @@ import java.util.Objects;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.model.Challenge;
+import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
@@ -98,7 +102,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                     double co2SavedCarDatabase =  dataSnapshot.getValue(Double.class);
                     co2SavedCarDatabase += co2Saved;
                     databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CAR_PARAMETER_DATABASE).setValue(co2SavedCarDatabase);
-                    updateKmTravelled(idToken, transportType, kmTravel);
+                    updateKmTravelled(idToken, transportType, CAR_PARAMETER_DATABASE, co2Saved, kmTravel);
 
                 }else{
 
@@ -112,7 +116,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
 
                     databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(TRANSIT_PARAMETER_DATABASE).setValue(co2SavedCarDatabase);
-                    updateKmTravelled(idToken, transportType, kmTravel);
+                    updateKmTravelled(idToken, transportType,TRANSIT_PARAMETER_DATABASE, co2Saved,kmTravel);
 
 
                 }else{
@@ -125,7 +129,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                     double co2SavedCarDatabase = (double) dataSnapshot.getValue(Double.class);
                     co2SavedCarDatabase += co2Saved;
                     databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(WALK_PARAMETER_DATABASE).setValue(co2SavedCarDatabase);
-                    updateKmTravelled(idToken, transportType, kmTravel);
+                    updateKmTravelled(idToken, transportType, WALK_PARAMETER_DATABASE, co2Saved,kmTravel );
 
                 }else{
 
@@ -141,15 +145,14 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     }
 
     @Override
-    public void updateKmTravelled(String idToken, String transportType, double kmTravel) {
+    public void updateKmTravelled(String idToken, String transportType, String parameterCo2, double co2Database,  double kmTravel) {
         if(transportType.equals(DRIVE_CONSTANT)) {
             databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CARKM_PARAMETER_DATABASE).get().addOnSuccessListener(dataSnapshot -> {
                 if(dataSnapshot.exists()){
                     double kmDatabase =  dataSnapshot.getValue(Double.class);
                     kmDatabase += kmTravel;
                     databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CARKM_PARAMETER_DATABASE).setValue(kmDatabase);
-
-                    getUserInfo(idToken); //Come callback
+                    updateStatusChallenge(idToken, transportType, parameterCo2, CARKM_PARAMETER_DATABASE, co2Database, kmTravel);
                 }else{
 
                 }
@@ -160,8 +163,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                     double kmDatabase = (double) dataSnapshot.getValue(Double.class);
                     kmDatabase += kmTravel;
                     databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(TRANSITKM_PARAMETER_DATABASE).setValue(kmDatabase);
-
-                    getUserInfo(idToken); //Come callback
+                    updateStatusChallenge(idToken, transportType, parameterCo2, TRANSITKM_PARAMETER_DATABASE,co2Database, kmTravel);
                 }else{
 
                 }
@@ -172,24 +174,90 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                     double kmDatabase = (double) dataSnapshot.getValue(Double.class);
                     kmDatabase += kmTravel;
                     databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(WALKKM_PARAMETER_DATABASE).setValue(kmDatabase);
-                    getUserInfo(idToken); //Come callback
+                    updateStatusChallenge(idToken, transportType, parameterCo2, WALKKM_PARAMETER_DATABASE, co2Database, kmTravel);
                 }else{
 
                 }
             });
         }
+    }
 
+
+    @Override
+    public void updateStatusChallenge(String idToken, String transportType, String parameterco2 , String parameterKm, double co2Database, double kmDatabase) {
+        List<Challenge> challengeList = new ArrayList<>();
+        databaseReference.child(CHALLENGE_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                for(DataSnapshot challengeSnapshot: task.getResult().getChildren()){
+                    Challenge challenge = challengeSnapshot.getValue(Challenge.class);
+                    challengeList.add(challenge);
+                }
+                databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(STATUS_CHALLENGE_DATABASE_REFERENCE).get().addOnCompleteListener(task1 -> {
+                    List<StatusChallenge> statusChallengeList = new ArrayList<>();
+                    if(task1.isSuccessful()){
+                        for(DataSnapshot statusChallengeSnapshot: task1.getResult().getChildren()){
+                            StatusChallenge statusChallenge = statusChallengeSnapshot.getValue(StatusChallenge.class);
+                            statusChallengeList.add(statusChallenge);
+                        }
+                        if(statusChallengeList != null){
+                                for (Challenge challenge : challengeList) {
+                                    if (challenge.isKmCar() && parameterKm.equals(CARKM_PARAMETER_DATABASE)) {
+                                        statusChallengeList.get(challenge.getId()-1).setStatusChallenge(statusChallengeList.get(challenge.getId()-1).getStatusChallenge() + kmDatabase);
+                                    }
+                                    if (challenge.isKmTransit() && parameterKm.equals(TRANSITKM_PARAMETER_DATABASE)) {
+                                        statusChallengeList.get(challenge.getId()-1).setStatusChallenge(statusChallengeList.get(challenge.getId()-1).getStatusChallenge() + kmDatabase);
+                                    }
+                                    if (challenge.isKmWalk() && parameterKm.equals(WALKKM_PARAMETER_DATABASE)) {
+                                        statusChallengeList.get(challenge.getId()-1).setStatusChallenge(statusChallengeList.get(challenge.getId()-1).getStatusChallenge() + kmDatabase);
+                                    }
+                                    if (challenge.isCo2SavedCar() && parameterco2.equals(CAR_PARAMETER_DATABASE)) {
+                                        statusChallengeList.get(challenge.getId()-1).setStatusChallenge(statusChallengeList.get(challenge.getId()-1).getStatusChallenge() + co2Database);
+                                    }
+                                    if (challenge.isCo2SavedTransit() && parameterco2.equals(TRANSIT_PARAMETER_DATABASE)) {
+                                        statusChallengeList.get(challenge.getId()-1).setStatusChallenge(statusChallengeList.get(challenge.getId()-1).getStatusChallenge() + co2Database);
+                                    }
+                                    if (challenge.isCo2SavedWalk() && parameterco2.equals(WALK_PARAMETER_DATABASE)) {
+                                        statusChallengeList.get(challenge.getId()-1).setStatusChallenge(statusChallengeList.get(challenge.getId()-1).getStatusChallenge() + co2Database);
+                                    }
+
+                                    statusChallengeList.get(challenge.getId()-1).setPercentage((int) ((statusChallengeList.get(challenge.getId()-1).getStatusChallenge() / challenge.getTarget()) * 100));
+                                    if(statusChallengeList.get(challenge.getId()-1).getPercentage() >= 100 && !statusChallengeList.get(challenge.getId()-1).isCompleted()) {
+                                        statusChallengeList.get(challenge.getId()-1).setCompleted(true);
+                                        updateUserPoint(idToken, challenge.getPoint());
+                                    }
+                                }
+
+                            databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(STATUS_CHALLENGE_DATABASE_REFERENCE).setValue(statusChallengeList);
+                            getUserInfo(idToken); //Come callback
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
+    public void updateUserPoint(String idToken, int point) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(POINT_DATABASE_REFERENCE).get().addOnSuccessListener(dataSnapshot -> {
+            if(dataSnapshot.exists()){
+                int pointDatabase =  dataSnapshot.getValue(Integer.class);
+                pointDatabase += point;
+                databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(POINT_DATABASE_REFERENCE).setValue(pointDatabase);
+                getUserInfo(idToken); //Come callback
+            }else{
+
+            }
+        });
+    }
+
+
+    @Override
     public void changePassword(String token, String newPw, String oldPw) {
-        Log.d("changePassword", "changePassword: " + token + " " + newPw + " " + oldPw);
         databaseReference.child(USER_DATABASE_REFERENCE).child(token).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     String passwordDb = snapshot.child(PASSWORD_DATABASE_REFERENCE).getValue(String.class);
-
                     //controllo se vecchia password inserita è uguale a quella dentro database
                     if(!passwordDb.equals("")) {
                         if (passwordDb.equals(oldPw)) {
@@ -199,8 +267,6 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                                 FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
                                 fUser.updatePassword(newPw);
                                 userResponseCallback.onSuccessFromRemoteDatabase(null);
-
-
                             } else {
                                 userResponseCallback.onFailureFromRemoteDatabase(NEW_PASSWORD_ERROR);
                             }
@@ -212,8 +278,6 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                     }
                 }
             }
-
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -234,6 +298,8 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
             }
         });
     }
+
+
 
 
     /*public void addChallenge(){
