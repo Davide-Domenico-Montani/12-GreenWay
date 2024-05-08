@@ -25,7 +25,7 @@
                 android:id="@+id/friendImage"
                 android:layout_width="match_parent"
                 android:layout_height="194dp"
-                app:srcCompat="Foto"
+                android:src="@drawable/icon_car"
                 android:scaleType="centerCrop"
                 android:contentDescription="description"
                 />
