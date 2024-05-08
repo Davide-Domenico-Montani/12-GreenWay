@@ -3,6 +3,9 @@ package it.unimib.greenway.ui.welcome;
 import static it.unimib.greenway.util.Constants.EMAIL_ADDRESS;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ERROR_LOGIN;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_CHALLENGE;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.ID;
 import static it.unimib.greenway.util.Constants.PASSWORD;
 import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
@@ -118,19 +121,16 @@ public class LoginFragment extends Fragment {
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {
                                     User user = ((Result.UserResponseSuccess) result).getData();
-                                    Log.d("LoginFragment", "User: " + user.getUserId() + " " + user.getEmail());
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     saveLoginData(user.getUserId(), Email, Password);
-                                    //userViewModel.setAuthenticationError(false);
                                     retrieveUserInformationAndStartActivity(user, R.id.action_loginFragment_to_mainActivity);
 
                                 } else {
-                                    //userViewModel.setAuthenticationError(true);
                                     progressIndicator.setVisibility(View.GONE);
-                                    //Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                      //      getErrorMessage(((Result.Error) result).getMessage()),
-                                        //    Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                            getErrorMessage(((Result.Error) result).getMessage()),
+                                            Snackbar.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -142,11 +142,7 @@ public class LoginFragment extends Fragment {
         return EmailValidator.getInstance().isValid(email);
     }
     private void retrieveUserInformationAndStartActivity(User user, int destination) {
-
-
-
                     startActivityBasedOnCondition(MainActivity.class, destination);
-
     }
 
     private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
@@ -179,6 +175,19 @@ public class LoginFragment extends Fragment {
         } catch (GeneralSecurityException | IOException e) {
             Log.e("Error saving login data", e.toString());
             e.printStackTrace();
+        }
+    }
+
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case ERROR_RETRIEVING_CHALLENGE:
+                return requireActivity().getString(R.string.error_retrieving_challenge);
+            case ERROR_RETRIEVING_USER_INFO:
+                return requireActivity().getString(R.string.error_retrieving_user_info);
+            case ERROR_LOGIN:
+                return requireActivity().getString(R.string.error_login);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
         }
     }
 }

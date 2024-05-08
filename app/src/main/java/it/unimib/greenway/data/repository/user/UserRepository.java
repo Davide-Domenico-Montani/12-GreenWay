@@ -10,6 +10,7 @@ import it.unimib.greenway.data.source.user.BaseUserAuthenticationRemoteDataSourc
 import it.unimib.greenway.data.source.user.BaseUserDataRemoteDataSource;
 import it.unimib.greenway.model.AirQuality;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 
 public class UserRepository implements IUserRepository, UserResponseCallback, AirQualityCallBack {
@@ -45,14 +46,14 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     }
 
     @Override
-    public MutableLiveData<Result> registerUser(String nome, String cognome, String email, String password) {
-        signUp(nome, cognome, email, password);
+    public MutableLiveData<Result> registerUser(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList) {
+        signUp(nome, cognome, email, password, statusChallengeList);
         return userMutableLiveData;
     }
 
     @Override
-    public void signUp(String nome, String cognome, String email, String password) {
-        userRemoteDataSource.signUp(nome, cognome, email, password);
+    public void signUp(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList) {
+        userRemoteDataSource.signUp(nome, cognome, email, password, statusChallengeList);
     }
 
     @Override
@@ -95,7 +96,8 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
 
     @Override
     public void onFailureFromAuthentication(String message) {
-
+        Result.Error result = new Result.Error(message);
+        userMutableLiveData.postValue(result);
     }
 
     @Override
@@ -112,7 +114,7 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
 
     @Override
     public void onSuccessLogout() {
-        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0,0));
+        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0,0, null));
         userMutableLiveData.postValue(result);
     }
 

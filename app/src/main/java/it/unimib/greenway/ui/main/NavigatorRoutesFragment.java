@@ -229,7 +229,7 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
 
                                             }else{
                                                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                                        getErrorMessage(((Result.Error) result2).getMessage()),
                                                         Snackbar.LENGTH_SHORT).show();
                                             }
                                     });

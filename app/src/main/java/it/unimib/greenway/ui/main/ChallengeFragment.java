@@ -1,6 +1,7 @@
 package it.unimib.greenway.ui.main;
 
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_CHALLENGE;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 
 import android.os.Bundle;
 
@@ -23,9 +24,13 @@ import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.ChallengeRecyclerViewAdapter;
 import it.unimib.greenway.adapter.RoutesRecyclerViewAdapter;
 import it.unimib.greenway.data.repository.challenge.IChallengeRepositoryWithLiveData;
+import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.model.Challenge;
 import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.Route;
+import it.unimib.greenway.model.User;
+import it.unimib.greenway.ui.UserViewModel;
+import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ServiceLocator;
 
 
@@ -36,11 +41,12 @@ public class ChallengeFragment extends Fragment {
     private RecyclerView recyclerViewChallenge;
     private ChallengeRecyclerViewAdapter challengeRecyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private UserViewModel userViewModel;
+
+
     public ChallengeFragment() {
         // Required empty public constructor
     }
-
-
 
     public static ChallengeFragment newInstance() {
         ChallengeFragment fragment = new ChallengeFragment();
@@ -52,6 +58,12 @@ public class ChallengeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         challengeList = new ArrayList<>();
+
+        IUserRepository userRepository = ServiceLocator.getInstance().
+                getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         IChallengeRepositoryWithLiveData challengeRepositoryWithLiveData =
                 ServiceLocator.getInstance().getChallengeRepository(
@@ -71,38 +83,50 @@ public class ChallengeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         recyclerViewChallenge = view.findViewById(R.id.recyclerViewChallenge);
-
-
         layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
-        challengeRecyclerViewAdapter = new ChallengeRecyclerViewAdapter(challengeList,
-                requireActivity().getApplication());
 
-        recyclerViewChallenge.setLayoutManager(layoutManager);
-        recyclerViewChallenge.setAdapter(challengeRecyclerViewAdapter);
-        Log.d("challenge", "size" + challengeRecyclerViewAdapter.getItemCount());
-        challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
-                result -> {
-                    if(result.isSuccessChallenge()){
-                        this.challengeList.clear();
-                        this.challengeList.addAll(((Result.ChallengeResponseSuccess) result).getData().getChallenges());
-                        challengeRecyclerViewAdapter.notifyDataSetChanged();
+        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
+            if(result.isSuccessUser()){
+                User user = ((Result.UserResponseSuccess) result).getData();
 
-                        Log.d("challenge", "" + challengeList.size());
-                    }else{
-                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                getErrorMessage(((Result.Error) result).getMessage()),
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+
+                challengeRecyclerViewAdapter = new ChallengeRecyclerViewAdapter(challengeList,
+                        requireActivity().getApplication(), user);
+
+                recyclerViewChallenge.setLayoutManager(layoutManager);
+                recyclerViewChallenge.setAdapter(challengeRecyclerViewAdapter);
+                challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
+                        result2 -> {
+                            if(result2.isSuccessChallenge()){
+                                this.challengeList.clear();
+                                this.challengeList.addAll(((Result.ChallengeResponseSuccess) result2).getData().getChallenges());
+                                challengeRecyclerViewAdapter.notifyDataSetChanged();
+                            }else{
+                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                        getErrorMessage(((Result.Error) result2).getMessage()),
+                                        Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+            }else{
+                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                        getErrorMessage(((Result.Error) result).getMessage()),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private String getErrorMessage(String errorType) {
         switch (errorType) {
             case ERROR_RETRIEVING_CHALLENGE:
                 return requireActivity().getString(R.string.error_retrieving_challenge);
-
+            case ERROR_RETRIEVING_USER_INFO:
+                return requireActivity().getString(R.string.error_retrieving_user_info);
             default:
                 return requireActivity().getString(R.string.unexpected_error);
         }

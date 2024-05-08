@@ -3,6 +3,8 @@ package it.unimib.greenway.ui.welcome;
 import static it.unimib.greenway.util.Constants.EMAIL_ADDRESS;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_CHALLENGE;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.ID;
 import static it.unimib.greenway.util.Constants.PASSWORD;
 import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
@@ -31,13 +33,21 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.data.repository.challenge.IChallengeRepositoryWithLiveData;
+import it.unimib.greenway.model.Challenge;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
+import it.unimib.greenway.ui.main.ChallengeViewModel;
+import it.unimib.greenway.ui.main.ChallengeViewModelFactory;
 import it.unimib.greenway.ui.main.MainActivity;
 import it.unimib.greenway.util.DataEncryptionUtil;
+import it.unimib.greenway.util.ServiceLocator;
 import it.unimib.greenway.util.SharedPreferencesUtil;
 
 
@@ -46,7 +56,8 @@ public class Sign_inFragment extends Fragment {
     TextInputEditText editTextname, editTextSurname, editTextEmail, editTextPassword, editTextRepeatPassword;
     TextInputLayout textInputLayoutName, textInputLayoutSurname, textInputLayoutEmail, textInputLayoutPassword, textInputLayoutRepeatPassword;
     Button btnConfirmRegister;
-
+    private List<Challenge> challengeList;
+    private ChallengeViewModel challengeViewModel;
     private UserViewModel userViewModel;
     private DataEncryptionUtil dataEncryptionUtil;
     private SharedPreferencesUtil sharedPreferencesUtil;
@@ -67,6 +78,12 @@ public class Sign_inFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        IChallengeRepositoryWithLiveData challengeRepositoryWithLiveData =
+                ServiceLocator.getInstance().getChallengeRepository(
+                        requireActivity().getApplication()
+                );
+        challengeViewModel = new ViewModelProvider(this, new ChallengeViewModelFactory(challengeRepositoryWithLiveData)).get(ChallengeViewModel.class);
+        challengeList = new ArrayList<>();
     }
 
     @Override
@@ -97,71 +114,84 @@ public class Sign_inFragment extends Fragment {
             public void onClick(View v) {
                 boolean isValid = true;
 
-                if(TextUtils.isEmpty(editTextname.getText().toString())){
+                if (TextUtils.isEmpty(editTextname.getText().toString())) {
                     textInputLayoutName.setError(getString(R.string.insert_name));
                     isValid = false;
                 }
 
-                if(TextUtils.isEmpty(editTextSurname.getText().toString())){
+                if (TextUtils.isEmpty(editTextSurname.getText().toString())) {
                     textInputLayoutSurname.setError(getString(R.string.insert_surname));
                     isValid = false;
                 }
 
-                if(TextUtils.isEmpty(editTextEmail.getText().toString())){
+                if (TextUtils.isEmpty(editTextEmail.getText().toString())) {
                     textInputLayoutEmail.setError(getString(R.string.insert_email));
                     isValid = false;
                 }
 
-                if(TextUtils.isEmpty(editTextPassword.getText().toString())){
+                if (TextUtils.isEmpty(editTextPassword.getText().toString())) {
                     textInputLayoutPassword.setError(getString(R.string.insert_password));
                     isValid = false;
                 }
 
-                if(TextUtils.isEmpty(editTextRepeatPassword.getText().toString())){
+                if (TextUtils.isEmpty(editTextRepeatPassword.getText().toString())) {
                     textInputLayoutRepeatPassword.setError(getString(R.string.insert_password));
                     isValid = false;
                 }
 
-                if(!editTextPassword.getText().toString().equals(editTextRepeatPassword.getText().toString())) {
+                if (!editTextPassword.getText().toString().equals(editTextRepeatPassword.getText().toString())) {
                     textInputLayoutRepeatPassword.setError(getString(R.string.password_not_match));
                     textInputLayoutPassword.setError(getString(R.string.password_not_match));
                     isValid = false;
                 }
 
-                if(!isValidEmail(editTextEmail.getText().toString()) && !TextUtils.isEmpty(editTextEmail.getText().toString())) {
+                if (!isValidEmail(editTextEmail.getText().toString()) && !TextUtils.isEmpty(editTextEmail.getText().toString())) {
                     textInputLayoutEmail.setError(getString(R.string.email_not_valid));
                     isValid = false;
                 }
 
-                if(isValid){
+                if (isValid) {
                     String Nome = editTextname.getText().toString();
                     String Cognome = editTextSurname.getText().toString();
                     String Email = editTextEmail.getText().toString();
                     String Password = editTextPassword.getText().toString();
-                    userViewModel.registerUserMutableLiveData(Nome, Cognome, Email, Password).observe(
-                            getViewLifecycleOwner(), result -> {
-                                if (result.isSuccessUser()) {
-                                    User user = ((Result.UserResponseSuccess) result).getData();
-                                    //userViewModel.setAuthenticationError(false);
-                                    //Navigation.findNavController(view).navigate(
-                                    //        R.id.action_registerFragment_to_loginFragment);
-                                    saveLoginData(user.getUserId(), Email, Password);
-                                    retrieveUserInformationAndStartActivity(user, R.id.action_signInFragment_to_mainActivity);
 
-                                    Log.d("Register", "Success");
+                    challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
+                            result2 -> {
+                                if (result2.isSuccessChallenge()) {
+                                    challengeList.clear();
+                                    challengeList.addAll(((Result.ChallengeResponseSuccess) result2).getData().getChallenges());
+                                    List<StatusChallenge> statusChallengeList = new ArrayList<>();
+                                    for (Challenge challenge : challengeList) {
+                                        statusChallengeList.add(new StatusChallenge(challenge.getId(), 0, challenge.getPoint(), 0, false));
+                                    }
+                                    userViewModel.registerUserMutableLiveData(Nome, Cognome, Email, Password, statusChallengeList).observe(
+                                            getViewLifecycleOwner(), result -> {
+                                                if (result.isSuccessUser()) {
+                                                    User user = ((Result.UserResponseSuccess) result).getData();
+
+                                                    saveLoginData(user.getUserId(), Email, Password);
+                                                    retrieveUserInformationAndStartActivity(user, R.id.action_signInFragment_to_mainActivity);
+
+                                                } else {
+
+                                                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                                        getErrorMessage(((Result.Error) result).getMessage()),
+                                                        Snackbar.LENGTH_SHORT).show();
+                                                }
+                                            });
                                 } else {
-                                    //userViewModel.setAuthenticationError(true);
-                                    //progressIndicator.setVisibility(View.GONE);
-                                    /*Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                            getErrorMessage(((Result.Error) result).getMessage()),
-                                            Snackbar.LENGTH_SHORT).show();*/
-                                    Log.d("Register", "Failure");
+                                    Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                            getErrorMessage(((Result.Error) result2).getMessage()),
+                                            Snackbar.LENGTH_SHORT).show();
                                 }
                             });
-                }
 
+                }
             }
         });
+
+
     }
 
     public boolean isValidEmail(String email) {
@@ -201,6 +231,17 @@ public class Sign_inFragment extends Fragment {
                     id.concat(":").concat(email).concat(":").concat(password));
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case ERROR_RETRIEVING_CHALLENGE:
+                return requireActivity().getString(R.string.error_retrieving_challenge);
+            case ERROR_RETRIEVING_USER_INFO:
+                return requireActivity().getString(R.string.error_retrieving_user_info);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
         }
     }
 }

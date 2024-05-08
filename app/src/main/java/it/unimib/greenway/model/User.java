@@ -2,6 +2,8 @@ package it.unimib.greenway.model;
 
 import android.graphics.Bitmap;
 
+import java.util.List;
+
 public class User {
     String userId;
     String name;
@@ -21,13 +23,14 @@ public class User {
 
     int point;
 
+    List<StatusChallenge> statusChallengeList;
+
     public User() {
     }
 
 
-//User normale
-
-    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Produced, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
+    //User normale
+    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Produced, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point, List<StatusChallenge> statusChallengeList) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -43,12 +46,13 @@ public class User {
         this.co2SavedTransit = co2SavedTransit;
         this.co2SavedWalk = co2SavedWalk;
         this.point = point;
+        this.statusChallengeList = statusChallengeList;
     }
 
 
     //User Google
 
-    public User(String userId, String name, String surname, String email, String photoUrlGoogle, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point) {
+    public User(String userId, String name, String surname, String email, String photoUrlGoogle, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point, List<StatusChallenge> statusChallengeList) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -64,8 +68,11 @@ public class User {
         this.co2SavedWalk = co2SavedWalk;
         this.point = point;
         this.photoUrl = photoUrl;
+        this.statusChallengeList = statusChallengeList;
     }
     //Costruttore per login
+
+
 
     public User(String userId, String email, String password){
         this.userId = userId;
@@ -78,7 +85,13 @@ public class User {
         this.userId = userId;
         this.email = email;
     }
+    public List<StatusChallenge> getStatusChallengeList() {
+        return statusChallengeList;
+    }
 
+    public void setStatusChallengeList(List<StatusChallenge> statusChallengeList) {
+        this.statusChallengeList = statusChallengeList;
+    }
     public String getName() {
         return name;
     }

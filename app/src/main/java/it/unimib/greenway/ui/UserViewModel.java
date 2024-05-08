@@ -3,8 +3,11 @@ package it.unimib.greenway.ui;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 
 public class UserViewModel extends ViewModel {
@@ -28,21 +31,19 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.getGoogleUser(token);
     }
 
-    public MutableLiveData<Result> registerUserMutableLiveData(String nome, String cognome, String email, String password) {
+    public MutableLiveData<Result> registerUserMutableLiveData(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList) {
         if (userMutableLiveData == null) {
-            registerUser(nome, cognome, email, password);
+            registerUser(nome, cognome, email, password, statusChallengeList);
         }
         return userMutableLiveData;
     }
 
-    public void registerUser(String nome, String cognome, String email, String password) {
-        userMutableLiveData = userRepository.registerUser(nome, cognome, email, password);
+    public void registerUser(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList) {
+        userMutableLiveData = userRepository.registerUser(nome, cognome, email, password, statusChallengeList);
     }
 
     public MutableLiveData<Result> loginUserMutableLiveData(String email, String password) {
-        if (userMutableLiveData == null) {
             loginUser(email, password);
-        }
         return userMutableLiveData;
     }
 
