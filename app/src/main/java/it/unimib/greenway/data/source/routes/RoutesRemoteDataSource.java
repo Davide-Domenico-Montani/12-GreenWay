@@ -88,7 +88,7 @@ public class RoutesRemoteDataSource extends BaseRoutesRemoteDataSource{
                                 route.setStart(new LatLng(latStart, lonStart));
                                 route.setDestination(new LatLng(latEnd, lonEnd));
 
-                                String co2 = converterUtil.co2Calculator(route);
+                                String co2 = converterUtil.co2Calculator(route, co2Car);
                                 co2= co2.replace(",", ".");
                                 route.setCo2(Double.valueOf(co2.substring(0, co2.length()-2)));
                             }

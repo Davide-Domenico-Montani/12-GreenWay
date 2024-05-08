@@ -1,5 +1,11 @@
 package it.unimib.greenway.util;
 
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_DIESEL;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_ELETTRIC;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GASOLINE;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GPL;
+import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +23,6 @@ import it.unimib.greenway.ui.UserViewModelFactory;
 public class ConverterUtil {
     UserViewModel userViewModel;
     public ConverterUtil() {
-
     }
 
     //Convert second in to houre and minute
@@ -40,9 +45,9 @@ public class ConverterUtil {
     public double convertMeter(int meters) {
         return meters / 1000.0; // Dividi i metri per 1000 per ottenere i chilometri
     }
-    public String co2Calculator(Route route) {
+    public String co2Calculator(Route route, double co2Car) {
         if (route.getTravelMode().equals(Constants.DRIVE_CONSTANT)) {
-            return co2Converter(convertMeter(route.getDistanceMeters()) * 108.2);
+            return co2Converter(convertMeter(route.getDistanceMeters()) * co2CarEngineProduction(co2Car));
         }
         if(route.getTravelMode().equals(Constants.TRANSIT_CONSTANT)){
             double totalCO2 = 0;
@@ -94,6 +99,25 @@ public class ConverterUtil {
         return co2Progress;
     }
 
+    public double co2CarEngineProduction(double co2Car){
+        switch ((int)co2Car){
+            case 0:
+                return 0;
+            case -1:
+                return CO2_PRODUCTION_CAR_GASOLINE;
+            case -2:
+                return CO2_PRODUCTION_CAR_DIESEL;
+            case -3:
+                return CO2_PRODUCTION_CAR_GPL;
+            case -4:
+                return CO2_PRODUCTION_CAR_METHANE;
+            case -5:
+                return CO2_PRODUCTION_CAR_ELETTRIC;
+            default:
+                return co2Car;
+        }
+    }
+
     //TODO: fare funzione che calcola la co2 consumata attraverso i km fatti e funzione che calcola il massimo aggiungendo la co2 salvata
 
     /* double co2ConsumedProgressBarMax(double kmCar,double kmTransit, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, double co2Car) {
@@ -115,4 +139,5 @@ public class ConverterUtil {
         byte[] decodedBytes = Base64.decode(encodedString, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
+
 }
