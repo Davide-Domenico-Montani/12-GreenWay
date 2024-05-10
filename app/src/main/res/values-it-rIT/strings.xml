@@ -74,6 +74,7 @@
     <string name="error_retrieving_routes">Errore nel recuperare i percorsi</string>
     <string name="error_retrieving_challenge">Errore nel recuperare le sfide</string>
     <string name="error_login">Email o password errate</string>
+    <string name="friends">Amici</string>
 
 
 </resources>

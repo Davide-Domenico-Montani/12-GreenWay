@@ -8,17 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.List;
 
 import it.unimib.greenway.R;
-import it.unimib.greenway.model.Challenge;
-import it.unimib.greenway.model.Route;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.util.ConverterUtil;
 
@@ -29,7 +25,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private ConverterUtil converterUtil;
 
-    public FriendsRecyclerViewAdapter(List<User> friendsList, Application application) {
+    public FriendsRecyclerViewAdapter(List<User> friendsList, Application application, User user) {
         this.friendsList = friendsList;
         this.application = application;
     }
