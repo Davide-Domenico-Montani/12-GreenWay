@@ -70,7 +70,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 Log.d("test", storedEmail);
                 Log.d("test", storedPassword);
                 if(!storedPassword.equals(".")) {
-                    //Se sono presenti informazioni di login, effettua il login automatico
                     performAutoLogin(storedEmail, storedPassword);
                 }else{
                     dataEncryptionUtil.deleteAll(ENCRYPTED_SHARED_PREFERENCES_FILE_NAME, ENCRYPTED_DATA_FILE_NAME);
