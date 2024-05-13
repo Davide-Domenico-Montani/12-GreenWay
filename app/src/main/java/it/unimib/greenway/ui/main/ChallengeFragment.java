@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
@@ -48,6 +50,8 @@ public class ChallengeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private UserViewModel userViewModel;
     private TabLayout tabLayout;
+
+    private FloatingActionButton floatingActionButton;
 
     public ChallengeFragment() {
         // Required empty public constructor
@@ -93,6 +97,8 @@ public class ChallengeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewChallenge = view.findViewById(R.id.recyclerViewChallengeFriends);
         tabLayout = view.findViewById(R.id.tabLayoutChallenge);
+        floatingActionButton = view.findViewById(R.id.floating_action_button);
+        floatingActionButton.hide();
 
         layoutManager =
                 new LinearLayoutManager(requireContext(),
@@ -153,8 +159,13 @@ public class ChallengeFragment extends Fragment {
                 int position = tab.getPosition();
                 if(position == 0){
                     currentAdapter = challengeRecyclerViewAdapter;
+                    floatingActionButton.hide();
+                    recyclerViewChallenge.setLayoutManager(new GridLayoutManager(getContext(), 1));
                 }else{
+
                     currentAdapter = friendsRecyclerViewAdapter;
+                    floatingActionButton.show();
+                    recyclerViewChallenge.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
                 }
                 recyclerViewChallenge.setAdapter(currentAdapter);

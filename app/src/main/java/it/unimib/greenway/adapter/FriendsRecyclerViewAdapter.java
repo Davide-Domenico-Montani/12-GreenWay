@@ -84,7 +84,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .into(friendImage);
             }
             friendPoint.setText(friend.getPoint() + "pt");
-            friendCo2Saved.setText("CO2 risparmiata"+(friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk()) + "g");
+            friendCo2Saved.setText((friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk()) + "kg");
         }
     }
 
