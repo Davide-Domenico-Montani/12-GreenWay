@@ -71,6 +71,8 @@ public class Constants {
     public static final String STATUS_CHALLENGE_DATABASE_REFERENCE = "statusChallengeList";
     public static final String POINT_DATABASE_REFERENCE = "point";
     public static final String ERROR_LOGIN = "login_error";
+    public static final String ADDING_FRIEND_ERROR = "adding_friend_error";
+    public static final String FRIEND_DATABASE_REFERENCE = "idFriends";
 
 
 }

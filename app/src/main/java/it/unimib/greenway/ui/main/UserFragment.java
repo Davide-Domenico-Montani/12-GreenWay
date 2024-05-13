@@ -29,6 +29,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.repository.user.IUserRepository;
 import it.unimib.greenway.model.Result;
@@ -119,6 +121,24 @@ public class UserFragment extends Fragment {
                     }
                 });
         });
+
+
+        userViewModel.getFriendsMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
+                getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessFriends()) {
+                       List<User> friends = ((Result.FriendResponseSuccess) result).getData();
+                        for(User friend : friends){
+                            Log.d("FRIENDS", friend.getName());
+                            Log.d("Friends", friends.size() + "");
+                        }
+                    }else if(result.isError()){
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+
+
         return view;
     }
     @Override
@@ -171,7 +191,7 @@ public class UserFragment extends Fragment {
                         }
 
 
-                    }else {
+                    }else if(result.isError()){
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                 getErrorMessage(((Result.Error) result).getMessage()),
                                 Snackbar.LENGTH_SHORT).show();
@@ -183,6 +203,7 @@ public class UserFragment extends Fragment {
         switch (errorType) {
             case ERROR_RETRIEVING_USER_INFO:
                 return requireActivity().getString(R.string.error_retrieving_user_info);
+
             default:
                 return requireActivity().getString(R.string.unexpected_error);
         }

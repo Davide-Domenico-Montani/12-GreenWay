@@ -1,6 +1,7 @@
 package it.unimib.greenway.data.source.user;
 
 import static android.provider.Settings.System.getString;
+import static it.unimib.greenway.util.Constants.ADDING_FRIEND_ERROR;
 import static it.unimib.greenway.util.Constants.CARKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CAR_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CHALLENGE_DATABASE_REFERENCE;
@@ -12,6 +13,7 @@ import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_ELETTRIC;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
+import static it.unimib.greenway.util.Constants.FRIEND_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.OLD_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.PASSWORD_DATABASE_REFERENCE;
@@ -26,6 +28,7 @@ import static it.unimib.greenway.util.Constants.USER_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.WALKKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.WALK_PARAMETER_DATABASE;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -50,6 +53,8 @@ import it.unimib.greenway.model.User;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     private static final String TAG = UserDataRemoteDataSource.class.getSimpleName();
+
+
 
     public double co2Car;
     private final DatabaseReference databaseReference;
@@ -246,6 +251,60 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 getUserInfo(idToken); //Come callback
             }else{
 
+            }
+        });
+    }
+
+    @Override
+    public void getFriends(String idToken) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child("idFriends").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                List<String> idFriends = new ArrayList<>();
+                for(DataSnapshot idFriendSnapshot: task.getResult().getChildren()){
+                    String idFriend = idFriendSnapshot.getValue(String.class);
+                    idFriends.add(idFriend);
+                }
+                List<User> friends = new ArrayList<>();
+                    databaseReference.child(USER_DATABASE_REFERENCE).get().addOnCompleteListener(task1 -> {
+                        if(task1.isSuccessful()){
+                            for(DataSnapshot userSnapshot: task1.getResult().getChildren()){
+                                User user = userSnapshot.getValue(User.class);
+                                if(idFriends.contains(user.getUserId())){
+                                    friends.add(user);
+                                }
+                            }
+                            Log.d("friend", friends.size() + "");
+                            userResponseCallback.onSuccessGettingFriendsFromRemoteDatabase(friends);
+                        }else{
+                            userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(task1.getException().getLocalizedMessage());
+                        }
+                    });
+
+
+            }else{
+                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(task.getException().getLocalizedMessage());
+            }
+        });
+    }
+
+    @Override
+    public void addFriend(String idToken, String friendId) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(FRIEND_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                List<String> idFriends = new ArrayList<>();
+                for(DataSnapshot idFriendSnapshot: task.getResult().getChildren()){
+                    String idFriend = idFriendSnapshot.getValue(String.class);
+                    idFriends.add(idFriend);
+                }
+                if(!idFriends.contains(friendId)){
+                    idFriends.add(friendId);
+                    databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(FRIEND_DATABASE_REFERENCE).setValue(idFriends);
+                    getFriends(idToken);
+                }else{
+                    userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(ADDING_FRIEND_ERROR);
+                }
+            }else{
+                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(ADDING_FRIEND_ERROR);
             }
         });
     }

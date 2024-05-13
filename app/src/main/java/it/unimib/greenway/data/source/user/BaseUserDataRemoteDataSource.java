@@ -22,4 +22,6 @@ public abstract class BaseUserDataRemoteDataSource {
     public abstract void updateStatusChallenge(String idToken, String transportType, String parameterco2 , String parameterKm, double co2Database, double kmDatabase);
 
     public abstract void updateUserPoint(String idToken, int point);
+    public abstract void getFriends(String idToken);
+    public abstract void addFriend(String idToken, String friendId);
 }

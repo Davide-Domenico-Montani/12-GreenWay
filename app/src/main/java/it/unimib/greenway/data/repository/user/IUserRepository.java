@@ -27,4 +27,7 @@ public interface IUserRepository {
     MutableLiveData<Result> logout();
     MutableLiveData<Result> changePassword(String token, String newPw, String oldPw);
     MutableLiveData<Result> changePhoto(String token, String imageBitmap);
+
+    MutableLiveData<Result> getFriends(String idToken);
+    MutableLiveData<Result> addFriend(String idToken, String friendId);
 }

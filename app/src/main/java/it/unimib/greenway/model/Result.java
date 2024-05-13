@@ -1,5 +1,7 @@
 package it.unimib.greenway.model;
 
+import java.util.List;
+
 public class Result {
     private Result(){}
 
@@ -17,6 +19,13 @@ public class Result {
 
     public boolean isSuccessRoutes(){
         return this instanceof RouteResponseSuccess;
+    }
+
+    public boolean isSuccessFriends(){
+        return this instanceof FriendResponseSuccess;
+    }
+    public boolean isError() {
+        return this instanceof Error;
     }
     public static final class UserResponseSuccess extends Result {
         private final User user;
@@ -56,6 +65,16 @@ public class Result {
         }
         public ChallengeResponse getData() {
             return challengeResponse;
+        }
+    }
+
+    public static final class FriendResponseSuccess extends Result{
+        private final List<User> friends;
+        public FriendResponseSuccess(List<User> friends){
+            this.friends = friends;
+        }
+        public List<User> getData(){
+            return friends;
         }
     }
     public static final class Error extends Result {

@@ -123,5 +123,22 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.updateCo2Car(idToken, co2Car);
     }
 
+    public MutableLiveData<Result> getFriendsMutableLiveData(String idToken){
+        getFriends(idToken);
+        return userMutableLiveData;
+    }
+
+    public void getFriends(String idToken){
+        userMutableLiveData = userRepository.getFriends(idToken);
+    }
+
+    public MutableLiveData<Result> addFriendMutableLiveData(String idToken, String friendId){
+        addFriend(idToken, friendId);
+        return userMutableLiveData;
+    }
+
+    public void addFriend(String idToken, String friendId){
+        userMutableLiveData = userRepository.addFriend(idToken, friendId);
+    }
 
 }
