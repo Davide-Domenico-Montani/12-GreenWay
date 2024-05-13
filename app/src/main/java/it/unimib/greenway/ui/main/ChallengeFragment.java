@@ -16,14 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.ChallengeRecyclerViewAdapter;
-import it.unimib.greenway.adapter.FriendsRecyclerViewAdapter;
 import it.unimib.greenway.adapter.RoutesRecyclerViewAdapter;
 import it.unimib.greenway.data.repository.challenge.IChallengeRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
@@ -41,14 +39,9 @@ public class ChallengeFragment extends Fragment {
     private ChallengeViewModel challengeViewModel;
     private List<Challenge> challengeList;
     private RecyclerView recyclerViewChallenge;
-    private RecyclerView recyclerViewFriends;
     private ChallengeRecyclerViewAdapter challengeRecyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private UserViewModel userViewModel;
-
-    private TabLayout tabLayout;
-    private FriendsRecyclerViewAdapter friendsRecyclerViewAdapter;
-    private List<User> friendsList;
 
 
     public ChallengeFragment() {
@@ -89,118 +82,11 @@ public class ChallengeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
-        tabLayout = view.findViewById(R.id.tabLayoutChallenge);
-
-
-        TabLayout.Tab tab0 = tabLayout.getTabAt(0);
-        TabLayout.Tab tab1 = tabLayout.getTabAt(1);
-
-
-
-        challengeList = new ArrayList<>();
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        recyclerViewChallenge= view.findViewById(R.id.recyclerViewChallengeFriends);
-                        layoutManager =
-                                new LinearLayoutManager(requireContext(),
-                                        LinearLayoutManager.VERTICAL, false);
-                        break;
-                    case 1:
-                        recyclerViewFriends= view.findViewById(R.id.recyclerViewChallengeFriends);
-                        layoutManager =
-                                new LinearLayoutManager(requireContext(),
-                                        LinearLayoutManager.VERTICAL, false);
-
-                        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
-                            if(result.isSuccessUser()){
-                                User user = ((Result.UserResponseSuccess) result).getData();
-
-
-                                friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter(friendsList,
-                                        requireActivity().getApplication(), user);
-
-                                recyclerViewFriends.setLayoutManager(layoutManager);
-                                recyclerViewFriends.setAdapter(challengeRecyclerViewAdapter);
-                                challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
-                                        result2 -> {
-                                            if(result2.isSuccessChallenge()){
-                                                //this.friendsList.clear();
-                                                //this.friendsList.addAll(((Result.ChallengeResponseSuccess) result2).getData().getChallenges());
-                                                friendsRecyclerViewAdapter.notifyDataSetChanged();
-                                            }else{
-                                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                                        getErrorMessage(((Result.Error) result2).getMessage()),
-                                                        Snackbar.LENGTH_SHORT).show();
-                                            }
-                                        });
-
-
-                            }else{
-                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                        getErrorMessage(((Result.Error) result).getMessage()),
-                                        Snackbar.LENGTH_SHORT).show();
-                            }
-                        });
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-/*
+        recyclerViewChallenge = view.findViewById(R.id.recyclerViewChallengeFriends);
         layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
-            if(result.isSuccessUser()){
-                User user = ((Result.UserResponseSuccess) result).getData();
-
-
-                challengeRecyclerViewAdapter = new ChallengeRecyclerViewAdapter(challengeList,
-                        requireActivity().getApplication(), user);
-
-                recyclerViewChallengeFriends.setLayoutManager(layoutManager);
-                recyclerViewChallengeFriends.setAdapter(challengeRecyclerViewAdapter);
-                challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
-                        result2 -> {
-                            if(result2.isSuccessChallenge()){
-                                this.challengeList.clear();
-                                this.challengeList.addAll(((Result.ChallengeResponseSuccess) result2).getData().getChallenges());
-                                challengeRecyclerViewAdapter.notifyDataSetChanged();
-                            }else{
-                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                        getErrorMessage(((Result.Error) result2).getMessage()),
-                                        Snackbar.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-            }else{
-                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                        getErrorMessage(((Result.Error) result).getMessage()),
-                        Snackbar.LENGTH_SHORT).show();
-            }
-        });
-        */
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessUser()){
                 User user = ((Result.UserResponseSuccess) result).getData();
@@ -231,6 +117,8 @@ public class ChallengeFragment extends Fragment {
                         Snackbar.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private String getErrorMessage(String errorType) {
