@@ -17,8 +17,6 @@ public class Polyline {
 
     @Override
     public String toString() {
-        return "Polyline{" +
-                "encodedPolyline='" + encodedPolyline + '\'' +
-                '}';
+        return encodedPolyline;
     }
 }

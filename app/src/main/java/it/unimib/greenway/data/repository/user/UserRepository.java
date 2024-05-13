@@ -113,8 +113,19 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     }
 
     @Override
+    public void onSuccessGettingFriendsFromRemoteDatabase(List<User> friends) {
+        Result.FriendResponseSuccess result = new Result.FriendResponseSuccess(friends);
+        userMutableLiveData.postValue(result);
+    }
+
+    @Override
+    public void onFailureGettingFriendsFromRemoteDatabase(String message) {
+
+    }
+
+    @Override
     public void onSuccessLogout() {
-        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0,0, null));
+        Result.UserResponseSuccess result = new Result.UserResponseSuccess(new User("", "", "", "", "", "", 0,0,0,0,0,0,0,0,0, null, null, 0));
         userMutableLiveData.postValue(result);
     }
 
@@ -150,6 +161,18 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
     @Override
     public MutableLiveData<Result> changePhoto(String token, String imageBitmap) {
         userDataRemoteDataSource.changePhoto(token, imageBitmap);
+        return userMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> getFriends(String idToken) {
+        userDataRemoteDataSource.getFriends(idToken);
+        return userMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> addFriend(String idToken, String friendId) {
+        userDataRemoteDataSource.addFriend(idToken, friendId);
         return userMutableLiveData;
     }
 

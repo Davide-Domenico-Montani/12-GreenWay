@@ -22,15 +22,16 @@ public class User {
     double co2SavedWalk;
 
     int point;
+    double co2Consumed;
 
     List<StatusChallenge> statusChallengeList;
-
+    List<String> idFriends;
     public User() {
     }
 
 
     //User normale
-    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Produced, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point, List<StatusChallenge> statusChallengeList) {
+    public User(String userId, String name, String surname, String email, String password, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Produced, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point, List<StatusChallenge> statusChallengeList, List<String> idFriends, double co2Consumed) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -47,6 +48,8 @@ public class User {
         this.co2SavedWalk = co2SavedWalk;
         this.point = point;
         this.statusChallengeList = statusChallengeList;
+        this.idFriends = idFriends;
+        this.co2Consumed = co2Consumed;
     }
 
 
@@ -85,6 +88,23 @@ public class User {
         this.userId = userId;
         this.email = email;
     }
+
+    public double getCo2Consumed() {
+        return co2Consumed;
+    }
+
+    public void setCo2Consumed(double co2Consumed) {
+        this.co2Consumed = co2Consumed;
+    }
+
+    public List<String> getIdFriends() {
+        return idFriends;
+    }
+
+    public void setIdFriends(List<String> idFriends) {
+        this.idFriends = idFriends;
+    }
+
     public List<StatusChallenge> getStatusChallengeList() {
         return statusChallengeList;
     }

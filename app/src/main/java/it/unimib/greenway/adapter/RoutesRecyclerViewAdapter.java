@@ -1,5 +1,7 @@
 package it.unimib.greenway.adapter;
 
+import static androidx.core.content.ContextCompat.startActivity;
+import static java.security.AccessController.getContext;
 import static it.unimib.greenway.util.Constants.URI_STRING_MAPS;
 
 import android.app.Application;
@@ -19,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.PolyUtil;
 
 import java.util.List;
 
@@ -90,10 +93,12 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         private final Button buttonNavigation;
         private final TextView co2Value;
         private final Button select;
+        private Context context;
 
         private final RecylclerViewClickListener mlistener;
         public RoutesViewHolder(@NonNull View itemView, RecylclerViewClickListener listener) {
             super(itemView);
+            context = itemView.getContext();
             routeDuration = itemView.findViewById(R.id.time_card_route);
             routeDistance = itemView.findViewById(R.id.distance_value);
             buttonNavigation = itemView.findViewById(R.id.buttonNavigate);
@@ -117,7 +122,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             routeDuration.setText(converterUtil.convertSecond(Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1))));
             routeDistance.setText(distanceString);
 
-            co2Value.setText(String.valueOf(route.getCo2()));
+            co2Value.setText(route.getCo2() + "kg");
 
 
 
@@ -129,6 +134,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps"); // Specifica che vuoi aprire l'app Google Maps
                     context.startActivity(mapIntent);
+
                 }
             });
 
@@ -155,6 +161,7 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     public void addAll(List<Route> newList) {
         routeList.addAll(newList);
     }
+
 
 
 }

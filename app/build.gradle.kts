@@ -90,6 +90,9 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
+    implementation ("com.google.maps.android:android-maps-utils:2.2.0")
+
+
 
 
 }

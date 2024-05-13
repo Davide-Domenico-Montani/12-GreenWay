@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.greenway.model.StatusChallenge;
@@ -76,8 +77,12 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                 Log.d("Ciao", firebaseUser.getUid());
                 Log.d("pippo2", statusChallengeList.size() + "");
                 if (firebaseUser != null) {
+                    List<String> friendsId = new ArrayList<>();
+                    friendsId.add("PuHhcOp2uDYfsiWqAgFVllIRMuN2");
+                    friendsId.add("EsM2kzUGPLM2iFEOkMeZ0NJ65gA2");
+
                     userResponseCallback.onSuccessFromAuthentication(
-                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0,  0, -1, 0, 0, 0, statusChallengeList)
+                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0,  0, -1, 0, 0, 0,0, statusChallengeList, friendsId, 0)
                     );
                 } else {
                     userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
