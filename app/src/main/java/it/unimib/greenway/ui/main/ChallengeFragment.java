@@ -16,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.ChallengeRecyclerViewAdapter;
+import it.unimib.greenway.adapter.FriendsRecyclerViewAdapter;
 import it.unimib.greenway.adapter.RoutesRecyclerViewAdapter;
 import it.unimib.greenway.data.repository.challenge.IChallengeRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
@@ -38,11 +40,14 @@ public class ChallengeFragment extends Fragment {
 
     private ChallengeViewModel challengeViewModel;
     private List<Challenge> challengeList;
+    private List<User> friendsList;
     private RecyclerView recyclerViewChallenge;
+    private RecyclerView.Adapter currentAdapter;
+    private FriendsRecyclerViewAdapter friendsRecyclerViewAdapter;
     private ChallengeRecyclerViewAdapter challengeRecyclerViewAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private UserViewModel userViewModel;
-
+    private TabLayout tabLayout;
 
     public ChallengeFragment() {
         // Required empty public constructor
@@ -58,6 +63,7 @@ public class ChallengeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         challengeList = new ArrayList<>();
+        friendsList = new ArrayList<>();
 
         IUserRepository userRepository = ServiceLocator.getInstance().
                 getUserRepository(requireActivity().getApplication());
@@ -75,6 +81,9 @@ public class ChallengeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_challenge, container, false);
     }
@@ -83,9 +92,14 @@ public class ChallengeFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         recyclerViewChallenge = view.findViewById(R.id.recyclerViewChallengeFriends);
+        tabLayout = view.findViewById(R.id.tabLayoutChallenge);
+
         layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
+
+        friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter(friendsList,requireActivity().getApplication());
+
 
         userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessUser()){
@@ -94,9 +108,9 @@ public class ChallengeFragment extends Fragment {
 
                 challengeRecyclerViewAdapter = new ChallengeRecyclerViewAdapter(challengeList,
                         requireActivity().getApplication(), user);
-
+                currentAdapter = challengeRecyclerViewAdapter;
+                recyclerViewChallenge.setAdapter(currentAdapter);
                 recyclerViewChallenge.setLayoutManager(layoutManager);
-                recyclerViewChallenge.setAdapter(challengeRecyclerViewAdapter);
                 challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
                         result2 -> {
                             if(result2.isSuccessChallenge()){
@@ -111,14 +125,51 @@ public class ChallengeFragment extends Fragment {
                         });
 
 
-            }else{
+            }else if(result.isError()){
                 Snackbar.make(requireActivity().findViewById(android.R.id.content),
                         getErrorMessage(((Result.Error) result).getMessage()),
                         Snackbar.LENGTH_SHORT).show();
             }
         });
 
+        userViewModel.getFriendsMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
+                getViewLifecycleOwner(), result -> {
+                    if (result.isSuccessFriends()) {
+                        List<User> friends = ((Result.FriendResponseSuccess) result).getData();
+                        this.friendsList.clear();
+                        this.friendsList.addAll(friends);
+                        Log.d("FRIENDS", friends.size() + "");
+                        friendsRecyclerViewAdapter.notifyDataSetChanged();
+                    }else if(result.isError()){
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                getErrorMessage(((Result.Error) result).getMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if(position == 0){
+                    currentAdapter = challengeRecyclerViewAdapter;
+                }else{
+                    currentAdapter = friendsRecyclerViewAdapter;
+
+                }
+                recyclerViewChallenge.setAdapter(currentAdapter);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+        });
     }
 
     private String getErrorMessage(String errorType) {

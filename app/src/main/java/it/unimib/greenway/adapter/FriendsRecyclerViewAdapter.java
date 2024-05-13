@@ -35,7 +35,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
         view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.challenge_card_item, parent, false);
+                inflate(R.layout.friend_card_item, parent, false);
         return new FriendsRecyclerViewAdapter.FriendsViewHolder(view);
     }
 
