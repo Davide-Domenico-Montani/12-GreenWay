@@ -8,17 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.List;
 
 import it.unimib.greenway.R;
-import it.unimib.greenway.model.Challenge;
-import it.unimib.greenway.model.Route;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.util.ConverterUtil;
 
@@ -39,7 +35,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
         view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.challenge_card_item, parent, false);
+                inflate(R.layout.friend_card_item, parent, false);
         return new FriendsRecyclerViewAdapter.FriendsViewHolder(view);
     }
 
@@ -88,7 +84,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .into(friendImage);
             }
             friendPoint.setText(friend.getPoint() + "pt");
-            friendCo2Saved.setText("CO2 risparmiata"+(friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk()) + "g");
+            friendCo2Saved.setText((friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk()) + "kg");
         }
     }
 
