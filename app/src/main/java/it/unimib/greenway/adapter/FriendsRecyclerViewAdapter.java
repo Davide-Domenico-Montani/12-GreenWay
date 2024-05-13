@@ -25,7 +25,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private ConverterUtil converterUtil;
 
-    public FriendsRecyclerViewAdapter(List<User> friendsList, Application application, User user) {
+    public FriendsRecyclerViewAdapter(List<User> friendsList, Application application) {
         this.friendsList = friendsList;
         this.application = application;
     }
