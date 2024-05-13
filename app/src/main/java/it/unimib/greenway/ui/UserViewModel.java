@@ -141,4 +141,13 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.addFriend(idToken, friendId);
     }
 
+    public MutableLiveData<Result> removeFriendMutableLiveData(String idToken, String friendId){
+        removeFriend(idToken, friendId);
+        return userMutableLiveData;
+    }
+
+    public void removeFriend(String idToken, String friendId){
+        userMutableLiveData = userRepository.removeFriend(idToken, friendId);
+    }
+
 }

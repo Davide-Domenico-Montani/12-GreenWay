@@ -30,4 +30,5 @@ public interface IUserRepository {
 
     MutableLiveData<Result> getFriends(String idToken);
     MutableLiveData<Result> addFriend(String idToken, String friendId);
+    MutableLiveData<Result> removeFriend(String idToken, String friendId);
 }

@@ -24,4 +24,5 @@ public abstract class BaseUserDataRemoteDataSource {
     public abstract void updateUserPoint(String idToken, int point);
     public abstract void getFriends(String idToken);
     public abstract void addFriend(String idToken, String friendId);
+    public abstract  void removeFriend(String idToken, String friendId);
 }

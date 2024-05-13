@@ -176,6 +176,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
         return userMutableLiveData;
     }
 
+    @Override
+    public MutableLiveData<Result> removeFriend(String idToken, String friendId) {
+        userDataRemoteDataSource.removeFriend(idToken, friendId);
+        return userMutableLiveData;
+    }
+
 
     @Override
     public void onSuccessFromLocal(List<AirQuality> Response) {

@@ -138,6 +138,8 @@ public class UserFragment extends Fragment {
                     }
                 });
 
+        //userViewModel.addFriend(userViewModel.getLoggedUser().getUserId(), "EhfDKanpBYUlBiCkWLB6vjNgool1");
+        userViewModel.removeFriend(userViewModel.getLoggedUser().getUserId(), "EsM2kzUGPLM2iFEOkMeZ0NJ65gA2");
 
         return view;
     }

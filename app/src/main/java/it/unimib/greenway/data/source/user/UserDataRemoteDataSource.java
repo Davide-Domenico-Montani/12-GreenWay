@@ -20,6 +20,7 @@ import static it.unimib.greenway.util.Constants.PASSWORD_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.PASSWORD_ERROR_GOOGLE;
 import static it.unimib.greenway.util.Constants.PHOTOURL_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.POINT_DATABASE_REFERENCE;
+import static it.unimib.greenway.util.Constants.REMOVE_FRIEND_ERROR;
 import static it.unimib.greenway.util.Constants.STATUS_CHALLENGE_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.TRANSITKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
@@ -53,7 +54,6 @@ import it.unimib.greenway.model.User;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     private static final String TAG = UserDataRemoteDataSource.class.getSimpleName();
-
 
 
     public double co2Car;
@@ -257,7 +257,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
     @Override
     public void getFriends(String idToken) {
-        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child("idFriends").get().addOnCompleteListener(task -> {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(FRIEND_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 List<String> idFriends = new ArrayList<>();
                 for(DataSnapshot idFriendSnapshot: task.getResult().getChildren()){
@@ -305,6 +305,28 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 }
             }else{
                 userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(ADDING_FRIEND_ERROR);
+            }
+        });
+    }
+
+    @Override
+    public void removeFriend(String idToken, String friendId) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(FRIEND_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                List<String> idFriends = new ArrayList<>();
+                for(DataSnapshot idFriendSnapshot: task.getResult().getChildren()){
+                    String idFriend = idFriendSnapshot.getValue(String.class);
+                    idFriends.add(idFriend);
+                }
+                if(idFriends.contains(friendId)){
+                    idFriends.remove(friendId);
+                    databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(FRIEND_DATABASE_REFERENCE).setValue(idFriends);
+                    getFriends(idToken);
+                }else{
+                    userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(REMOVE_FRIEND_ERROR);
+                }
+            }else{
+                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(REMOVE_FRIEND_ERROR);
             }
         });
     }

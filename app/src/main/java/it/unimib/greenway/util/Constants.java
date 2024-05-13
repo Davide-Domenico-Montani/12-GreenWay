@@ -73,6 +73,8 @@ public class Constants {
     public static final String ERROR_LOGIN = "login_error";
     public static final String ADDING_FRIEND_ERROR = "adding_friend_error";
     public static final String FRIEND_DATABASE_REFERENCE = "idFriends";
+    public static final String REMOVE_FRIEND_ERROR = "remove_friend_error";
+
 
 
 }
