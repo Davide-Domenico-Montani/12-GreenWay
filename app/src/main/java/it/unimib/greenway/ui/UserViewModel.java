@@ -132,6 +132,13 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.getFriends(idToken);
     }
 
+    public MutableLiveData<Result> getAllUser(String idToken){
+        getAllUsers(idToken);
+        return userMutableLiveData;
+    }
+    public void getAllUsers(String idToken){
+        userMutableLiveData = userRepository.getAllUsers(idToken);
+    }
     public MutableLiveData<Result> addFriendMutableLiveData(String idToken, String friendId){
         addFriend(idToken, friendId);
         return userMutableLiveData;

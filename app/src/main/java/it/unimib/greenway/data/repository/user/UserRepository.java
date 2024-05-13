@@ -182,6 +182,12 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
         return userMutableLiveData;
     }
 
+    @Override
+    public MutableLiveData<Result> getAllUsers(String idToken) {
+        userDataRemoteDataSource.getAllUsers(idToken);
+        return userMutableLiveData;
+    }
+
 
     @Override
     public void onSuccessFromLocal(List<AirQuality> Response) {

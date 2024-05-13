@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_userFragment_to_welcomeActivity2"
             app:destination="@id/welcomeActivity2" />
+        <action
+            android:id="@+id/action_userFragment_to_addFriendFragment"
+            app:destination="@id/addFriendFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigatorRoutesFragment"
@@ -62,5 +65,10 @@
         android:name="it.unimib.greenway.ui.welcome.WelcomeActivity"
         android:label="activity_welcome"
         tools:layout="@layout/activity_welcome" />
+    <fragment
+        android:id="@+id/addFriendFragment"
+        android:name="it.unimib.greenway.ui.main.AddFriendFragment"
+        android:label="fragment_add_friend"
+        tools:layout="@layout/fragment_add_friend" />
 
 </navigation>

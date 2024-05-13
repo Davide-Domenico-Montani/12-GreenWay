@@ -291,6 +291,11 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
         fragmentManager.popBackStack();
     }
 
+    @Override
+    public void onClick(String userId) {
+
+    }
+
     private String getErrorMessage(String errorType) {
         switch (errorType) {
             case ERROR_RETRIEVING_USER_INFO:

@@ -107,7 +107,8 @@ public class UserFragment extends Fragment {
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_userFragment_to_settingFragment);
+                //Navigation.findNavController(view).navigate(R.id.action_userFragment_to_settingFragment);
+                Navigation.findNavController(view).navigate(R.id.action_userFragment_to_addFriendFragment);
             }
         });
         logoutButton.setOnClickListener(v -> {

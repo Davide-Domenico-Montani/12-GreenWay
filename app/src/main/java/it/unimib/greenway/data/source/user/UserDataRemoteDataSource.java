@@ -331,6 +331,24 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
         });
     }
 
+    @Override
+    public void getAllUsers(String idToken) {
+        databaseReference.child(USER_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                List<User> users = new ArrayList<>();
+                for(DataSnapshot userSnapshot: task.getResult().getChildren()){
+                    User user = userSnapshot.getValue(User.class);
+                    if(!user.getUserId().equals(idToken)){
+                        users.add(user);
+                    }
+                }
+                userResponseCallback.onSuccessGettingFriendsFromRemoteDatabase(users);
+            }else{
+                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(task.getException().getLocalizedMessage());
+            }
+        });
+    }
+
 
     @Override
     public void changePassword(String token, String newPw, String oldPw) {
