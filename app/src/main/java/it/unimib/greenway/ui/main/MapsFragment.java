@@ -78,7 +78,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private AirQualityViewModel airQualityViewModel;
     private SharedPreferencesUtil sharedPreferencesUtil;
     Button zoom;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -138,7 +137,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             throw new RuntimeException(e);
         }*/
 
-        //TODO: SIstemare bottone che compare solo quando accetti i permessi
         if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
         } else {

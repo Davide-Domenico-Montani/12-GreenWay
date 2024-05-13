@@ -118,8 +118,6 @@ public class UserFragment extends Fragment {
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });
-
-
         });
         return view;
     }
