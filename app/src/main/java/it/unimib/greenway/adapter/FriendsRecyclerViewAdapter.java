@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import it.unimib.greenway.R;
+import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.util.ConverterUtil;
 
@@ -41,7 +42,10 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof FriendsRecyclerViewAdapter.FriendsViewHolder){
+            ((FriendsRecyclerViewAdapter.FriendsViewHolder) holder).bind(friendsList.get(position));
 
+        }
     }
 
     @Override
@@ -74,15 +78,14 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .load(friend.getPhotoUrlGoogle())
                         .placeholder(R.drawable.icon_user)
                         .error(R.drawable.icon_user)
-                        .circleCrop()
                         .into(friendImage);
             }else if(!friend.getPhotoUrl().equals("")){
                 Glide.with(application.getApplicationContext())
                         .load(converterUtil.stringToBitmap(friend.getPhotoUrl()))
                         .error(R.drawable.icon_user)
-                        .circleCrop()
                         .into(friendImage);
             }
+            friendName.setText(friend.getName() + " " + friend.getSurname());
             friendPoint.setText(friend.getPoint() + "pt");
             friendCo2Saved.setText((friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk()) + "kg");
         }

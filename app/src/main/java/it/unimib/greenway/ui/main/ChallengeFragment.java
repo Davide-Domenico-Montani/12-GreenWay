@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -107,6 +108,45 @@ public class ChallengeFragment extends Fragment {
         friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter(friendsList,requireActivity().getApplication());
 
 
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if(position == 0){
+                    currentAdapter = challengeRecyclerViewAdapter;
+                    floatingActionButton.hide();
+                    recyclerViewChallenge.setLayoutManager(new GridLayoutManager(getContext(), 1));
+                }else{
+
+                    currentAdapter = friendsRecyclerViewAdapter;
+                    floatingActionButton.show();
+                    recyclerViewChallenge.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+                }
+                recyclerViewChallenge.setAdapter(currentAdapter);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Do nothing
+            }
+        });
+
+        floatingActionButton.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_challengeFragment_to_addFriendFragment);
+
+        });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
         userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(getViewLifecycleOwner(), result -> {
             if(result.isSuccessUser()){
                 User user = ((Result.UserResponseSuccess) result).getData();
@@ -144,7 +184,6 @@ public class ChallengeFragment extends Fragment {
                         List<User> friends = ((Result.FriendResponseSuccess) result).getData();
                         this.friendsList.clear();
                         this.friendsList.addAll(friends);
-                        Log.d("FRIENDS", friends.size() + "");
                         friendsRecyclerViewAdapter.notifyDataSetChanged();
                     }else if(result.isError()){
                         Snackbar.make(requireActivity().findViewById(android.R.id.content),
@@ -153,37 +192,8 @@ public class ChallengeFragment extends Fragment {
                     }
                 });
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                if(position == 0){
-                    currentAdapter = challengeRecyclerViewAdapter;
-                    floatingActionButton.hide();
-                    recyclerViewChallenge.setLayoutManager(new GridLayoutManager(getContext(), 1));
-                }else{
-
-                    currentAdapter = friendsRecyclerViewAdapter;
-                    floatingActionButton.show();
-                    recyclerViewChallenge.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-                }
-                recyclerViewChallenge.setAdapter(currentAdapter);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // Do nothing
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // Do nothing
-            }
-        });
     }
-
-    private String getErrorMessage(String errorType) {
+        private String getErrorMessage(String errorType) {
         switch (errorType) {
             case ERROR_RETRIEVING_CHALLENGE:
                 return requireActivity().getString(R.string.error_retrieving_challenge);

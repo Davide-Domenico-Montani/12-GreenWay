@@ -6,5 +6,5 @@ import it.unimib.greenway.model.Route;
 
 public interface RecylclerViewClickListener {
     void onClick(Route route);
-    void onClick(String userId);
+    void onClick(String userId, boolean checked);
 }

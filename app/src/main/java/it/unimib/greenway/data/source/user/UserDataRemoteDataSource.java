@@ -342,9 +342,9 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                         users.add(user);
                     }
                 }
-                userResponseCallback.onSuccessGettingFriendsFromRemoteDatabase(users);
+                userResponseCallback.onSuccessGettingAllFriendsFromRemoteDatabase(users);
             }else{
-                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(task.getException().getLocalizedMessage());
+                userResponseCallback.onFailureGettingAllFriendsFromRemoteDatabase(task.getException().getLocalizedMessage());
             }
         });
     }

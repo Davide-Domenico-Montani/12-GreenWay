@@ -120,7 +120,20 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
 
     @Override
     public void onFailureGettingFriendsFromRemoteDatabase(String message) {
+        Result.Error result = new Result.Error(message);
+        userMutableLiveData.postValue(result);
+    }
 
+    @Override
+    public void onSuccessGettingAllFriendsFromRemoteDatabase(List<User> users) {
+        Result.AllUserResponseSuccess result = new Result.AllUserResponseSuccess(users);
+        userMutableLiveData.postValue(result);
+    }
+
+    @Override
+    public void onFailureGettingAllFriendsFromRemoteDatabase(String message) {
+        Result.Error result = new Result.Error(message);
+        userMutableLiveData.postValue(result);
     }
 
     @Override

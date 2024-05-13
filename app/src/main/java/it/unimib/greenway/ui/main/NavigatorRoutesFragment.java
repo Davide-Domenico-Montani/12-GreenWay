@@ -292,7 +292,7 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
     }
 
     @Override
-    public void onClick(String userId) {
+    public void onClick(String userId, boolean checked) {
 
     }
 

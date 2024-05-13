@@ -11,5 +11,7 @@ public interface UserResponseCallback {
     void onFailureFromRemoteDatabase(String message);
     void onSuccessGettingFriendsFromRemoteDatabase(List<User> friends);
     void onFailureGettingFriendsFromRemoteDatabase(String message);
+    void onSuccessGettingAllFriendsFromRemoteDatabase(List <User>users);
+    void onFailureGettingAllFriendsFromRemoteDatabase(String message);
     void onSuccessLogout();
 }

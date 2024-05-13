@@ -29,7 +29,11 @@
         android:id="@+id/challengeFragment"
         android:name="it.unimib.greenway.ui.main.ChallengeFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_challenge" />
+        tools:layout="@layout/fragment_challenge" >
+        <action
+            android:id="@+id/action_challengeFragment_to_addFriendFragment"
+            app:destination="@id/addFriendFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/userFragment"
@@ -42,9 +46,7 @@
         <action
             android:id="@+id/action_userFragment_to_welcomeActivity2"
             app:destination="@id/welcomeActivity2" />
-        <action
-            android:id="@+id/action_userFragment_to_addFriendFragment"
-            app:destination="@id/addFriendFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/navigatorRoutesFragment"

@@ -24,6 +24,9 @@ public class Result {
     public boolean isSuccessFriends(){
         return this instanceof FriendResponseSuccess;
     }
+    public boolean isSuccessAllUsers(){
+        return this instanceof AllUserResponseSuccess;
+    }
     public boolean isError() {
         return this instanceof Error;
     }
@@ -77,6 +80,18 @@ public class Result {
             return friends;
         }
     }
+
+
+    public static final class AllUserResponseSuccess extends Result{
+        private final List<User> allUser;
+        public AllUserResponseSuccess(List<User> allUser){
+            this.allUser = allUser;
+        }
+        public List<User> getData(){
+            return allUser;
+        }
+    }
+
     public static final class Error extends Result {
         private final String message;
         public Error(String message) {

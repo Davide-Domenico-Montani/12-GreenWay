@@ -115,7 +115,7 @@ public class AddFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
             checkBox.setChecked(loggedUser.getIdFriends().contains(user.getUserId()));
 
             checkBox.setOnClickListener(v -> {
-                    mlistener.onClick(user.getUserId());
+                    mlistener.onClick(user.getUserId(), checkBox.isChecked());
             });
         }
 

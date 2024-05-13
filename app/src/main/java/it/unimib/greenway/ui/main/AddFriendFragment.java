@@ -101,9 +101,9 @@ userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId
 
         userViewModel.getAllUser(userViewModel.getLoggedUser().getUserId()).observe(
                 getViewLifecycleOwner(), result -> {
-            if (result.isSuccessFriends()) {
+            if (result.isSuccessAllUsers()) {
                 this.userList.clear();
-                this.userList.addAll(((Result.FriendResponseSuccess) result).getData());
+                this.userList.addAll(((Result.AllUserResponseSuccess) result).getData());
                 addFriendRecyclerViewAdapter.notifyDataSetChanged();
 
             }
@@ -115,7 +115,13 @@ userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId
 
 
     @Override
-    public void onClick(String userId) {
+    public void onClick(String userId, boolean checked){
+        if(!checked){
+            userViewModel.removeFriend(userViewModel.getLoggedUser().getUserId(), userId);
+        }else{
+            userViewModel.addFriend(userViewModel.getLoggedUser().getUserId(), userId);
+
+        }
 
     }
 
