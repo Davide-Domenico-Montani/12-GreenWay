@@ -23,7 +23,6 @@ import it.unimib.greenway.util.ConverterUtil;
 public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final List<User> friendsList;
     private final Application application;
-
     private ConverterUtil converterUtil;
 
     public FriendsRecyclerViewAdapter(List<User> friendsList, Application application) {

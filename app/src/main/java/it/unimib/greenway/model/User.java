@@ -1,10 +1,15 @@
 package it.unimib.greenway.model;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Parcelable {
     String userId;
     String name;
     String surname;
@@ -240,5 +245,92 @@ public class User {
     public void setCo2Car(double co2Car) {
         this.co2Car = co2Car;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userId);
+        dest.writeString(this.name);
+        dest.writeString(this.surname);
+        dest.writeString(this.email);
+        dest.writeString(this.password);
+        dest.writeString(this.photoUrl);
+        dest.writeString(this.photoUrlGoogle);
+        dest.writeDouble(this.kmCar);
+        dest.writeDouble(this.kmTransit);
+        dest.writeDouble(this.kmWalk);
+        dest.writeDouble(this.co2Produced);
+        dest.writeDouble(this.co2Car);
+        dest.writeDouble(this.co2SavedCar);
+        dest.writeDouble(this.co2SavedTransit);
+        dest.writeDouble(this.co2SavedWalk);
+        dest.writeInt(this.point);
+        dest.writeDouble(this.co2Consumed);
+        dest.writeList(this.statusChallengeList);
+        dest.writeStringList(this.idFriends);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.userId = source.readString();
+        this.name = source.readString();
+        this.surname = source.readString();
+        this.email = source.readString();
+        this.password = source.readString();
+        this.photoUrl = source.readString();
+        this.photoUrlGoogle = source.readString();
+        this.kmCar = source.readDouble();
+        this.kmTransit = source.readDouble();
+        this.kmWalk = source.readDouble();
+        this.co2Produced = source.readDouble();
+        this.co2Car = source.readDouble();
+        this.co2SavedCar = source.readDouble();
+        this.co2SavedTransit = source.readDouble();
+        this.co2SavedWalk = source.readDouble();
+        this.point = source.readInt();
+        this.co2Consumed = source.readDouble();
+        this.statusChallengeList = new ArrayList<StatusChallenge>();
+        source.readList(this.statusChallengeList, StatusChallenge.class.getClassLoader());
+        this.idFriends = source.createStringArrayList();
+    }
+
+    protected User(Parcel in) {
+        this.userId = in.readString();
+        this.name = in.readString();
+        this.surname = in.readString();
+        this.email = in.readString();
+        this.password = in.readString();
+        this.photoUrl = in.readString();
+        this.photoUrlGoogle = in.readString();
+        this.kmCar = in.readDouble();
+        this.kmTransit = in.readDouble();
+        this.kmWalk = in.readDouble();
+        this.co2Produced = in.readDouble();
+        this.co2Car = in.readDouble();
+        this.co2SavedCar = in.readDouble();
+        this.co2SavedTransit = in.readDouble();
+        this.co2SavedWalk = in.readDouble();
+        this.point = in.readInt();
+        this.co2Consumed = in.readDouble();
+        this.statusChallengeList = new ArrayList<StatusChallenge>();
+        in.readList(this.statusChallengeList, StatusChallenge.class.getClassLoader());
+        this.idFriends = in.createStringArrayList();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
 
