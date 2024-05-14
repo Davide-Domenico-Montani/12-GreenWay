@@ -74,13 +74,13 @@ public class UserViewModel extends ViewModel {
         return userRepository.getLoggedUser();
     }
 
-    public MutableLiveData<Result> updateCo2SavedMutableLiveData(String idToken, String transportType, double co2Saved, double kmTravel){
-        updateCo2Saved(idToken, transportType, co2Saved, kmTravel);
+    public MutableLiveData<Result> updateCo2SavedMutableLiveData(String idToken, String transportType, double co2Saved, double kmTravel, double co2Consumed){
+        updateCo2Saved(idToken, transportType, co2Saved, kmTravel, co2Consumed);
         return userMutableLiveData;
     }
 
-    public void updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel){
-        userMutableLiveData = userRepository.updateCo2Saved(idToken, transportType, co2Saved, kmTravel);
+    public void updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel, double co2Consumed){
+        userMutableLiveData = userRepository.updateCo2Saved(idToken, transportType, co2Saved, kmTravel, co2Consumed);
     }
 
     public MutableLiveData<Result> logout() {

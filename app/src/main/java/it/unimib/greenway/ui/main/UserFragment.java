@@ -62,8 +62,9 @@ public class UserFragment extends Fragment {
     private double co2SavedCar;
     private double co2SavedTransit;
     private double co2SavedWalk;
-    private TextView co2SavedCarTextView, co2SavedTransitTextView,  co2SavedWalkTextView, userPointTextView;
-    private LinearProgressIndicator co2SavedCarProgressBar, co2SavedTransitProgressBar,  co2SavedWalkProgressBar;
+    private double co2Consumed;
+    private TextView co2SavedCarTextView, co2SavedTransitTextView,  co2SavedWalkTextView, userPointTextView, co2ConsumedTextView;
+    private LinearProgressIndicator co2SavedCarProgressBar, co2SavedTransitProgressBar,  co2SavedWalkProgressBar, co2ConsumedProgressBar;
     DataEncryptionUtil dataEncryptionUtil;
     public UserFragment() {
         // Required empty public constructor
@@ -103,6 +104,9 @@ public class UserFragment extends Fragment {
          co2SavedWalkTextView = view.findViewById(R.id.co2WalkTextView);
          co2SavedWalkProgressBar = view.findViewById(R.id.progressWalk);
          userPointTextView = view.findViewById(R.id.userPoints);
+        co2ConsumedProgressBar = view.findViewById(R.id.progressConsumed);
+        co2ConsumedTextView = view.findViewById(R.id.co2ConsumedTextView);
+
 
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,26 +141,32 @@ public class UserFragment extends Fragment {
                         co2SavedCar = user.getCo2SavedCar();
                         co2SavedTransit = user.getCo2SavedTransit();
                         co2SavedWalk = user.getCo2SavedWalk();
+                        co2Consumed = user.getCo2Consumed();
                         userName.setText(user.getName() + " " + user.getSurname());
                         userPointTextView.setText(user.getPoint() + "pt");
+
+
+
                         //co2SavedCar
                         String format = "%." + 3 + "f";
                         String formattedString = String.format(format,co2SavedCar);
-
                         co2SavedCarTextView.setText(formattedString + "kg");
-                         co2SavedCarProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedCar, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
+                        co2SavedCarProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedCar, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
 
                         //co2SavedTransit
-
                         formattedString = String.format(format,co2SavedTransit);
                         co2SavedTransitTextView.setText(formattedString + "kg");
                         co2SavedTransitProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedTransit, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
 
                         //co2SavedWalk
-
                         formattedString = String.format(format,co2SavedWalk);
                         co2SavedWalkTextView.setText(formattedString + "kg");
                         co2SavedWalkProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedWalk, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
+
+                        //co2Consumed
+                        formattedString = String.format(format, co2Consumed);
+                        co2ConsumedTextView.setText(formattedString + "kg");
+                        co2ConsumedProgressBar.setProgressCompat((int) (co2Consumed*100/300), true);
 
                         if(user.getPhotoUrlGoogle() != null && user.getPhotoUrl().equals("")){
                             Glide.with(requireContext())

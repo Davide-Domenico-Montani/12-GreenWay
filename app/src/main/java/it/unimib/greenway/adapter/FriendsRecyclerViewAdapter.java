@@ -85,9 +85,13 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .error(R.drawable.icon_user)
                         .into(friendImage);
             }
+            double co2Saved = friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk();
             friendName.setText(friend.getName() + " " + friend.getSurname());
             friendPoint.setText(friend.getPoint() + "pt");
-            friendCo2Saved.setText((friend.getCo2SavedCar() + friend.getCo2SavedTransit() + friend.getCo2SavedWalk()) + "kg");
+            String format = "%." + 3 + "f";
+            String formattedString = String.format(format,co2Saved);
+            friendCo2Saved.setText(formattedString + "kg");
+
         }
     }
 

@@ -5,6 +5,7 @@ import static it.unimib.greenway.util.Constants.ADDING_FRIEND_ERROR;
 import static it.unimib.greenway.util.Constants.CARKM_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CAR_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CHALLENGE_DATABASE_REFERENCE;
+import static it.unimib.greenway.util.Constants.CO2CONSUMED_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CO2_CAR_PARAMETER_DATABASE;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_DIESEL;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GASOLINE;
@@ -12,6 +13,8 @@ import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GPL;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_ELETTRIC;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ALL_USERS;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_FRIENDS;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.FRIEND_DATABASE_REFERENCE;
 import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
@@ -54,6 +57,7 @@ import it.unimib.greenway.model.User;
 
 public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     private static final String TAG = UserDataRemoteDataSource.class.getSimpleName();
+
 
 
     public double co2Car;
@@ -100,7 +104,16 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
     }
 
     @Override
-    public void updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel) {
+    public void updateCo2Saved(String idToken, String transportType, double co2Saved, double kmTravel, double co2Consumed) {
+        databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CO2CONSUMED_PARAMETER_DATABASE).get().addOnSuccessListener(dataSnapshot -> {
+            if(dataSnapshot.exists()){
+                double co2ConsumedDb =  dataSnapshot.getValue(Double.class);
+                co2ConsumedDb += co2Consumed;
+                databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CO2CONSUMED_PARAMETER_DATABASE).setValue(co2ConsumedDb);
+            }else{
+
+            }
+        });
         if(transportType.equals(DRIVE_CONSTANT)) {
             databaseReference.child(USER_DATABASE_REFERENCE).child(idToken).child(CAR_PARAMETER_DATABASE).get().addOnSuccessListener(dataSnapshot -> {
                 if(dataSnapshot.exists()){
@@ -189,7 +202,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
 
 
     @Override
-    public void updateStatusChallenge(String idToken, String transportType, String parameterco2 , String parameterKm, double co2Database, double kmDatabase) {
+    public void updateStatusChallenge(String idToken, String transportType, String parameterco2, String parameterKm, double co2Database, double kmDatabase) {
         List<Challenge> challengeList = new ArrayList<>();
         databaseReference.child(CHALLENGE_DATABASE_REFERENCE).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -273,16 +286,15 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                                     friends.add(user);
                                 }
                             }
-                            Log.d("friend", friends.size() + "");
                             userResponseCallback.onSuccessGettingFriendsFromRemoteDatabase(friends);
                         }else{
-                            userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(task1.getException().getLocalizedMessage());
+                            userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(ERROR_RETRIEVING_ALL_USERS);
                         }
                     });
 
 
             }else{
-                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(task.getException().getLocalizedMessage());
+                userResponseCallback.onFailureGettingFriendsFromRemoteDatabase(ERROR_RETRIEVING_FRIENDS);
             }
         });
     }

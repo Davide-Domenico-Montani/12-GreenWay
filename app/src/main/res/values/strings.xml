@@ -78,6 +78,8 @@
     <string name="error_retrieving_challenge">Error retrieving challenge</string>
     <string name="error_login">Email or password wrong</string>
     <string name="friends">Friends</string>
+    <string name="error_retrieving_friends">Error retrieving friends</string>
+    <string name="error_retrieving_all_users">Error retrieving all user</string>
 
 
 </resources>

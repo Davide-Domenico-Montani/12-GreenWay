@@ -277,16 +277,16 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
 
     @Override
     public void onClick(Route route) {
-        double co2Saved;
+        double co2Saved, co2Consumed;
         double kmTravel = (double) route.getDistanceMeters() / 1000;
         String transportType = route.getTravelMode();
-
+        co2Consumed = route.getCo2();
         if(transportType.equals(DRIVE_CONSTANT) || transportType.equals(TRANSIT_CONSTANT)) {
             co2Saved = driveList.get(driveList.size()-1).getCo2() - route.getCo2();
         }else{
             co2Saved = driveList.get(driveList.size()-1).getCo2();
         }
-        userViewModel.updateCo2SavedMutableLiveData(userViewModel.getLoggedUser().getUserId(), transportType, co2Saved, kmTravel);
+        userViewModel.updateCo2SavedMutableLiveData(userViewModel.getLoggedUser().getUserId(), transportType, co2Saved, kmTravel, co2Consumed);
         Snackbar.make(recyclerViewRoutes, "Hai risparmiato: " + co2Saved + " kg!", Snackbar.LENGTH_SHORT).show();
         fragmentManager.popBackStack();
     }

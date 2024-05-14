@@ -13,7 +13,7 @@ public abstract class BaseUserDataRemoteDataSource {
     public abstract void saveUserData(User user);
     public abstract void getUserInfo(String idToken);
 
-    public abstract void updateCo2Saved(String idToken,String transportType,double co2Saved,double kmTravel);
+    public abstract void updateCo2Saved(String idToken,String transportType,double co2Saved,double kmTravel, double co2Consumed);
 
     public abstract void updateCo2Car(String idToken,double co2Car);
     public abstract void updateKmTravelled(String idToken,String transportType, String parameterCo2, double co2Database,double kmTravel);

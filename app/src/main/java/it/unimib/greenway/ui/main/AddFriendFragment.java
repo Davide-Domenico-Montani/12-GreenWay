@@ -90,7 +90,7 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
+        userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
                 getViewLifecycleOwner(), result -> {
             if (result.isSuccessUser()) {
                 User user = ((Result.UserResponseSuccess) result).getData();

@@ -75,6 +75,10 @@ public class Constants {
     public static final String FRIEND_DATABASE_REFERENCE = "idFriends";
     public static final String REMOVE_FRIEND_ERROR = "remove_friend_error";
 
+    public static final String ERROR_RETRIEVING_ALL_USERS = "error_retrieving_all_users";
+    public static final String ERROR_RETRIEVING_FRIENDS = "error_retrieving_friends";
+    public static final String CO2CONSUMED_PARAMETER_DATABASE = "co2Consumed";
+
 
 
 }
