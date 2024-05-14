@@ -377,7 +377,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                                         child(token).child(PASSWORD_DATABASE_REFERENCE).setValue(newPw);
                                 FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
                                 fUser.updatePassword(newPw);
-                                userResponseCallback.onSuccessFromRemoteDatabase(null);
+                                    getUserInfo(token);
                             } else {
                                 userResponseCallback.onFailureFromRemoteDatabase(NEW_PASSWORD_ERROR);
                             }

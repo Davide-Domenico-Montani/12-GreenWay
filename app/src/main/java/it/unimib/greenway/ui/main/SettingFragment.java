@@ -276,13 +276,23 @@ public class SettingFragment extends Fragment {
                 String newPassword = newPw.getEditText().getText().toString();
                 String repeatPassword = repeatPw.getEditText().getText().toString();
 
-                if(oldPassword.isEmpty() || newPassword.isEmpty() || repeatPassword.isEmpty()){
+                if(oldPassword.isEmpty()) {
                     oldPw.setError(getString(R.string.empty_field));
+                }
+                if(newPassword.isEmpty()) {
                     newPw.setError(getString(R.string.empty_field));
+                }
+
+                if(repeatPassword.isEmpty()) {
                     repeatPw.setError(getString(R.string.empty_field));
-                }  else if(!newPassword.equals(repeatPassword)) {
+                }
+
+                if(!newPassword.equals(repeatPassword)) {
                     repeatPw.setError(getString(R.string.error_password_match));
                 }else{
+                    oldPw.setErrorEnabled(false);
+                    newPw.setErrorEnabled(false);
+                    repeatPw.setErrorEnabled(false);
                     userViewModel.changePasswordMutableLiveData(userViewModel.getLoggedUser().getUserId(), newPassword, oldPassword)
                             .observe(getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {

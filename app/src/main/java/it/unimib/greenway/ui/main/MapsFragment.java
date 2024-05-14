@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ import android.widget.Button;
 
 import com.google.android.gms.fido.fido2.api.common.AuthenticatorSelectionCriteria;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,7 +36,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -77,6 +81,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private UserViewModel userViewModel;
     private AirQualityViewModel airQualityViewModel;
     private SharedPreferencesUtil sharedPreferencesUtil;
+
     Button zoom;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -116,8 +121,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        return view;
     }
 
     @Override
@@ -127,7 +136,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         //TODO: Togliere commento quando si riattiva chiamata per mappa
         /*try {
             List<AirQuality> listAirQuality = airQualityViewModel.getAirQualityList();
-            Log.d("prova", String.valueOf(list.size()));
+            //Log.d("prova", String.valueOf(list.size()));
             if(listAirQuality.size() == 64){
                 printimage(listAirQuality);
             }
@@ -142,6 +151,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         } else {
             gMap.setMyLocationEnabled(true);
         }
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            // Get the user's current location
+                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                            // Zoom the map to the user's location
+                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        }
+                    }
+                });
 
     }
 
