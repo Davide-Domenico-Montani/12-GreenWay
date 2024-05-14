@@ -15,20 +15,24 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import it.unimib.greenway.R;
-import it.unimib.greenway.model.Result;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.util.ConverterUtil;
 
 
 public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public interface OnItemClickListener {
+        void onFriendItemClick(User user);
+    }
     private final List<User> friendsList;
     private final Application application;
+    private final OnItemClickListener onItemClickListener;
 
     private ConverterUtil converterUtil;
 
-    public FriendsRecyclerViewAdapter(List<User> friendsList, Application application) {
+    public FriendsRecyclerViewAdapter(List<User> friendsList, Application application, OnItemClickListener onItemClickListener) {
         this.friendsList = friendsList;
         this.application = application;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -65,11 +69,12 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             friendImage = itemView.findViewById(R.id.friendImage);
             friendPoint = itemView.findViewById(R.id.friendPoints);
             friendCo2Saved = itemView.findViewById(R.id.friendCo2Saved);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-
+            onItemClickListener.onFriendItemClick(friendsList.get(getAdapterPosition()));
         }
 
         public void bind(User friend) {

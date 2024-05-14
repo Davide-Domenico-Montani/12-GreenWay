@@ -78,6 +78,8 @@
     <string name="error_retrieving_challenge">Error retrieving challenge</string>
     <string name="error_login">Email or password wrong</string>
     <string name="friends">Friends</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

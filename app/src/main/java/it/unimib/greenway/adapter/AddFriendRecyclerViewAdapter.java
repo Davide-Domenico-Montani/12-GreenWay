@@ -75,6 +75,12 @@ public class AddFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
         return 0;
     }
 
+    public void filterList(List<User> filteredList) {
+        friendList.clear();
+        friendList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
+
     public class AddFriendViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Context context;
@@ -95,6 +101,7 @@ public class AddFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
         }
 
         public void bind(User user) {
+            profileImage.setImageResource(R.drawable.icon_user);
             if(user.getPhotoUrlGoogle() != null && user.getPhotoUrl().equals("")){
                 Glide.with(context)
                         .load(user.getPhotoUrlGoogle())

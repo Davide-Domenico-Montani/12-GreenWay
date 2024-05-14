@@ -113,8 +113,17 @@ public class ChallengeFragment extends Fragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter(friendsList,requireActivity().getApplication());
-
+        friendsRecyclerViewAdapter = new FriendsRecyclerViewAdapter(friendsList,
+                requireActivity().getApplication(),
+                new FriendsRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onFriendItemClick(User friend) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("friend", friend);
+                        Log.d("Friend", friend.toString());
+                        Navigation.findNavController(view).navigate(R.id.action_challengeFragment_to_friendFragment, bundle);
+                    }
+                });
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
