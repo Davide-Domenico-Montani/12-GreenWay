@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_fragment_welcome_to_sign_in"
             app:destination="@id/sign_in" />
+        <action
+            android:id="@+id/action_fragment_welcome_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
 
     <fragment

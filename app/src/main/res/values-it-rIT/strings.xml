@@ -77,6 +77,8 @@
     <string name="friends">Amici</string>
     <string name="error_retrieving_friends">Errore nel recuperare gli amici</string>
     <string name="error_retrieving_all_users">Errore nel recuperare tutti gli utenti</string>
+    <string name="car_production_notLoad">Car production non caricata</string>
+    <string name="car_production_number_error">Il valore inserito non è un numero</string>
 
 
 </resources>

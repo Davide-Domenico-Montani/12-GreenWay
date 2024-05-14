@@ -80,6 +80,8 @@
     <string name="friends">Friends</string>
     <string name="error_retrieving_friends">Error retrieving friends</string>
     <string name="error_retrieving_all_users">Error retrieving all user</string>
+    <string name="car_production_notLoad">Car production not loaded</string>
+    <string name="car_production_number_error">Inserted value is not a number</string>
 
 
 </resources>

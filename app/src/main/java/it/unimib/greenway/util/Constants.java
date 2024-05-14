@@ -79,6 +79,15 @@ public class Constants {
     public static final String ERROR_RETRIEVING_FRIENDS = "error_retrieving_friends";
     public static final String CO2CONSUMED_PARAMETER_DATABASE = "co2Consumed";
 
+    public static final String PERSONALIZED_PARAMETER = "Personalizzato";
+    public static final String ELECTRIC_PARAMETER = "Elettrica";
+    public static final String METANO_PARAMETER = "Metano";
+    public static final String GPL_PARAMETER = "GPL";
+    public static final String DIESEL_PARAMETER = "Diesel";
+    public static final String BENZINA_PARAMETER = "Benzina";
+
+
+
 
 
 }

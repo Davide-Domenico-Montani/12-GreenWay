@@ -88,8 +88,6 @@ public class NavigatorFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("startLatLng", startLatLng);
                     bundle.putParcelable("destinationLatLng", destinationLatLng);
-                    Log.d("ciao", startLatLng.toString());
-                    Log.d("ciao", destinationLatLng.toString());
                     Navigation.findNavController(rootView).navigate(R.id.action_navigatorFragment_to_navigatorRoutesFragment, bundle);
                 }
             }
@@ -115,10 +113,8 @@ public class NavigatorFragment extends Fragment {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 if(fragmentId == R.id.autocomplete_fragment){
-                    Log.d("ciao", place.getId());
                     startLatLng = place.getLatLng();
                 } else {
-                    Log.d("ciao", place.toString());
                     destinationLatLng = place.getLatLng();
                 }
             }

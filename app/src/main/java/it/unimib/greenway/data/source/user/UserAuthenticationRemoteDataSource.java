@@ -62,8 +62,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                                 getErrorMessage(task.getException()));
                     }
                 } else {
-                    Log.w(TAG, "signInWithCredential:failure", task.getException());
-                    //userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
+                    userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
                 }
             });
         }

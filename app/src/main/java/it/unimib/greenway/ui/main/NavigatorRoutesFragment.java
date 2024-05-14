@@ -286,8 +286,11 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
         }else{
             co2Saved = driveList.get(driveList.size()-1).getCo2();
         }
+        String format = "%." + 3 + "f";
+        String formattedString = String.format(format,co2Saved);
+
         userViewModel.updateCo2SavedMutableLiveData(userViewModel.getLoggedUser().getUserId(), transportType, co2Saved, kmTravel, co2Consumed);
-        Snackbar.make(recyclerViewRoutes, "Hai risparmiato: " + co2Saved + " kg!", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(recyclerViewRoutes, "Hai risparmiato: " + formattedString + " kg!", Snackbar.LENGTH_SHORT).show();
         fragmentManager.popBackStack();
     }
 

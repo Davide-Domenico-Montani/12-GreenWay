@@ -57,18 +57,12 @@ public class WelcomeActivity extends AppCompatActivity {
         try {
             // Leggi i dati di login dal file
             String storedLoginData = dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME);
-            Log.d("test", storedLoginData);
-            if(storedLoginData.isEmpty()) {
-                Log.d("test", "è null");
-            }
 
             if (storedLoginData != null && !storedLoginData.isEmpty()) {
 
                 String[] loginInfo = storedLoginData.split(":");
                 String storedEmail = loginInfo[1];
                 String storedPassword = loginInfo[2];
-                Log.d("test", storedEmail);
-                Log.d("test", storedPassword);
                 if(!storedPassword.equals(".")) {
                     performAutoLogin(storedEmail, storedPassword);
                 }else{

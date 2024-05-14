@@ -1,14 +1,21 @@
 package it.unimib.greenway.ui.main;
 
+import static it.unimib.greenway.util.Constants.BENZINA_PARAMETER;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_DIESEL;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_ELETTRIC;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GASOLINE;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GPL;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
+import static it.unimib.greenway.util.Constants.DIESEL_PARAMETER;
+import static it.unimib.greenway.util.Constants.ELECTRIC_PARAMETER;
 import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
+import static it.unimib.greenway.util.Constants.GPL_PARAMETER;
+import static it.unimib.greenway.util.Constants.METANO_PARAMETER;
 import static it.unimib.greenway.util.Constants.NEW_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.OLD_PASSWORD_ERROR;
 import static it.unimib.greenway.util.Constants.PASSWORD_ERROR_GOOGLE;
+import static it.unimib.greenway.util.Constants.PERSONALIZED_PARAMETER;
 
 import android.Manifest;
 import android.content.Intent;
@@ -72,6 +79,7 @@ public class SettingFragment extends Fragment {
     private ArrayAdapter<String> arrayAdapter_engine;
     private TextInputLayout menu;
     private AutoCompleteTextView autoCompleteTextView;
+    private boolean personalized;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -96,7 +104,7 @@ public class SettingFragment extends Fragment {
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
-
+        personalized = false;
 
 
     }
@@ -121,12 +129,12 @@ public class SettingFragment extends Fragment {
 
 
         engineTypes = new ArrayList<>();
-        engineTypes.add("Benzina");
-        engineTypes.add("Diesel");
-        engineTypes.add("GPL");
-        engineTypes.add("Metano");
-        engineTypes.add("Elettrica");
-        engineTypes.add("Personalizzato");
+        engineTypes.add(BENZINA_PARAMETER);
+        engineTypes.add(DIESEL_PARAMETER);
+        engineTypes.add(GPL_PARAMETER);
+        engineTypes.add(METANO_PARAMETER);
+        engineTypes.add(ELECTRIC_PARAMETER);
+        engineTypes.add(PERSONALIZED_PARAMETER);
 
 
 
@@ -139,7 +147,7 @@ public class SettingFragment extends Fragment {
                     if (result.isSuccessUser()) {
                         User user = ((Result.UserResponseSuccess) result).getData();
                         myEngineProduction = user.getCo2Car();
-                        Log.d("SettingFragment", "onCreateView: "+myEngineProduction);
+
                         switch ((int)myEngineProduction){
 
                                 case -1:
@@ -178,34 +186,45 @@ public class SettingFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEngine = parent.getItemAtPosition(position).toString();
                 switch (selectedEngine) {
-                    case "Benzina":
+                    case BENZINA_PARAMETER:
                         textInputCo2Car.setEnabled(false);
                         myEngineProduction = -1;
                         textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_GASOLINE));
+                        personalized = false;
                         break;
-                    case "Diesel":
+
+                    case DIESEL_PARAMETER:
                         textInputCo2Car.setEnabled(false);
                         myEngineProduction = -2;
                         textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_DIESEL));
+                        personalized = false;
                         break;
-                    case "GPL":
+
+                    case GPL_PARAMETER:
                         textInputCo2Car.setEnabled(false);
                         myEngineProduction = -3;
                         textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_GPL));
+                        personalized = false;
                         break;
-                    case "Metano":
+
+                    case METANO_PARAMETER:
                         textInputCo2Car.setEnabled(false);
                         myEngineProduction = -4;
                         textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_METHANE));
+                        personalized = false;
                         break;
-                    case "Elettrica":
+
+                    case ELECTRIC_PARAMETER:
                         textInputCo2Car.setEnabled(false);
                         myEngineProduction = -5;
                         textInputCo2Car.getEditText().setText(String.valueOf(CO2_PRODUCTION_CAR_ELETTRIC));
+                        personalized = false;
                         break;
-                    case "Personalizzato":
+
+                    case PERSONALIZED_PARAMETER:
                         textInputCo2Car.setEnabled(true);
                         textInputCo2Car.getEditText().setText(String.valueOf(0.0));
+                        personalized = true;
                         break;
                 }
             }
@@ -214,9 +233,12 @@ public class SettingFragment extends Fragment {
         addCarCo2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = textInputCo2Car.getEditText().getText().toString();
-                try {
+                if(personalized) {
+                    String input = textInputCo2Car.getEditText().getText().toString();
                     myEngineProduction = Double.parseDouble(input);
+                }
+                try {
+
                     if(myEngineProduction != 0) {
                         userViewModel.updateCo2CarMutableLiveData(userViewModel.getLoggedUser().getUserId(), myEngineProduction)
                                 .observe(getViewLifecycleOwner(), result -> {
@@ -229,15 +251,14 @@ public class SettingFragment extends Fragment {
                                     }
                                 });
                     }else{
-                        Snackbar.make(requireView(), "Car production non caricata", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(requireView(), R.string.car_production_notLoad, Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (NumberFormatException e) {
-                    Snackbar.make(requireView(), "Il valore inserito non è un numero", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), R.string.car_production_number_error, Snackbar.LENGTH_SHORT).show();
                 }
 
             }
         });
-
 
 
 
@@ -266,7 +287,6 @@ public class SettingFragment extends Fragment {
                             .observe(getViewLifecycleOwner(), result -> {
                                 if (result.isSuccessUser()) {
                                     Snackbar.make(view, getString(R.string.password_changed), Snackbar.LENGTH_SHORT).show();
-                                    //TODO: Fare check con login automatico se funziona, se non funziona bisogna carmbiare anche nelle sharedPreference
                                 } else {
                                     Snackbar.make(requireActivity().findViewById(android.R.id.content),
                                             getErrorMessage(((Result.Error) result).getMessage()),
@@ -324,6 +344,8 @@ public class SettingFragment extends Fragment {
                 return requireActivity().getString(R.string.error_oldpassword);
             case PASSWORD_ERROR_GOOGLE:
                 return requireActivity().getString(R.string.error_password_google);
+            case ERROR_RETRIEVING_USER_INFO:
+                return requireActivity().getString(R.string.error_retrieving_user_info);
             default:
                 return requireActivity().getString(R.string.unexpected_error);
         }

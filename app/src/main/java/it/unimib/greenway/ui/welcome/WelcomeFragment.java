@@ -1,5 +1,9 @@
 package it.unimib.greenway.ui.welcome;
 
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ROUTES;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
+import static it.unimib.greenway.util.Constants.USE_NAVIGATION_COMPONENT;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -107,19 +111,12 @@ public class WelcomeFragment extends Fragment {
 
                             if (authenticationResult.isSuccessUser()) {
                                 User user = ((Result.UserResponseSuccess) authenticationResult).getData();
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);
-
-                                //saveLoginData(user.getUserId(), user.getNome(), user.getCognome(), user.getEmail(), "");
-                                //userViewModel.setAuthenticationError(false);
-                                //retrieveUserInformationAndStartActivity(user, R.id.action_authenticationFragment_to_mainActivity);
+                                retrieveUserInformationAndStartActivity(user, R.id.action_fragment_welcome_to_mainActivity);
 
                             } else {
-                                //userViewModel.setAuthenticationError(true);
-
-                                //Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                 //       getErrorMessage(((Result.Error) authenticationResult).getMessage()),
-                                   //     Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                        getErrorMessage(((Result.Error) authenticationResult).getMessage()),
+                                        Snackbar.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -207,7 +204,28 @@ public class WelcomeFragment extends Fragment {
 
     }
 
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case ERROR_RETRIEVING_USER_INFO:
+                return requireActivity().getString(R.string.error_retrieving_user_info);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
+    }
 
 
+    private void retrieveUserInformationAndStartActivity(User user, int destination) {
+        startActivityBasedOnCondition(MainActivity.class, destination);
+    }
+
+    private void startActivityBasedOnCondition(Class<?> destinationActivity, int destination) {
+        if (USE_NAVIGATION_COMPONENT) {
+            Navigation.findNavController(requireView()).navigate(destination);
+        } else {
+            Intent intent = new Intent(requireContext(), destinationActivity);
+            startActivity(intent);
+        }
+        requireActivity().finish();
+    }
 
 }
