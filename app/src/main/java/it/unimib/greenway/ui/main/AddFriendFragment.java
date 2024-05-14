@@ -6,6 +6,7 @@ import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -40,6 +42,8 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
    private List<User> userList;
     private RecyclerView.LayoutManager layoutManager;
     private RecylclerViewClickListener listener;
+    private ImageButton backButton;
+    private FragmentManager fragmentManager;
 
 
     public AddFriendFragment() {
@@ -71,13 +75,15 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        fragmentManager = requireActivity().getSupportFragmentManager();
+
         return inflater.inflate(R.layout.fragment_add_friend, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        backButton = view.findViewById(R.id.backButtonAddFriend);
         recyclerView = view.findViewById(R.id.recyclerViewAddFriend);
 
         layoutManager =
@@ -109,7 +115,12 @@ userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId
             }
         });
 
-
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.popBackStack();
+            }
+        });
 
     }
 

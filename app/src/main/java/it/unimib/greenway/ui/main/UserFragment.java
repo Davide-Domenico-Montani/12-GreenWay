@@ -122,25 +122,6 @@ public class UserFragment extends Fragment {
                 });
         });
 
-
-        userViewModel.getFriendsMutableLiveData(userViewModel.getLoggedUser().getUserId()).observe(
-                getViewLifecycleOwner(), result -> {
-                    if (result.isSuccessFriends()) {
-                       List<User> friends = ((Result.FriendResponseSuccess) result).getData();
-                        for(User friend : friends){
-                            Log.d("FRIENDS", friend.getName());
-                            Log.d("Friends", friends.size() + "");
-                        }
-                    }else if(result.isError()){
-                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                getErrorMessage(((Result.Error) result).getMessage()),
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-
-        //userViewModel.addFriend(userViewModel.getLoggedUser().getUserId(), "EhfDKanpBYUlBiCkWLB6vjNgool1");
-        userViewModel.removeFriend(userViewModel.getLoggedUser().getUserId(), "EsM2kzUGPLM2iFEOkMeZ0NJ65gA2");
-
         return view;
     }
     @Override
