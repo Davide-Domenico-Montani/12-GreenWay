@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,6 +43,8 @@ import it.unimib.greenway.util.ServiceLocator;
 public class ChallengeFragment extends Fragment {
 
     private ChallengeViewModel challengeViewModel;
+
+    private ImageButton backButton;
     private List<Challenge> challengeList;
     private List<User> friendsList;
     private RecyclerView recyclerViewChallenge;
@@ -96,6 +99,11 @@ public class ChallengeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        backButton = requireActivity().findViewById(R.id.backButton);
+
+        backButton.setVisibility(View.INVISIBLE);
+
+
         recyclerViewChallenge = view.findViewById(R.id.recyclerViewChallengeFriends);
         tabLayout = view.findViewById(R.id.tabLayoutChallenge);
         floatingActionButton = view.findViewById(R.id.floating_action_button);

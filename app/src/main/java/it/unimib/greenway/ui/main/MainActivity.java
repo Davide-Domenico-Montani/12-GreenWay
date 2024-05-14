@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private NavController navController;
     private SparseArray<Integer> menuDestinationMap;
+
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +62,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.popBackStack();
+            }
+        });
+
 
     }
+
+
 
 
 }

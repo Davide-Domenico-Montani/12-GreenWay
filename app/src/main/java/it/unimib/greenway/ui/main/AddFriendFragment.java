@@ -75,6 +75,8 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        backButton = requireActivity().findViewById(R.id.backButton);
+        backButton.setVisibility(View.VISIBLE);
         fragmentManager = requireActivity().getSupportFragmentManager();
 
         return inflater.inflate(R.layout.fragment_add_friend, container, false);
@@ -83,7 +85,6 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        backButton = view.findViewById(R.id.backButtonAddFriend);
         recyclerView = view.findViewById(R.id.recyclerViewAddFriend);
 
         layoutManager =
@@ -131,7 +132,6 @@ userViewModel.getUserDataMutableLiveData(userViewModel.getLoggedUser().getUserId
             userViewModel.removeFriend(userViewModel.getLoggedUser().getUserId(), userId);
         }else{
             userViewModel.addFriend(userViewModel.getLoggedUser().getUserId(), userId);
-
         }
 
     }

@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.fido.fido2.api.common.AuthenticatorSelectionCriteria;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -77,7 +78,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private UserViewModel userViewModel;
     private AirQualityViewModel airQualityViewModel;
     private SharedPreferencesUtil sharedPreferencesUtil;
-    Button zoom;
+    private Button zoom;
+    private ImageButton backButton;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -117,6 +119,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        backButton = requireActivity().findViewById(R.id.backButton);
+        backButton.setVisibility(View.INVISIBLE);
+
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 

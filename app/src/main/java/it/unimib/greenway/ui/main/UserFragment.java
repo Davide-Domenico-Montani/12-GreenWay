@@ -45,6 +45,8 @@ import it.unimib.greenway.util.ServiceLocator;
 public class UserFragment extends Fragment {
 
     private ImageButton buttonSettings;
+
+    private ImageButton backButton;
     private ConverterUtil converterUtil;
 
     private LinearProgressIndicator linearProgress;
@@ -103,6 +105,9 @@ public class UserFragment extends Fragment {
          co2SavedWalkTextView = view.findViewById(R.id.co2WalkTextView);
          co2SavedWalkProgressBar = view.findViewById(R.id.progressWalk);
          userPointTextView = view.findViewById(R.id.userPoints);
+         backButton = requireActivity().findViewById(R.id.backButton);
+
+         backButton.setVisibility(View.INVISIBLE);
 
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
