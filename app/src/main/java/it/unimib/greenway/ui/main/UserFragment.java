@@ -45,6 +45,8 @@ import it.unimib.greenway.util.ServiceLocator;
 public class UserFragment extends Fragment {
 
     private ImageButton buttonSettings;
+
+    private ImageButton backButton;
     private ConverterUtil converterUtil;
 
     private LinearProgressIndicator linearProgress;
@@ -107,6 +109,9 @@ public class UserFragment extends Fragment {
         co2ConsumedProgressBar = view.findViewById(R.id.progressConsumed);
         co2ConsumedTextView = view.findViewById(R.id.co2ConsumedTextView);
 
+         backButton = requireActivity().findViewById(R.id.backButton);
+
+         backButton.setVisibility(View.INVISIBLE);
 
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,15 +155,18 @@ public class UserFragment extends Fragment {
                         //co2SavedCar
                         String format = "%." + 3 + "f";
                         String formattedString = String.format(format,co2SavedCar);
+
                         co2SavedCarTextView.setText(formattedString + "kg");
                         co2SavedCarProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedCar, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
 
                         //co2SavedTransit
+
                         formattedString = String.format(format,co2SavedTransit);
                         co2SavedTransitTextView.setText(formattedString + "kg");
                         co2SavedTransitProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedTransit, co2SavedCar, co2SavedTransit, co2SavedWalk), true);
 
                         //co2SavedWalk
+
                         formattedString = String.format(format,co2SavedWalk);
                         co2SavedWalkTextView.setText(formattedString + "kg");
                         co2SavedWalkProgressBar.setProgress(converterUtil.co2SavedProgressBar(co2SavedWalk, co2SavedCar, co2SavedTransit, co2SavedWalk), true);

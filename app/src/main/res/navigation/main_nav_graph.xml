@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_challengeFragment_to_addFriendFragment"
             app:destination="@id/addFriendFragment" />
+        <action
+            android:id="@+id/action_challengeFragment_to_friendFragment"
+            app:destination="@id/friendFragment" />
     </fragment>
 
     <fragment
@@ -72,5 +75,10 @@
         android:name="it.unimib.greenway.ui.main.AddFriendFragment"
         android:label="fragment_add_friend"
         tools:layout="@layout/fragment_add_friend" />
+    <fragment
+        android:id="@+id/friendFragment"
+        android:name="it.unimib.greenway.ui.main.FriendFragment"
+        android:label="fragment_friend"
+        tools:layout="@layout/fragment_friend" />
 
 </navigation>

@@ -113,7 +113,6 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        backButton = view.findViewById(R.id.backButton);
         oldPw = view.findViewById(R.id.textFieldOldPw);
         newPw = view.findViewById(R.id.textFieldNewPw);
         repeatPw = view.findViewById(R.id.textFieldRepeatPw);
@@ -125,6 +124,8 @@ public class SettingFragment extends Fragment {
         autoCompleteTextView = view.findViewById(R.id.list_items);
         addCarCo2 = view.findViewById(R.id.addCarCo2);
         textInputCo2Car = view.findViewById(R.id.text_input_co2Car);
+        backButton = requireActivity().findViewById(R.id.backButton);
+        backButton.setVisibility(View.VISIBLE);
 
 
 

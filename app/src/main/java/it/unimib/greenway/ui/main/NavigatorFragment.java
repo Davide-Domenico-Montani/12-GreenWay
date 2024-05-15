@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,9 +45,11 @@ import it.unimib.greenway.model.User;
 
 public class NavigatorFragment extends Fragment {
 
-    LatLng startLatLng;
-    LatLng destinationLatLng;
-    Button navigateButton;
+    private LatLng startLatLng;
+    private LatLng destinationLatLng;
+    private Button navigateButton;
+
+    private ImageButton backButton;
     public NavigatorFragment() {
         // Required empty public constructor
     }
@@ -72,6 +75,11 @@ public class NavigatorFragment extends Fragment {
         initAutocompleteFragment(R.id.autocomplete_fragment);
 
         initAutocompleteFragment(R.id.autocomplete_fragment2);
+
+        backButton = requireActivity().findViewById(R.id.backButton);
+
+        backButton.setVisibility(View.INVISIBLE);
+
 
 
         navigateButton.setOnClickListener(new View.OnClickListener() {

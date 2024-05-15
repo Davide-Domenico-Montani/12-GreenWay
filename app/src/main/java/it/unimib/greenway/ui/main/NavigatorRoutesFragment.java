@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
@@ -77,6 +78,8 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
     private List<Route> walkList;
     private TabLayout tabLayout;
 
+    private ImageButton backButton;
+
     private RecyclerView recyclerViewRoutes;
     private LatLng startLatLng;
     private LatLng destinationLatLng;
@@ -125,6 +128,9 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        backButton = requireActivity().findViewById(R.id.backButton);
+        backButton.setVisibility(View.VISIBLE);
 
 
         Bundle bundle = getArguments();
