@@ -370,7 +370,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 if(snapshot.exists()){
                     String passwordDb = snapshot.child(PASSWORD_DATABASE_REFERENCE).getValue(String.class);
                     //controllo se vecchia password inserita è uguale a quella dentro database
-                    if(!passwordDb.equals("")) {
+                    if(passwordDb != null) {
                         if (passwordDb.equals(oldPw)) {
                             if (!passwordDb.equals(newPw)) {
                                 databaseReference.child(USER_DATABASE_REFERENCE).

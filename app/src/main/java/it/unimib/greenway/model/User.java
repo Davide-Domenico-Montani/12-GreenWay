@@ -96,65 +96,6 @@ public class User implements Parcelable {
         this.email = email;
     }
 
-    protected User(Parcel in) {
-        userId = in.readString();
-        name = in.readString();
-        surname = in.readString();
-        email = in.readString();
-        password = in.readString();
-        photoUrl = in.readString();
-        photoUrlGoogle = in.readString();
-        kmCar = in.readDouble();
-        kmTransit = in.readDouble();
-        kmWalk = in.readDouble();
-        co2Produced = in.readDouble();
-        co2Car = in.readDouble();
-        co2SavedCar = in.readDouble();
-        co2SavedTransit = in.readDouble();
-        co2SavedWalk = in.readDouble();
-        point = in.readInt();
-        co2Consumed = in.readDouble();
-        idFriends = in.createStringArrayList();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(userId);
-        dest.writeString(name);
-        dest.writeString(surname);
-        dest.writeString(email);
-        dest.writeString(password);
-        dest.writeString(photoUrl);
-        dest.writeString(photoUrlGoogle);
-        dest.writeDouble(kmCar);
-        dest.writeDouble(kmTransit);
-        dest.writeDouble(kmWalk);
-        dest.writeDouble(co2Produced);
-        dest.writeDouble(co2Car);
-        dest.writeDouble(co2SavedCar);
-        dest.writeDouble(co2SavedTransit);
-        dest.writeDouble(co2SavedWalk);
-        dest.writeInt(point);
-        dest.writeDouble(co2Consumed);
-        dest.writeStringList(idFriends);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     public double getCo2Consumed() {
         return co2Consumed;
