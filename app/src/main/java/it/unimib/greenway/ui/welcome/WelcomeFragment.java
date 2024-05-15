@@ -41,11 +41,16 @@ import java.util.List;
 import it.unimib.greenway.CarouselItem;
 import it.unimib.greenway.R;
 import it.unimib.greenway.adapter.CarouselAdapter;
+import it.unimib.greenway.data.repository.challenge.IChallengeRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
+import it.unimib.greenway.model.Challenge;
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
+import it.unimib.greenway.ui.main.ChallengeViewModel;
+import it.unimib.greenway.ui.main.ChallengeViewModelFactory;
 import it.unimib.greenway.ui.main.MainActivity;
 import it.unimib.greenway.util.ServiceLocator;
 
@@ -67,6 +72,8 @@ public class WelcomeFragment extends Fragment {
 
 
     Button loginButton, signInButton, google;
+    private List<Challenge> challengeList;
+    private ChallengeViewModel challengeViewModel;
 
     public WelcomeFragment() {
     }
@@ -97,6 +104,13 @@ public class WelcomeFragment extends Fragment {
                 .setAutoSelectEnabled(true)
                 .build();
 
+        IChallengeRepositoryWithLiveData challengeRepositoryWithLiveData =
+                ServiceLocator.getInstance().getChallengeRepository(
+                        requireActivity().getApplication()
+                );
+        challengeViewModel = new ViewModelProvider(this, new ChallengeViewModelFactory(challengeRepositoryWithLiveData)).get(ChallengeViewModel.class);
+        challengeList = new ArrayList<>();
+
         startIntentSenderForResult = new ActivityResultContracts.StartIntentSenderForResult();
 
         activityResultLauncher = registerForActivityResult(startIntentSenderForResult, activityResult -> {
@@ -107,18 +121,35 @@ public class WelcomeFragment extends Fragment {
                     if (idToken !=  null) {
                         Log.d("Test", idToken);
                         // Got an ID token from Google. Use it to authenticate with Firebase.
-                        userViewModel.getGoogleUserMutableLiveData(idToken).observe(getViewLifecycleOwner(), authenticationResult -> {
+                        challengeViewModel.getChallengeMutableLiveData().observe(getViewLifecycleOwner(),
+                                result2 -> {
+                                    if (result2.isSuccessChallenge()) {
+                                        challengeList.clear();
+                                        challengeList.addAll(((Result.ChallengeResponseSuccess) result2).getData().getChallenges());
+                                        List<StatusChallenge> statusChallengeList = new ArrayList<>();
+                                        for (Challenge challenge : challengeList) {
+                                            statusChallengeList.add(new StatusChallenge(challenge.getId(), 0, challenge.getPoint(), 0, false));
+                                        }
 
-                            if (authenticationResult.isSuccessUser()) {
-                                User user = ((Result.UserResponseSuccess) authenticationResult).getData();
-                                retrieveUserInformationAndStartActivity(user, R.id.action_fragment_welcome_to_mainActivity);
+                                        userViewModel.getGoogleUserMutableLiveData(idToken, statusChallengeList).observe(getViewLifecycleOwner(), authenticationResult -> {
 
-                            } else {
-                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                                        getErrorMessage(((Result.Error) authenticationResult).getMessage()),
-                                        Snackbar.LENGTH_SHORT).show();
-                            }
-                        });
+                                            if (authenticationResult.isSuccessUser()) {
+                                                User user = ((Result.UserResponseSuccess) authenticationResult).getData();
+                                                retrieveUserInformationAndStartActivity(user, R.id.action_fragment_welcome_to_mainActivity);
+
+                                            } else {
+                                                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                                    getErrorMessage(((Result.Error) authenticationResult).getMessage()),
+                                                    Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                    } else {
+                                        Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                                                getErrorMessage(((Result.Error) result2).getMessage()),
+                                                Snackbar.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
                 } catch (ApiException e) {
                     Snackbar.make(requireActivity().findViewById(android.R.id.content),

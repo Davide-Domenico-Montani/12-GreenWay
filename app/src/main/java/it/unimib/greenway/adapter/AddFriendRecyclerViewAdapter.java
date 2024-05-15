@@ -112,7 +112,9 @@ public class AddFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 
             userName.setText(user.getName() + " " + user.getSurname());
             userPoint.setText(user.getPoint() + "pt");
-            checkBox.setChecked(loggedUser.getIdFriends().contains(user.getUserId()));
+
+            if(loggedUser.getIdFriends() != null)
+                checkBox.setChecked(loggedUser.getIdFriends().contains(user.getUserId()));
 
             checkBox.setOnClickListener(v -> {
                     mlistener.onClick(user.getUserId(), checkBox.isChecked());

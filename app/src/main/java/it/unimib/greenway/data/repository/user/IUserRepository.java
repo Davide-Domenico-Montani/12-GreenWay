@@ -9,8 +9,8 @@ import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
 
 public interface IUserRepository {
-    MutableLiveData<Result> getGoogleUser(String idToken);
-    void signInWithGoogle(String token);
+    MutableLiveData<Result> getGoogleUser(String idToken, List<StatusChallenge> statusChallengeList);
+    void signInWithGoogle(String token, List<StatusChallenge> statusChallengeList);
     MutableLiveData<Result> registerUser(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList);
     void signUp(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList);
     MutableLiveData<Result> loginUser(String email, String password);

@@ -13,7 +13,7 @@ public abstract class BaseUserAuthenticationRemoteDataSource {
         this.userResponseCallback = userResponseCallback;
     }
 
-    public abstract void signInWithGoogle(String idToken);
+    public abstract void signInWithGoogle(String idToken, List<StatusChallenge> statusChallengeList);
     public abstract void signUp(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList);
     public abstract void login(String email, String password);
     public abstract void getUserCredential(String email, String password);

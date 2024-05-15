@@ -20,15 +20,15 @@ public class UserViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public MutableLiveData<Result> getGoogleUserMutableLiveData(String token) {
+    public MutableLiveData<Result> getGoogleUserMutableLiveData(String token, List<StatusChallenge> statusChallengeList) {
         if (userMutableLiveData == null) {
-            getGoogleUserData(token);
+            getGoogleUserData(token, statusChallengeList);
         }
         return userMutableLiveData;
     }
 
-    private void getGoogleUserData(String token) {
-        userMutableLiveData = userRepository.getGoogleUser(token);
+    private void getGoogleUserData(String token, List<StatusChallenge> statusChallengeList) {
+        userMutableLiveData = userRepository.getGoogleUser(token, statusChallengeList);
     }
 
     public MutableLiveData<Result> registerUserMutableLiveData(String nome, String cognome, String email, String password, List<StatusChallenge> statusChallengeList) {

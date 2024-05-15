@@ -35,14 +35,14 @@ public class UserRepository implements IUserRepository, UserResponseCallback, Ai
 
 
     @Override
-    public MutableLiveData<Result> getGoogleUser(String idToken) {
-        signInWithGoogle(idToken);
+    public MutableLiveData<Result> getGoogleUser(String idToken, List<StatusChallenge> statusChallengeList) {
+        signInWithGoogle(idToken, statusChallengeList);
         return userMutableLiveData;
     }
 
     @Override
-    public void signInWithGoogle(String token) {
-        userRemoteDataSource.signInWithGoogle(token);
+    public void signInWithGoogle(String token, List<StatusChallenge> statusChallengeList) {
+        userRemoteDataSource.signInWithGoogle(token, statusChallengeList);
     }
 
     @Override

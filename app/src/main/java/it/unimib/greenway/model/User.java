@@ -60,7 +60,7 @@ public class User implements Parcelable {
 
     //User Google
 
-    public User(String userId, String name, String surname, String email, String photoUrlGoogle, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point, List<StatusChallenge> statusChallengeList) {
+    public User(String userId, String name, String surname, String email, String photoUrlGoogle, String photoUrl, double kmCar, double kmTransit, double kmWalk, double co2Car, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, int point, List<StatusChallenge> statusChallengeList, List<String> idFriends, double co2Consumed) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -77,6 +77,8 @@ public class User implements Parcelable {
         this.point = point;
         this.photoUrl = photoUrl;
         this.statusChallengeList = statusChallengeList;
+        this.idFriends = idFriends;
+        this.co2Consumed = co2Consumed;
     }
     //Costruttore per login
 

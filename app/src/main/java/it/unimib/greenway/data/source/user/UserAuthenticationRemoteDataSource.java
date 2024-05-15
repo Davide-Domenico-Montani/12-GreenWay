@@ -36,7 +36,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
     }
 
     @Override
-    public void signInWithGoogle(String idToken) {
+    public void signInWithGoogle(String idToken, List<StatusChallenge> statusChallengeList) {
         if (idToken !=  null) {
             // Got an ID token from Google. Use it to authenticate with Firebase.
             AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
@@ -49,13 +49,13 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                         String[] parts = firebaseUser.getDisplayName().split(" ");
                         String nome = parts[0];  // Il primo elemento è il nome
                         String cognome = parts.length > 1 ? parts[1] : "";  // Il secondo elemento è il cognome, se presente
-
+                        List<String> friendList = new ArrayList<>();
                         userResponseCallback.onSuccessFromAuthentication(
                                 new User(firebaseUser.getUid(),
                                         nome, cognome,
                                         firebaseUser.getEmail(),
                                         firebaseUser.getPhotoUrl().toString(),"",
-                                        0, 0, 0, -1, 0, 0, 0,0, null
+                                        0, 0, 0, -1, 0, 0, 0,0, statusChallengeList, friendList, 0
                                         ));
                     } else {
                         userResponseCallback.onFailureFromAuthentication(
@@ -76,12 +76,9 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                 Log.d("Ciao", firebaseUser.getUid());
                 Log.d("pippo2", statusChallengeList.size() + "");
                 if (firebaseUser != null) {
-                    List<String> friendsId = new ArrayList<>();
-                    friendsId.add("PuHhcOp2uDYfsiWqAgFVllIRMuN2");
-                    friendsId.add("EsM2kzUGPLM2iFEOkMeZ0NJ65gA2");
-
+                    List<String> friendList = new ArrayList<>();
                     userResponseCallback.onSuccessFromAuthentication(
-                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0,  0, -1, 0, 0, 0,0, statusChallengeList, friendsId, 0)
+                            new User(firebaseUser.getUid(), nome, cognome, email, password, "", 0, 0, 0,  0, -1, 0, 0, 0,0, statusChallengeList, friendList, 0)
                     );
                 } else {
                     userResponseCallback.onFailureFromAuthentication(getErrorMessage(task.getException()));
