@@ -55,7 +55,11 @@
         android:id="@+id/navigatorRoutesFragment"
         android:name="it.unimib.greenway.ui.main.NavigatorRoutesFragment"
         android:label="fragment_navigator_routes"
-        tools:layout="@layout/fragment_navigator_routes" />
+        tools:layout="@layout/fragment_navigator_routes" >
+        <action
+            android:id="@+id/action_navigatorRoutesFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="it.unimib.greenway.ui.main.SettingFragment"

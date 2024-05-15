@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -298,10 +299,19 @@ public class NavigatorRoutesFragment extends Fragment implements RecylclerViewCl
         userViewModel.updateCo2SavedMutableLiveData(userViewModel.getLoggedUser().getUserId(), transportType, co2Saved, kmTravel, co2Consumed);
         Snackbar.make(recyclerViewRoutes, "Hai risparmiato: " + formattedString + " kg!", Snackbar.LENGTH_SHORT).show();
         fragmentManager.popBackStack();
+
     }
 
     @Override
     public void onClick(String userId, boolean checked) {
+
+    }
+
+    @Override
+    public void onClickMaps(Route route) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("polyline", route);
+        Navigation.findNavController(requireView()).navigate(R.id.action_navigatorRoutesFragment_to_mapsFragment, bundle);
 
     }
 

@@ -61,9 +61,15 @@ dependencies {
     // Maps SDK for Android
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation(libs.play.services.location)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+
+    implementation ("androidx.core:core:1.9.0")
+    implementation ("androidx.tracing:tracing:1.1.0")
+    testImplementation("junit:junit:4.12")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha04")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.6.0-alpha01")
+    androidTestImplementation ("androidx.test.espresso:espresso-intents:3.4.0")
+
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
@@ -80,6 +86,9 @@ dependencies {
     //places
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.0"))
     implementation("com.google.android.libraries.places:places:3.3.0")
+    androidTestImplementation(libs.rules)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.contrib)
 
     //room
     val room_version = "2.6.0"

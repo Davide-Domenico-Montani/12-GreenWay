@@ -15,11 +15,13 @@ googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "18.2.0"
 playServicesLocation = "21.2.0"
 firebaseCrashlyticsBuildtools = "2.9.9"
+rules = "1.6.0-alpha01"
+espressoContrib = "3.6.0-alpha04"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.2.0-alpha04" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.6.0-alpha04" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
@@ -31,6 +33,8 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+rules = { group = "androidx.test", name = "rules", version = "1.6.0-alpha01" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

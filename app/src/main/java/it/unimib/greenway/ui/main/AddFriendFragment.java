@@ -168,6 +168,11 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
     }
 
     @Override
+    public void onClickMaps(Route route) {
+
+    }
+
+    @Override
     public void onClick(Route route) {
 
     }

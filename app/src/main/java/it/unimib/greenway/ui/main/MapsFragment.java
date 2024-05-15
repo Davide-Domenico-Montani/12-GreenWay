@@ -7,14 +7,12 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,56 +23,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.google.android.gms.fido.fido2.api.common.AuthenticatorSelectionCriteria;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.VisibleRegion;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.maps.android.PolyUtil;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 import it.unimib.greenway.R;
-import it.unimib.greenway.data.database.AirQualityDao;
-import it.unimib.greenway.data.database.AirQualityDatabase;
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.repository.user.IUserRepository;
-import it.unimib.greenway.data.service.AirQualityApiService;
 import it.unimib.greenway.model.AirQuality;
-import it.unimib.greenway.model.AirQualityApiResponse;
-import it.unimib.greenway.model.Result;
+import it.unimib.greenway.model.Route;
 import it.unimib.greenway.ui.UserViewModel;
 import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ServiceLocator;
 import it.unimib.greenway.util.SharedPreferencesUtil;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
@@ -88,7 +64,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
 
     private int i = 0;
-
+    private Route route;
+    private List<LatLng> decodedPoint;
     private static final int PERMISSION_REQUEST_CODE = 1;
 
     public MapsFragment() {
@@ -117,7 +94,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
             airQualityViewModel = new ViewModelProvider(this, new AirQualityViewModelFactory(airQualityRepositoryWithLiveData)).get(AirQualityViewModel.class);
-
     }
 
     @Override
@@ -127,7 +103,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         backButton = requireActivity().findViewById(R.id.backButton);
         backButton.setVisibility(View.INVISIBLE);
 
-
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            route = bundle.getParcelable("polyline");
+        }
         // Inflate the layout for this fragment
         return view;
 
@@ -149,27 +128,49 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }*/
+        if(route != null){
 
-        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-        } else {
-            gMap.setMyLocationEnabled(true);
-        }
+                List<LatLng> decodedPoint = PolyUtil.decode(route.getPolyline().getEncodedPolyline());
+                Log.d("prova", decodedPoint.toString());
+                PolylineOptions polylineOptions = new PolylineOptions()
+                        .addAll(decodedPoint)
+                        .width(12)
+                        .color(Color.BLUE);
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            // Get the user's current location
-                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                gMap.addPolyline(polylineOptions);
 
-                            // Zoom the map to the user's location
-                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            float zoomLevel = 10; // Imposta il livello di zoom desiderato, un valore tra 1 e 20
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(route.getStart()) // Imposta le coordinate su cui zoomare
+                    .zoom(zoomLevel) // Imposta il livello di zoom
+                    .build();
+
+            gMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            backButton.setVisibility(View.VISIBLE);
+
+
+        }else {
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+            } else {
+                gMap.setMyLocationEnabled(true);
+            }
+
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                // Get the user's current location
+                                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                                // Zoom the map to the user's location
+                                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                            }
                         }
-                    }
-                });
-
+                    });
+        }
     }
 
     private LatLng getLatLngFromTile(int x, int y, float zoom) {
@@ -218,5 +219,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         }
     }
+
+
 }
 

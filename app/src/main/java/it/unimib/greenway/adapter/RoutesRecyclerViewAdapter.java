@@ -8,6 +8,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -109,32 +111,15 @@ public class RoutesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         public void bind(Route route) {
-
-            String polyline = "enc:" + route.getPolyline().getEncodedPolyline();
-            LatLng start = route.getStart();
-            LatLng destination = route.getDestination();
-
-            String uri = URI_STRING_MAPS + start.latitude+ ","+ start.longitude  + "&destination=" +
-                    destination.latitude + "," + destination.longitude + "&polyline=" + polyline;
-
             String distanceString = converterUtil.convertMeter(route.getDistanceMeters()) + "km";
-
             routeDuration.setText(converterUtil.convertSecond(Integer.valueOf(route.getDuration().substring(0, route.getDuration().length() - 1))));
             routeDistance.setText(distanceString);
-
             co2Value.setText(route.getCo2() + "kg");
-
-
 
             buttonNavigation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Uri gmmIntentUri = Uri.parse(uri);
-                    Context context = v.getContext();
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps"); // Specifica che vuoi aprire l'app Google Maps
-                    context.startActivity(mapIntent);
-
+                    mlistener.onClickMaps(route);
                 }
             });
 
