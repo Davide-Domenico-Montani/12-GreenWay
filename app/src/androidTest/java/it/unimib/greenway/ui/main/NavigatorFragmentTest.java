@@ -103,7 +103,7 @@ public class NavigatorFragmentTest {
 
     @Test
     public void correcAddresstSearch() throws InterruptedException {
-
+        Thread.sleep(20000);
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.item_nav), withContentDescription("Navigatore"),
                         childAtPosition(
@@ -190,6 +190,7 @@ public class NavigatorFragmentTest {
 
     @Test
     public void errorAddressSearch() throws InterruptedException {
+        Thread.sleep(20000);
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.item_nav), withContentDescription("Navigatore"),
                         childAtPosition(
