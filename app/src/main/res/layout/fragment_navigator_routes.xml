@@ -16,12 +16,14 @@
         android:id="@+id/tabLayout">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabCar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_car"
             android:text="---"/>
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabPublic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_publict"
@@ -29,6 +31,7 @@
 
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabWalk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/icon_walk"
