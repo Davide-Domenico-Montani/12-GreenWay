@@ -64,6 +64,7 @@ dependencies {
 
     implementation ("androidx.core:core:1.9.0")
     implementation ("androidx.tracing:tracing:1.1.0")
+    implementation(libs.transportation.consumer)
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha04")
     androidTestImplementation("androidx.test:runner:1.4.0")
