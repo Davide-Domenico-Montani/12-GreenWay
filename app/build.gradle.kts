@@ -101,6 +101,16 @@ dependencies {
 
     implementation ("com.google.maps.android:android-maps-utils:2.2.0")
 
+    // Dipendenza di Robolectric
+    testImplementation ("org.robolectric:robolectric:4.10.3")
+
+    // Dipendenza per le API Android per i test
+    testImplementation ("androidx.test:core:1.5.0")
+
+    // Dipendenze per Mockito se lo usi
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    testImplementation ("org.mockito:mockito-inline:3.12.4")
+
 
 
 
