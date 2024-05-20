@@ -356,7 +356,7 @@ public class UserDataRemoteDataSource extends BaseUserDataRemoteDataSource{
                 }
                 userResponseCallback.onSuccessGettingAllFriendsFromRemoteDatabase(users);
             }else{
-                userResponseCallback.onFailureGettingAllFriendsFromRemoteDatabase(task.getException().getLocalizedMessage());
+                userResponseCallback.onFailureGettingAllFriendsFromRemoteDatabase(ERROR_RETRIEVING_ALL_USERS);
             }
         });
     }
