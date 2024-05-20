@@ -79,6 +79,8 @@
     <string name="error_retrieving_all_users">Errore nel recuperare tutti gli utenti</string>
     <string name="car_production_notLoad">Car production non caricata</string>
     <string name="car_production_number_error">Il valore inserito non è un numero</string>
+    <string name="error_removing_friend">Errore: amico non rimosso</string>
+    <string name="error_adding_friend">Errore: amico non aggiunto</string>
 
 
 </resources>

@@ -1,5 +1,7 @@
 package it.unimib.greenway.data.source.user;
 
+import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.unimib.greenway.util.Constants.ENCRYPTED_SHARED_PREFERENCES_FILE_NAME;
 import static it.unimib.greenway.util.Constants.ERROR_LOGIN;
 import static it.unimib.greenway.util.Constants.INVALID_CREDENTIALS_ERROR;
 import static it.unimib.greenway.util.Constants.INVALID_USER_ERROR;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import it.unimib.greenway.model.StatusChallenge;
 import it.unimib.greenway.model.User;
+import it.unimib.greenway.util.DataEncryptionUtil;
 
 public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRemoteDataSource {
 
@@ -33,6 +36,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
     private final FirebaseAuth firebaseAuth;
     public UserAuthenticationRemoteDataSource() {
         firebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     @Override
@@ -144,6 +148,7 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
                 if (firebaseAuth.getCurrentUser() == null) {
                     firebaseAuth.removeAuthStateListener(this);
                     Log.d(TAG, "User logged out");
+
                     userResponseCallback.onSuccessLogout();
                 }
             }

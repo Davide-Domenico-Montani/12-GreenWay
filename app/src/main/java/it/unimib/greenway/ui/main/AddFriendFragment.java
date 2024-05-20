@@ -1,6 +1,11 @@
 package it.unimib.greenway.ui.main;
 
+import static it.unimib.greenway.util.Constants.ADDING_FRIEND_ERROR;
 import static it.unimib.greenway.util.Constants.DRIVE_CONSTANT;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ALL_USERS;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_ROUTES;
+import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
+import static it.unimib.greenway.util.Constants.REMOVE_FRIEND_ERROR;
 import static it.unimib.greenway.util.Constants.TRANSIT_CONSTANT;
 
 import android.os.Bundle;
@@ -144,6 +149,10 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
                 this.userList.addAll(((Result.AllUserResponseSuccess) result).getData());
                 addFriendRecyclerViewAdapter.notifyDataSetChanged();
 
+            }else if(result.isError()){
+                Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                        getErrorMessage(((Result.Error) result).getMessage()),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -192,5 +201,18 @@ public class AddFriendFragment extends Fragment implements RecylclerViewClickLis
             }
         }
         addFriendRecyclerViewAdapter.filterList(filteredList);
+    }
+
+    private String getErrorMessage(String errorType) {
+        switch (errorType) {
+            case REMOVE_FRIEND_ERROR:
+                return requireActivity().getString(R.string.error_removing_friend);
+            case ADDING_FRIEND_ERROR:
+                return requireActivity().getString(R.string.error_adding_friend);
+            case ERROR_RETRIEVING_ALL_USERS:
+                return requireActivity().getString(R.string.error_retrieving_all_users);
+            default:
+                return requireActivity().getString(R.string.unexpected_error);
+        }
     }
 }
