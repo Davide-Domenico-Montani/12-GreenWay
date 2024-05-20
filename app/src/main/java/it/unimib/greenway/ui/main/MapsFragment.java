@@ -41,6 +41,7 @@ import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
@@ -117,9 +118,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         gMap = googleMap;
 
         //TODO: Togliere commento quando si riattiva chiamata per mappa
-        /*try {
+        try {
             List<AirQuality> listAirQuality = airQualityViewModel.getAirQualityList();
-            Log.d("prova", String.valueOf(list.size()));
+            Log.d("prova", String.valueOf(listAirQuality.size()));
             if(listAirQuality.size() == 64){
                 printimage(listAirQuality);
             }
@@ -127,7 +128,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         if(route != null){
 
                 List<LatLng> decodedPoint = PolyUtil.decode(route.getPolyline().getEncodedPolyline());
