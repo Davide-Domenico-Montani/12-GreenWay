@@ -18,9 +18,7 @@ public class ChallengeViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getChallengeMutableLiveData() {
-
         getChallenge();
-
         return challengeMutableLiveData;
     }
 
