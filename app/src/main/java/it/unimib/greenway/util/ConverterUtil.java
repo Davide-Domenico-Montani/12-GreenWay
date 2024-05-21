@@ -95,7 +95,7 @@ public class ConverterUtil {
 
     public int co2SavedProgressBar(double co2, double co2SavedCar, double co2SavedTransit, double co2SavedWalk){
         int co2Progress;
-        co2Progress =(int)(co2*(100/(co2SavedCar + co2SavedTransit + co2SavedWalk)));//TODO: aggiornare co2*(100/totalco2Saved)
+        co2Progress =(int)(co2*(100/(co2SavedCar + co2SavedTransit + co2SavedWalk)));
         return co2Progress;
     }
 
@@ -117,14 +117,6 @@ public class ConverterUtil {
                 return co2Car;
         }
     }
-
-    //TODO: fare funzione che calcola la co2 consumata attraverso i km fatti e funzione che calcola il massimo aggiungendo la co2 salvata
-
-    /* double co2ConsumedProgressBarMax(double kmCar,double kmTransit, double co2SavedCar, double co2SavedTransit, double co2SavedWalk, double co2Car) {
-        double co2ConsumedProgress;
-        co2ConsumedProgress = kmCar
-        return co2ConsumedProgress;
-    }*/
 
 
     //conversione immagine BitMap a string per salvarla su realtime
