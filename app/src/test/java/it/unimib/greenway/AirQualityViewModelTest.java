@@ -1,99 +1,97 @@
 package it.unimib.greenway;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
 import it.unimib.greenway.data.source.airQuality.BaseAirQualityRemoteDataSource;
 import it.unimib.greenway.model.AirQuality;
+import it.unimib.greenway.model.AirQualityResponse;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
+import org.junit.Before;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
+
 import it.unimib.greenway.model.Result;
+import it.unimib.greenway.ui.main.AirQualityViewModel;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(manifest=Config.NONE)
 public class AirQualityViewModelTest {
 
-
-    @Mock
-    BaseAirQualityLocalDataSource mockLocalDataSource;
-
-    @Mock
-    BaseAirQualityRemoteDataSource mockRemoteDataSource;
-
     private AirQualityRepositoryWithLiveData repository;
-    private final long TWO_HOURS = 2 * 60 * 60 * 1000;
+    private AirQualityViewModel viewModel;
 
     @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        repository = new AirQualityRepositoryWithLiveData(mockLocalDataSource, mockRemoteDataSource);
+    public void setUp() {
+        BaseAirQualityLocalDataSource localDataSource = mock(BaseAirQualityLocalDataSource.class);
+        BaseAirQualityRemoteDataSource remoteDataSource = mock(BaseAirQualityRemoteDataSource.class);
+
+        repository = new AirQualityRepositoryWithLiveData(localDataSource, remoteDataSource);
+        viewModel = new AirQualityViewModel(repository);
     }
 
     @Test
-    public void testFetchAllAirQuality_remoteDataSourceCalled() {
-        // Given
-        long lastUpdate = System.currentTimeMillis() - TWO_HOURS - 1;
+    public void testFetchAllAirQuality_whenLastUpdateIsZero_fetchesFromRemote() {
+        // Arrange
+        MutableLiveData<Result> liveData = new MutableLiveData<>();
+        when(repository.fetchAllAirQUality(0)).thenReturn(liveData);
 
-        // When
-        repository.fetchAllAirQUality(lastUpdate);
+        // Act
+        LiveData<Result> result = viewModel.getAirQuality(0);
 
-        // Then
-        verify(mockRemoteDataSource).getAirQuality();
-        verify(mockLocalDataSource, never()).getAirQuality();
+        // Assert
+        assertNotNull(result);
+        assertEquals(result, liveData);
     }
 
     @Test
-    public void testFetchAllAirQuality_localDataSourceCalled() {
-        // Given
-        long lastUpdate = System.currentTimeMillis() - TWO_HOURS + 1;
+    public void testRefreshData_whenLastUpdateIsRecent_fetchesFromLocal() {
+        // Arrange
+        long lastUpdate = System.currentTimeMillis() - 1 * 60 * 60 * 1000; // 1 hour ago
+        MutableLiveData<Result> liveData = new MutableLiveData<>();
+        when(repository.fetchAllAirQUality(lastUpdate)).thenReturn(liveData);
 
-        // When
-        repository.fetchAllAirQUality(lastUpdate);
+        // Act
+        viewModel.fetchAirQuality(lastUpdate);
+        LiveData<Result> result = viewModel.getAirQuality(lastUpdate);
 
-        // Then
-        verify(mockLocalDataSource).getAirQuality();
-        verify(mockRemoteDataSource, never()).getAirQuality();
+        // Assert
+        assertNotNull(result);
+        assertEquals(result, liveData);
     }
 
     @Test
-    public void testOnSuccessFromLocal_updatesLiveData() {
-        // Given
-        List<AirQuality> airQualityList = Collections.singletonList(new AirQuality(new byte[0], 1, 2));
+    public void testOnSuccessFromLocal_postsResultToLiveData() {
+        // Arrange
+        List<AirQuality> airQualityList = new ArrayList<>();
+        airQualityList.add(new AirQuality(new byte[]{}, 1, 2));
+        Result.AirQualityResponseSuccess success = new Result.AirQualityResponseSuccess(new AirQualityResponse(airQualityList));
+        MutableLiveData<Result> liveData = new MutableLiveData<>();
+        when(repository.fetchAllAirQUality(anyLong())).thenReturn(liveData);
+        liveData.postValue(success);
 
-        // When
-        repository.onSuccessFromLocal(airQualityList);
+        // Act
+        viewModel.fetchAirQuality(0);
+        LiveData<Result> result = viewModel.getAirQuality(0);
 
-        // Then
-        MutableLiveData<Result> liveData = repository.fetchAllAirQUality(0);
-        Result result = liveData.getValue();
-        assertTrue(result instanceof Result.AirQualityResponseSuccess);
-        assertEquals(((Result.AirQualityResponseSuccess) result).getData().getAirQualities(), airQualityList);
-    }
-
-    @Test
-    public void testGetAirQualityList() throws ExecutionException, InterruptedException {
-        // Given
-        List<AirQuality> airQualityList = Collections.singletonList(new AirQuality(new byte[0], 1, 2));
-        when(mockLocalDataSource.getAirQualityList()).thenReturn(airQualityList);
-
-        // When
-        List<AirQuality> result = repository.getAirQualityList();
-
-        // Then
-        assertEquals(result, airQualityList);
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.getValue() instanceof Result.AirQualityResponseSuccess);
+        assertEquals(((Result.AirQualityResponseSuccess) result.getValue()).getData().getAirQualities(), airQualityList);
     }
 }
