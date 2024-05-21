@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,10 +20,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import org.junit.Before;
+import org.robolectric.shadows.ShadowLooper;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
 
 import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
 
@@ -33,15 +37,12 @@ import it.unimib.greenway.ui.main.AirQualityViewModel;
 @Config(manifest=Config.NONE)
 public class AirQualityViewModelTest {
 
-    private AirQualityRepositoryWithLiveData repository;
+    private IAirQualityRepositoryWithLiveData repository;
     private AirQualityViewModel viewModel;
 
     @Before
     public void setUp() {
-        BaseAirQualityLocalDataSource localDataSource = mock(BaseAirQualityLocalDataSource.class);
-        BaseAirQualityRemoteDataSource remoteDataSource = mock(BaseAirQualityRemoteDataSource.class);
-
-        repository = new AirQualityRepositoryWithLiveData(localDataSource, remoteDataSource);
+        repository = mock(IAirQualityRepositoryWithLiveData.class);
         viewModel = new AirQualityViewModel(repository);
     }
 
@@ -49,7 +50,7 @@ public class AirQualityViewModelTest {
     public void testFetchAllAirQuality_whenLastUpdateIsZero_fetchesFromRemote() {
         // Arrange
         MutableLiveData<Result> liveData = new MutableLiveData<>();
-        when(repository.fetchAllAirQUality(0)).thenReturn(liveData);
+        when(repository.fetchAllAirQUality(eq(0L))).thenReturn(liveData);
 
         // Act
         LiveData<Result> result = viewModel.getAirQuality(0);
@@ -64,7 +65,7 @@ public class AirQualityViewModelTest {
         // Arrange
         long lastUpdate = System.currentTimeMillis() - 1 * 60 * 60 * 1000; // 1 hour ago
         MutableLiveData<Result> liveData = new MutableLiveData<>();
-        when(repository.fetchAllAirQUality(lastUpdate)).thenReturn(liveData);
+        when(repository.fetchAllAirQUality(eq(lastUpdate))).thenReturn(liveData);
 
         // Act
         viewModel.fetchAirQuality(lastUpdate);
@@ -82,12 +83,15 @@ public class AirQualityViewModelTest {
         airQualityList.add(new AirQuality(new byte[]{}, 1, 2));
         Result.AirQualityResponseSuccess success = new Result.AirQualityResponseSuccess(new AirQualityResponse(airQualityList));
         MutableLiveData<Result> liveData = new MutableLiveData<>();
-        when(repository.fetchAllAirQUality(anyLong())).thenReturn(liveData);
         liveData.postValue(success);
+        when(repository.fetchAllAirQUality(anyLong())).thenReturn(liveData);
 
         // Act
         viewModel.fetchAirQuality(0);
-        LiveData<Result> result = viewModel.getAirQuality(0);
+        MutableLiveData<Result> result = viewModel.getAirQuality(0);
+
+        // Advancing the main looper to ensure LiveData changes are observed
+        ShadowLooper.runUiThreadTasks();
 
         // Assert
         assertNotNull(result);
