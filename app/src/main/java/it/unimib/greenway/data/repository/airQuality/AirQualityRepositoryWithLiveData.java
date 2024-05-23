@@ -1,5 +1,7 @@
 package it.unimib.greenway.data.repository.airQuality;
 
+import android.view.View;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
@@ -30,9 +32,9 @@ public class AirQualityRepositoryWithLiveData implements IAirQualityRepositoryWi
     }
 
     @Override
-    public MutableLiveData<Result> fetchAllAirQUality(long lastUpdate) {
+    public MutableLiveData<Result> fetchAllAirQUality(long lastUpdate, View view) {
         if (lastUpdate == 0 || System.currentTimeMillis() - lastUpdate >= 2 * 60 * 60 * 1000){
-            airQualityRemoteDataSource.getAirQuality();
+            airQualityRemoteDataSource.getAirQuality(view);
         }else{
             airQualityLocalDataSource.getAirQuality();
         }

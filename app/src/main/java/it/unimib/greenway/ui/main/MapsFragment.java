@@ -4,6 +4,8 @@ import static it.unimib.greenway.util.Constants.LAST_UPDATE;
 import static it.unimib.greenway.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.Manifest;
+import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.maps.android.PolyUtil;
 
 import java.util.ArrayList;
@@ -192,9 +195,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             lastUpdate = sharedPreferencesUtil.readStringData(
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
         }
-
-         airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate));
-
+         airQualityViewModel.getAirQuality(Long.parseLong(lastUpdate), view);
 
 
     }

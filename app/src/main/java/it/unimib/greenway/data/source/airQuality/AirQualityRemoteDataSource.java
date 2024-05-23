@@ -5,17 +5,21 @@ import static it.unimib.greenway.BuildConfig.MAPS_API_KEY;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.greenway.R;
 import it.unimib.greenway.data.service.AirQualityApiService;
 import it.unimib.greenway.model.AirQuality;
+import it.unimib.greenway.util.NotificationUtil;
 import it.unimib.greenway.util.ServiceLocator;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,7 +37,7 @@ public class AirQualityRemoteDataSource extends BaseAirQualityRemoteDataSource {
     }
 
     @Override
-    public void getAirQuality() {
+    public void getAirQuality(View view) {
         List<AirQuality> airQualities = new ArrayList<>();
         Call<ResponseBody> call = airQualityApiService.fetchAirQualityImage("US_AQI", 3, x, y, MAPS_API_KEY);
         call.enqueue(new Callback<ResponseBody>() {
@@ -51,26 +55,33 @@ public class AirQualityRemoteDataSource extends BaseAirQualityRemoteDataSource {
                                 x = 0;
                                 y = y+1;
                                 i = i+1;
-                                getAirQuality();
+                                getAirQuality(view);
 
                             }else{
                                 x = x+1;
                                 i = i+1;
-                                getAirQuality();
+                                getAirQuality(view);
 
                             }
                         } catch (Exception e) {
                             Log.e("Prova", "Errore nel caricare l'immagine come overlay", e);
                         }
+                    }else{
+
                     }
 
                 } else {
+
                     // handle request errors
                     Log.d("Prova2","no" );
 
                     Log.d("Prova2", "Codice di stato HTTP: " + response.code());
                     Log.d("Prova2", "Messaggio di errore: " + response.message());
                 }
+                if(i == 64) {
+                    Snackbar.make(view, R.string.image_load_complete, Snackbar.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override

@@ -89,6 +89,7 @@
     <string name="good_air">Buona qualità dell\'aria (0-50)</string>
     <string name="color_legend">Legenda</string>
     <string name="us_aqi">(scala: us_AQI)</string>
+    <string name="image_load_complete">Caricamento immagini completato</string>
 
 
 </resources>

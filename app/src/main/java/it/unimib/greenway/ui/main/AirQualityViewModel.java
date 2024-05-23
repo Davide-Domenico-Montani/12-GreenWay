@@ -1,5 +1,8 @@
 package it.unimib.greenway.ui.main;
 
+import android.content.Context;
+import android.view.View;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -22,15 +25,15 @@ public class AirQualityViewModel extends ViewModel {
         this.airQualityRepositoryWithLiveData = airQualityRepositoryWithLiveData;
     }
 
-    public MutableLiveData<Result> getAirQuality(long lastUpdate) {
+    public MutableLiveData<Result> getAirQuality(long lastUpdate, View view) {
         if (airQualityListLiveData == null) {
-            fetchAirQuality(lastUpdate);
+            fetchAirQuality(lastUpdate, view);
         }
         return airQualityListLiveData;
     }
 
-    public void fetchAirQuality(long lastUpdate) {
-        airQualityListLiveData = airQualityRepositoryWithLiveData.fetchAllAirQUality(lastUpdate);
+    public void fetchAirQuality(long lastUpdate, View view) {
+        airQualityListLiveData = airQualityRepositoryWithLiveData.fetchAllAirQUality(lastUpdate, view);
     }
 
     public List<AirQuality> getAirQualityList() throws ExecutionException, InterruptedException {

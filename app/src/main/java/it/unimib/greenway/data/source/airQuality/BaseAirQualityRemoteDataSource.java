@@ -1,5 +1,7 @@
 package it.unimib.greenway.data.source.airQuality;
 
+import android.view.View;
+
 public abstract class BaseAirQualityRemoteDataSource {
     protected AirQualityCallBack airQualityCallBack;
 
@@ -7,5 +9,6 @@ public abstract class BaseAirQualityRemoteDataSource {
         this.airQualityCallBack = airQualityCallBack;
     }
 
-    public abstract void getAirQuality();
+    public abstract void getAirQuality(View view);
+
 }
