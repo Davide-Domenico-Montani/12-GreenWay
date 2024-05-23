@@ -2,9 +2,17 @@ plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id ("org.sonarqube") version "5.0.0.4638"
+
 }
 
 
+sonar {
+    properties {
+        property("sonar.projectKey", "GreenWay")
+        property("sonar.projectName", "GreenWay")
+    }
+}
 
 secrets {
     // Optionally specify a different file name containing your secrets.
