@@ -84,6 +84,14 @@
     <string name="car_production_number_error">Inserted value is not a number</string>
     <string name="error_removing_friend">Error: friend not removed</string>
     <string name="error_adding_friend">Error: friend not added</string>
+    <string name="hazardous_air">Hazardous air quality (301-500)</string>
+    <string name="very_unhealthy_air">Very unhealthy air quality (201-300)</string>
+    <string name="unhealthy_air">Unhealthy air quality (151-200)</string>
+    <string name="unhealthy_for_sensitive_group_air">Unhealthy air quality for sensitive groups (101-150)</string>
+    <string name="moderate_air">Moderate air quality (51-100)</string>
+    <string name="good_air">Good air quality (0-50)</string>
+    <string name="color_legend">Legend</string>
+    <string name="us_aqi">(scale: us_AQI)</string>
 
 
 </resources>

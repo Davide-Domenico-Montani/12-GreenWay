@@ -81,6 +81,14 @@
     <string name="car_production_number_error">Il valore inserito non è un numero</string>
     <string name="error_removing_friend">Errore: amico non rimosso</string>
     <string name="error_adding_friend">Errore: amico non aggiunto</string>
+    <string name="hazardous_air">Qualità dell\'aria pericolosa (301-500)</string>
+    <string name="very_unhealthy_air">Qualità dell\'aria molto insalubre (201-300)</string>
+    <string name="unhealthy_air">Qualità dell\'aria insalubre (151-200)</string>
+    <string name="unhealthy_for_sensitive_group_air">Qualità dell\'aria insalubre per gruppi sensibili (101-150)</string>
+    <string name="moderate_air">Qualità dell\'aria media (51-100)</string>
+    <string name="good_air">Buona qualità dell\'aria (0-50)</string>
+    <string name="color_legend">Legenda</string>
+    <string name="us_aqi">(scala: us_AQI)</string>
 
 
 </resources>
