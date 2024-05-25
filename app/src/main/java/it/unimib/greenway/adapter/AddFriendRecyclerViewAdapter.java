@@ -87,8 +87,9 @@ public class AddFriendRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
 
         private final RecylclerViewClickListener mlistener;
         private final ImageView profileImage;
-        private final TextView userName, userPoint;
-        private final MaterialCheckBox checkBox;
+        final TextView userName;
+        final TextView userPoint;
+        final MaterialCheckBox checkBox;
         public AddFriendViewHolder(@NonNull View itemView, RecylclerViewClickListener listener) {
             super(itemView);
             mlistener = listener;

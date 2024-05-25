@@ -1,4 +1,4 @@
-package it.unimib.greenway;
+package it.unimib.greenway.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doAnswer;

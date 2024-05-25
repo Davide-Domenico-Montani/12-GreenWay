@@ -1,4 +1,4 @@
-package it.unimib.greenway;
+package it.unimib.greenway.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
