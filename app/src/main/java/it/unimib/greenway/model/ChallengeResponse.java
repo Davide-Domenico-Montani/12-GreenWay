@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ChallengeResponse implements Parcelable {
     private List<Challenge> challenges;
@@ -63,4 +64,18 @@ public class ChallengeResponse implements Parcelable {
     protected ChallengeResponse(Parcel in) {
         this.challenges = in.createTypedArrayList(Challenge.CREATOR);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ChallengeResponse that = (ChallengeResponse) obj;
+        // replace this.field and that.field with the actual fields of the ChallengeResponse class
+        return Objects.equals(this.challenges, that.challenges);
+    }
+
 }

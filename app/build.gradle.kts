@@ -113,7 +113,7 @@ dependencies {
     implementation ("com.google.maps.android:android-maps-utils:2.2.0")
 
     // Dipendenza di Robolectric
-    testImplementation ("org.robolectric:robolectric:4.10.3")
+    testImplementation ("org.robolectric:robolectric:4.12")
 
     // Dipendenza per le API Android per i test
     testImplementation ("androidx.test:core:1.5.0")

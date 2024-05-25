@@ -1,6 +1,7 @@
 package it.unimib.greenway.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Result {
     private Result(){}
@@ -30,6 +31,7 @@ public class Result {
     public boolean isError() {
         return this instanceof Error;
     }
+
     public static final class UserResponseSuccess extends Result {
         private final User user;
         public UserResponseSuccess(User user) {
@@ -38,6 +40,7 @@ public class Result {
         public User getData() {
             return user;
         }
+
     }
 
 
@@ -59,6 +62,15 @@ public class Result {
         public RoutesResponse getData() {
             return routesResponse;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            RouteResponseSuccess that = (RouteResponseSuccess) obj;
+            return Objects.equals(this.routesResponse, that.routesResponse);
+        }
+
     }
 
     public static final class ChallengeResponseSuccess extends Result {
@@ -68,6 +80,18 @@ public class Result {
         }
         public ChallengeResponse getData() {
             return challengeResponse;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            Result.ChallengeResponseSuccess that = (Result.ChallengeResponseSuccess) obj;
+            return Objects.equals(this.challengeResponse, that.challengeResponse);
         }
     }
 

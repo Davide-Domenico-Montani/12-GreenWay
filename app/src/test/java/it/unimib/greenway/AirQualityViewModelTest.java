@@ -8,12 +8,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import androidx.lifecycle.LiveData;
+import android.view.View;
+
 import androidx.lifecycle.MutableLiveData;
-import it.unimib.greenway.data.source.airQuality.BaseAirQualityLocalDataSource;
-import it.unimib.greenway.data.source.airQuality.BaseAirQualityRemoteDataSource;
-import it.unimib.greenway.model.AirQuality;
-import it.unimib.greenway.model.AirQualityResponse;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -27,9 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.greenway.data.repository.airQuality.IAirQualityRepositoryWithLiveData;
-
-import it.unimib.greenway.data.repository.airQuality.AirQualityRepositoryWithLiveData;
-
+import it.unimib.greenway.model.AirQuality;
 import it.unimib.greenway.model.Result;
 import it.unimib.greenway.ui.main.AirQualityViewModel;
 
@@ -39,63 +36,41 @@ public class AirQualityViewModelTest {
 
     private IAirQualityRepositoryWithLiveData repository;
     private AirQualityViewModel viewModel;
+    private View view;
 
     @Before
     public void setUp() {
         repository = mock(IAirQualityRepositoryWithLiveData.class);
         viewModel = new AirQualityViewModel(repository);
+        view = mock(View.class); // Mocking the View object
     }
 
     @Test
-    public void testFetchAllAirQuality_whenLastUpdateIsZero_fetchesFromRemote() {
+    public void testGetAirQuality_whenLiveDataIsNull_fetchesFromRepository() {
         // Arrange
         MutableLiveData<Result> liveData = new MutableLiveData<>();
-        //when(repository.fetchAllAirQUality(eq(0L))).thenReturn(liveData);
+        when(repository.fetchAllAirQUality(eq(0L), eq(view))).thenReturn(liveData);
 
         // Act
-        //LiveData<Result> result = viewModel.getAirQuality(0);
+        MutableLiveData<Result> result = viewModel.getAirQuality(0, view);
 
         // Assert
-        //assertNotNull(result);
-        //assertEquals(result, liveData);
+        assertNotNull(result);
+        assertEquals(result, liveData);
     }
 
     @Test
-    public void testRefreshData_whenLastUpdateIsRecent_fetchesFromLocal() {
+    public void testFetchAirQuality_fetchesFromRepository() {
         // Arrange
-        long lastUpdate = System.currentTimeMillis() - 1 * 60 * 60 * 1000; // 1 hour ago
         MutableLiveData<Result> liveData = new MutableLiveData<>();
-        //when(repository.fetchAllAirQUality(eq(lastUpdate))).thenReturn(liveData);
+        when(repository.fetchAllAirQUality(anyLong(), eq(view))).thenReturn(liveData);
 
         // Act
-        //viewModel.fetchAirQuality(lastUpdate);
-        //LiveData<Result> result = viewModel.getAirQuality(lastUpdate);
+        viewModel.fetchAirQuality(0, view);
+        MutableLiveData<Result> result = viewModel.getAirQuality(0, view);
 
         // Assert
-        //assertNotNull(result);
-        //assertEquals(result, liveData);
-    }
-
-    @Test
-    public void testOnSuccessFromLocal_postsResultToLiveData() {
-        // Arrange
-        List<AirQuality> airQualityList = new ArrayList<>();
-        airQualityList.add(new AirQuality(new byte[]{}, 1, 2));
-        Result.AirQualityResponseSuccess success = new Result.AirQualityResponseSuccess(new AirQualityResponse(airQualityList));
-        MutableLiveData<Result> liveData = new MutableLiveData<>();
-        liveData.postValue(success);
-        //when(repository.fetchAllAirQUality(anyLong())).thenReturn(liveData);
-
-        // Act
-        //viewModel.fetchAirQuality(0);
-        //MutableLiveData<Result> result = viewModel.getAirQuality(0);
-
-        // Advancing the main looper to ensure LiveData changes are observed
-        ShadowLooper.runUiThreadTasks();
-
-        // Assert
-        //assertNotNull(result);
-        //assertTrue(result.getValue() instanceof Result.AirQualityResponseSuccess);
-        //assertEquals(((Result.AirQualityResponseSuccess) result.getValue()).getData().getAirQualities(), airQualityList);
+        assertNotNull(result);
+        assertEquals(result, liveData);
     }
 }

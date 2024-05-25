@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RoutesResponse implements Parcelable {
     @SerializedName("routes")
@@ -63,5 +64,12 @@ public class RoutesResponse implements Parcelable {
         this.routes = source.createTypedArrayList(Route.CREATOR);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoutesResponse)) return false;
+        RoutesResponse that = (RoutesResponse) o;
+        return Objects.equals(routes, that.routes);
+    }
 
 }
