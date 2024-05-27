@@ -39,7 +39,7 @@ import it.unimib.greenway.util.Constants;
 import it.unimib.greenway.util.ConverterUtil;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 28, manifest=Config.NONE)
+@Config(manifest=Config.NONE)
 public class ConverterUtilTest {
     ConverterUtil instance;
     @Before

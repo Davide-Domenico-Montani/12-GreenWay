@@ -41,6 +41,14 @@ public class Result {
             return user;
         }
 
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            UserResponseSuccess that = (UserResponseSuccess) obj;
+            return Objects.equals(user, that.user);
+        }
+
     }
 
 

@@ -81,6 +81,12 @@ public class UserRepositoryTest {
         String password = "testPassword";
         Result expected = new Result.UserResponseSuccess(new User());
 
+        // Stub the login method to immediately post a value to userMutableLiveData
+        doAnswer(invocation -> {
+            userRepository.onSuccessFromAuthentication(new User());
+            return null;
+        }).when(userRemoteDataSource).login(email, password);
+
         // Act
         MutableLiveData<Result> result = userRepository.loginUser(email, password);
 
@@ -88,7 +94,6 @@ public class UserRepositoryTest {
         verify(userRemoteDataSource).login(email, password);
         assertEquals(expected, result.getValue());
     }
-
     @Test
     public void testGetUserData() {
         // Arrange

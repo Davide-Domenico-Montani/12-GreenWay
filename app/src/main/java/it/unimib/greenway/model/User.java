@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User implements Parcelable {
     String userId;
@@ -96,7 +97,13 @@ public class User implements Parcelable {
         this.email = email;
     }
 
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Double.compare(kmCar, user.kmCar) == 0 && Double.compare(kmTransit, user.kmTransit) == 0 && Double.compare(kmWalk, user.kmWalk) == 0 && Double.compare(co2Produced, user.co2Produced) == 0 && Double.compare(co2Car, user.co2Car) == 0 && Double.compare(co2SavedCar, user.co2SavedCar) == 0 && Double.compare(co2SavedTransit, user.co2SavedTransit) == 0 && Double.compare(co2SavedWalk, user.co2SavedWalk) == 0 && point == user.point && Double.compare(co2Consumed, user.co2Consumed) == 0 && Objects.equals(userId, user.userId) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(photoUrl, user.photoUrl) && Objects.equals(photoUrlGoogle, user.photoUrlGoogle) && Objects.equals(statusChallengeList, user.statusChallengeList) && Objects.equals(idFriends, user.idFriends);
+    }
     public double getCo2Consumed() {
         return co2Consumed;
     }
@@ -323,6 +330,8 @@ public class User implements Parcelable {
         in.readList(this.statusChallengeList, StatusChallenge.class.getClassLoader());
         this.idFriends = in.createStringArrayList();
     }
+
+
 
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
