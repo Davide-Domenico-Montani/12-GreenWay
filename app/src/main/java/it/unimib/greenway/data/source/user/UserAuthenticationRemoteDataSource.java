@@ -33,12 +33,11 @@ public class UserAuthenticationRemoteDataSource extends BaseUserAuthenticationRe
 
     private static final String TAG = UserAuthenticationRemoteDataSource.class.getSimpleName();
 
-    private final FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
     public UserAuthenticationRemoteDataSource() {
         firebaseAuth = FirebaseAuth.getInstance();
 
     }
-
     @Override
     public void signInWithGoogle(String idToken, List<StatusChallenge> statusChallengeList) {
         if (idToken !=  null) {

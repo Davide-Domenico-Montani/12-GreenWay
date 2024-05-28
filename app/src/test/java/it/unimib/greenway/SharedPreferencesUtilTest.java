@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 import it.unimib.greenway.util.SharedPreferencesUtil;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = {28})
+@Config(manifest=Config.NONE)
 public class SharedPreferencesUtilTest {
 
     private SharedPreferencesUtil sharedPreferencesUtil;
