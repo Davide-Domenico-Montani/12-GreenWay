@@ -8,7 +8,6 @@ import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_GPL;
 import static it.unimib.greenway.util.Constants.CO2_PRODUCTION_CAR_METHANE;
 import static it.unimib.greenway.util.Constants.DIESEL_PARAMETER;
 import static it.unimib.greenway.util.Constants.ELECTRIC_PARAMETER;
-import static it.unimib.greenway.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.unimib.greenway.util.Constants.ERROR_RETRIEVING_USER_INFO;
 import static it.unimib.greenway.util.Constants.GPL_PARAMETER;
 import static it.unimib.greenway.util.Constants.METANO_PARAMETER;
@@ -31,10 +30,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +45,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import it.unimib.greenway.R;
 import it.unimib.greenway.data.repository.user.IUserRepository;
@@ -59,7 +55,6 @@ import it.unimib.greenway.ui.UserViewModelFactory;
 import it.unimib.greenway.util.ConverterUtil;
 import it.unimib.greenway.util.ServiceLocator;
 import it.unimib.greenway.util.SharedPreferencesUtil;
-import retrofit2.Converter;
 
 
 public class SettingFragment extends Fragment {
